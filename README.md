@@ -1,0 +1,2 @@
+# bq
+Bootique CLI tool
