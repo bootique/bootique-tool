@@ -2,7 +2,7 @@ properties:
   java.package: "io.bootique.demo"
   maven.groupId: "io.bootique.demo"
   maven.artifactId: "bootique-demo"
-  mavem.version: "0.26-SNAPSHOT"
+  maven.version: "0.26-SNAPSHOT"
 
 templates:
   templateRoot: "target/test-classes/test-tpl"

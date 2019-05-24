@@ -37,7 +37,7 @@ public class SourceSet {
             return combinedFilter = path -> true;
         }
 
-        for(var filter: includes) {
+        for(SourceFilter filter: includes) {
             if(combinedFilter == null) {
                 combinedFilter = filter;
             } else {
@@ -45,7 +45,7 @@ public class SourceSet {
             }
         }
 
-        for(var filter: excludes) {
+        for(SourceFilter filter: excludes) {
             if(combinedFilter == null) {
                 combinedFilter = filter;
             } else {
@@ -66,7 +66,7 @@ public class SourceSet {
             return combinedProcessor = t -> t;
         }
 
-        for(var processor: processors) {
+        for(TemplateProcessor processor: processors) {
             if(combinedProcessor == null) {
                 combinedProcessor = processor;
             } else {

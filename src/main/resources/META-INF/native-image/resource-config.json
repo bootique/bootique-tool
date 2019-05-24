@@ -1,0 +1,9 @@
+{
+  "resources":[
+    {"pattern":"META-INF/native/osx/libjansi.jnilib"}, 
+    {"pattern":"META-INF/services/io.bootique.BQModuleProvider"}, 
+    {"pattern":"META-INF/services/org.jline.terminal.spi.JansiSupport"}, 
+    {"pattern":"org/jline/utils/capabilities.txt"}, 
+    {"pattern":"org/jline/utils/xterm-256color.caps"}
+  ]
+}

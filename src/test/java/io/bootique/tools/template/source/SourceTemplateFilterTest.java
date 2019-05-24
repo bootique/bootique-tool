@@ -1,10 +1,12 @@
 package io.bootique.tools.template.source;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.TreeMap;
 
+import io.bootique.tools.Utils;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -14,7 +16,7 @@ public class SourceTemplateFilterTest {
     @Test
     public void templateToRegexp() {
 
-        Map<String, String> templates = Map.of(
+        Map<String, String> templates = Utils.mapOf(
                 "/some/path/*.ext",             "/some/path/[^/]+\\.ext$",
                 "/some/path/file.ext",          "/some/path/file\\.ext$",
                 "**/pom.xml",                   "(.*/)?pom\\.xml$",
@@ -25,7 +27,7 @@ public class SourceTemplateFilterTest {
                 "/some/path/**/subfolder/*",    "/some/path/(.*/)?subfolder/[^/]+$"
         );
 
-        for(var e : templates.entrySet()) {
+        for(Map.Entry<String, String> e : templates.entrySet()) {
             String regexp = SourceTemplateFilter.templateToRegexp(e.getKey());
             assertEquals("Pattern " + e.getKey() + " failed", e.getValue(), regexp);
         }
@@ -33,13 +35,13 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void exactMatch() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("some", "path", "file.ext"),            true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("some", "path", "file.ext"),            true,
 
-                Path.of("some", "path", "file2.ext"),           false,
-                Path.of("some", "path", "file.ext3"),           false,
-                Path.of("some", "path", "sub", "file.ext"),     false,
-                Path.of("super", "some", "path", "file.ext"),   false
+                Paths.get("some", "path", "file2.ext"),           false,
+                Paths.get("some", "path", "file.ext3"),           false,
+                Paths.get("some", "path", "sub", "file.ext"),     false,
+                Paths.get("super", "some", "path", "file.ext"),   false
         );
 
         testFilter("some/path/file.ext", dataSet);
@@ -47,14 +49,14 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void extensionMatch() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("some", "path", "file.ext"),            true,
-                Path.of("some", "path", "some long file name.ext"),true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("some", "path", "file.ext"),            true,
+                Paths.get("some", "path", "some long file name.ext"),true,
 
-                Path.of("some", "path", ".ext"),                false,
-                Path.of("some", "path", "file.ext3"),           false,
-                Path.of("some", "path", "sub", "file.ext"),     false,
-                Path.of("super", "some", "path", "file.ext"),   false
+                Paths.get("some", "path", ".ext"),                false,
+                Paths.get("some", "path", "file.ext3"),           false,
+                Paths.get("some", "path", "sub", "file.ext"),     false,
+                Paths.get("super", "some", "path", "file.ext"),   false
         );
 
         testFilter("some/path/*.ext", dataSet);
@@ -62,15 +64,15 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void exactFileAnywhere() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("pom.xml"), true,
-                Path.of("pom.xml").toAbsolutePath(), true,
-                Path.of("super", "some", "path", "pom.xml"), true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("pom.xml"), true,
+                Paths.get("pom.xml").toAbsolutePath(), true,
+                Paths.get("super", "some", "path", "pom.xml"), true,
 
-                Path.of("file.xml"), false,
-                Path.of("some", "path", "pom.ext"), false,
-                Path.of("some", "path", "file.ext3"), false,
-                Path.of("some", "path", "some long file pom.xml"), false
+                Paths.get("file.xml"), false,
+                Paths.get("some", "path", "pom.ext"), false,
+                Paths.get("some", "path", "file.ext3"), false,
+                Paths.get("some", "path", "some long file pom.xml"), false
         );
 
         testFilter("**/pom.xml", dataSet);
@@ -78,14 +80,14 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void anything() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("pom.xml"), true,
-                Path.of("pom.xml").toAbsolutePath(), true,
-                Path.of("some", "path", "pom.ext"), true,
-                Path.of("some", "path", "some long file pom.xml"), true,
-                Path.of("some", "path", "file.ext3"), true,
-                Path.of("some", "path", "sub", "file.xml"), true,
-                Path.of("super", "some", "path", "pom.xml"), true
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("pom.xml"), true,
+                Paths.get("pom.xml").toAbsolutePath(), true,
+                Paths.get("some", "path", "pom.ext"), true,
+                Paths.get("some", "path", "some long file pom.xml"), true,
+                Paths.get("some", "path", "file.ext3"), true,
+                Paths.get("some", "path", "sub", "file.xml"), true,
+                Paths.get("super", "some", "path", "pom.xml"), true
         );
 
         testFilter("**/*", dataSet);
@@ -93,14 +95,14 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void allFilesInRoot() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("pom.xml"), true,
-                Path.of("other file.ext"), true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("pom.xml"), true,
+                Paths.get("other file.ext"), true,
 
-                Path.of("pom.xml").toAbsolutePath(), false,
-                Path.of("some", "path", "pom.ext"), false,
-                Path.of("some", "path", "some long file pom.xml"), false,
-                Path.of("super", "some", "path", "pom.xml"), false
+                Paths.get("pom.xml").toAbsolutePath(), false,
+                Paths.get("some", "path", "pom.ext"), false,
+                Paths.get("some", "path", "some long file pom.xml"), false,
+                Paths.get("super", "some", "path", "pom.xml"), false
         );
 
         testFilter("*", dataSet);
@@ -108,14 +110,14 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void allFilesInPath() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("some", "path", "pom.ext"), true,
-                Path.of("some", "path", "some long file name.ext"), true,
-                Path.of("some", "path", "file"), true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("some", "path", "pom.ext"), true,
+                Paths.get("some", "path", "some long file name.ext"), true,
+                Paths.get("some", "path", "file"), true,
 
-                Path.of("some", "pom.xml"), false,
-                Path.of("some", "path", "sub", "pom.xml"), false,
-                Path.of("super", "some", "path", "pom.xml"), false
+                Paths.get("some", "pom.xml"), false,
+                Paths.get("some", "path", "sub", "pom.xml"), false,
+                Paths.get("super", "some", "path", "pom.xml"), false
         );
 
         testFilter("some/path/*", dataSet);
@@ -123,13 +125,13 @@ public class SourceTemplateFilterTest {
 
     @Test
     public void everythingInSubPath() {
-        Map<Path, Boolean> dataSet = Map.of(
-                Path.of("path", "start", "file.ext"), true,
-                Path.of("path", "start", "sub", "file.ext"), true,
+        Map<Path, Boolean> dataSet = Utils.mapOf(
+                Paths.get("path", "start", "file.ext"), true,
+                Paths.get("path", "start", "sub", "file.ext"), true,
 
-                Path.of("path", "start", "file.ext2"), false,
-                Path.of("path", "start", "sub", "file.ext2"), false,
-                Path.of("other", "path", "start", "sub", "file.ext"), false
+                Paths.get("path", "start", "file.ext2"), false,
+                Paths.get("path", "start", "sub", "file.ext2"), false,
+                Paths.get("other", "path", "start", "sub", "file.ext"), false
         );
 
         testFilter("path/start/**/*.ext", dataSet);
@@ -138,7 +140,7 @@ public class SourceTemplateFilterTest {
     private void testFilter(String pattern, Map<Path, Boolean> dataSet) {
         SourceTemplateFilter filter = new SourceTemplateFilter(pattern);
 
-        for(var entry : dataSet.entrySet()) {
+        for(Map.Entry<Path, Boolean> entry : dataSet.entrySet()) {
             assertEquals("Failed path: \"" + entry.getKey().toString() + "\" with pattern \"" + filter.pattern + "\""
                     , entry.getValue(), filter.test(entry.getKey()));
         }

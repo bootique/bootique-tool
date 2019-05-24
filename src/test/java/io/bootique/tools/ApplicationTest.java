@@ -2,7 +2,7 @@ package io.bootique.tools;
 
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import io.bootique.BQRuntime;
 import io.bootique.test.junit.BQTestFactory;
@@ -23,9 +23,9 @@ public class ApplicationTest {
 
     @Test
     public void runtimeTest() throws IOException {
-        Files.deleteIfExists(Path.of("target", "tmp-output", "subfolder", "test.file"));
-        Files.deleteIfExists(Path.of("target", "tmp-output", "pom.xml"));
-        Files.deleteIfExists(Path.of("target", "tmp-output", "io", "bootique", "demo", "Test.java"));
+        Files.deleteIfExists(Paths.get("target", "tmp-output", "subfolder", "test.file"));
+        Files.deleteIfExists(Paths.get("target", "tmp-output", "pom.xml"));
+        Files.deleteIfExists(Paths.get("target", "tmp-output", "io", "bootique", "demo", "Test.java"));
 
         BQRuntime runtime = testFactory.app()
                 .args("-c=classpath:demo.yml")

@@ -1,6 +1,7 @@
 package io.bootique.tools.template.processor;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import io.bootique.tools.template.DefaultPropertyService;
 import io.bootique.tools.template.PropertyService;
@@ -81,7 +82,7 @@ public class MavenProcessorTest {
                 "</project>";
 
 
-        String processed = processor.processContent(new Template(Path.of(""), content));
+        String processed = processor.processContent(new Template(Paths.get(""), content));
 
         assertEquals(expected, processed);
     }

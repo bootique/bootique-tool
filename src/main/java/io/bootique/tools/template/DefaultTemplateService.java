@@ -1,10 +1,13 @@
 package io.bootique.tools.template;
 
+import java.io.BufferedWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardOpenOption;
+import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import io.bootique.tools.template.source.SourceSet;
 
@@ -18,7 +21,7 @@ public class DefaultTemplateService implements TemplateService {
         this.templateRoot = templateRoot;
         this.outputRoot = outputRoot;
         this.sourceSets = sourceSets.isEmpty()
-                ? List.of(new SourceSet())  // will just copy everything to destination root
+                ? Collections.singletonList(new SourceSet())  // will just copy everything to destination root
                 : sourceSets;
     }
 
@@ -37,7 +40,7 @@ public class DefaultTemplateService implements TemplateService {
         }
 
         // Process templates
-        for (var set : sourceSets) {
+        for (SourceSet set : sourceSets) {
             if (set.combineFilters().test(path)) {
                 saveTemplate(set.combineProcessors().process(loadTemplate(path)));
             }
@@ -51,7 +54,10 @@ public class DefaultTemplateService implements TemplateService {
     void saveTemplate(Template template) {
         try {
             Files.createDirectories(template.getPath().getParent());
-            Files.writeString(template.getPath(), template.getContent(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE);
+            try(BufferedWriter bufferedWriter = Files.newBufferedWriter(template.getPath(), StandardOpenOption.CREATE_NEW, StandardOpenOption.WRITE)) {
+                bufferedWriter.write(template.getContent());
+                bufferedWriter.flush();
+            }
         } catch (IOException ex) {
             throw new TemplateException("Can't process template " + template, ex);
         }
@@ -60,7 +66,7 @@ public class DefaultTemplateService implements TemplateService {
     String loadContent(Path path) {
         String content;
         try {
-            content = Files.readString(path);
+            content = Files.lines(path).collect(Collectors.joining("\n"));
         } catch (IOException ex) {
             throw new TemplateException("Unable to read template " + path, ex);
         }

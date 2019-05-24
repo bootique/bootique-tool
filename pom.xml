@@ -5,7 +5,7 @@
     <parent>
         <groupId>io.bootique.parent</groupId>
         <artifactId>bootique-parent</artifactId>
-        <version>0.12</version>
+        <version>0.13</version>
     </parent>
 
     <groupId>io.bootique.tools</groupId>
@@ -13,10 +13,13 @@
     <version>1.0-SNAPSHOT</version>
 
     <properties>
-        <maven.compiler.source>11</maven.compiler.source>
-        <maven.compiler.target>11</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <main.class>io.bootique.tools.Application</main.class>
+        <bootique.version>1.0</bootique.version>
+        <bootique.di.version>1.0-SNAPSHOT</bootique.di.version>
+        <jline.version>3.11.0</jline.version>
     </properties>
 
     <dependencyManagement>
@@ -24,7 +27,7 @@
             <dependency>
                 <groupId>io.bootique.bom</groupId>
                 <artifactId>bootique-bom</artifactId>
-                <version>0.26-SNAPSHOT</version>
+                <version>${bootique.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
@@ -46,7 +49,17 @@
         <dependency>
             <groupId>io.bootique.di</groupId>
             <artifactId>guice-over-bootique-di</artifactId>
-            <version>1.0-SNAPSHOT</version>
+            <version>${bootique.di.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-terminal-jansi</artifactId>
+            <version>${jline.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.jline</groupId>
+            <artifactId>jline-reader</artifactId>
+            <version>${jline.version}</version>
         </dependency>
 
         <dependency>
@@ -71,12 +84,12 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.0</version>
+                <version>3.1.1</version>
             </plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.1.1</version>
+                <version>3.2.1</version>
             </plugin>
         </plugins>
     </build>

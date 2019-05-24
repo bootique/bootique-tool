@@ -1,6 +1,7 @@
 package io.bootique.tools.template;
 
 import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.Collections;
 
 import org.junit.Test;
@@ -14,20 +15,20 @@ public class DefaultTemplateServiceTest {
 
     @Test
     public void convertToOutputPath() {
-        Path templatePath = Path.of("template", "path");
-        Path outputPath = Path.of("output", "path");
+        Path templatePath = Paths.get("template", "path");
+        Path outputPath = Paths.get("output", "path");
 
         DefaultTemplateService templateService = new DefaultTemplateService(templatePath, outputPath, Collections.emptyList());
         {
-            Path path = Path.of("template", "path", "file.ext");
+            Path path = Paths.get("template", "path", "file.ext");
             Path filePath1 = templateService.convertToOutputPath(path);
-            assertEquals(Path.of("output", "path", "file.ext"), filePath1);
+            assertEquals(Paths.get("output", "path", "file.ext"), filePath1);
         }
 
         {
-            Path path = Path.of("template", "path", "long", "subpath", "file.ext");
+            Path path = Paths.get("template", "path", "long", "subpath", "file.ext");
             Path filePath1 = templateService.convertToOutputPath(path);
-            assertEquals(Path.of("output", "path", "long", "subpath", "file.ext"), filePath1);
+            assertEquals(Paths.get("output", "path", "long", "subpath", "file.ext"), filePath1);
         }
     }
 }
