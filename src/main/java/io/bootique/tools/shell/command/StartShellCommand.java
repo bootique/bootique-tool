@@ -3,12 +3,14 @@ package io.bootique.tools.shell.command;
 import java.io.IOException;
 
 import com.google.inject.Inject;
+import com.google.inject.Provider;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.tools.shell.module.Banner;
 import org.fusesource.jansi.Ansi;
+import org.jline.reader.EndOfFileException;
 import org.jline.reader.LineReader;
 import org.jline.reader.UserInterruptException;
 import org.jline.terminal.Terminal;
@@ -19,15 +21,19 @@ public class StartShellCommand extends CommandWithMetadata {
     private Terminal terminal;
 
     @Inject
-    private LineReader lineReader;
+    private Provider<LineReader> lineReaderProvider;
 
     @Inject
     @Banner
     private String banner;
 
+    @Inject
+    private CommandLineParser commandLineParser;
+
     public StartShellCommand() {
         super(CommandMetadata
                 .builder("shell")
+                .description("Start interactive shell")
                 .shortName('s')
         );
     }
@@ -37,8 +43,8 @@ public class StartShellCommand extends CommandWithMetadata {
         try {
             printBanner();
             commandLoop();
-        } catch (UserInterruptException ignored) {
-            // ctrl-c pressed, nothing to do here
+        } catch (UserInterruptException | EndOfFileException ignored) {
+            // ctrl-c pressed or terminal was closed, nothing to do here
         } finally {
             closeTerminal();
         }
@@ -47,13 +53,25 @@ public class StartShellCommand extends CommandWithMetadata {
 
     private void commandLoop() {
         String line;
-        String prompt = Ansi.ansi().render("@|green bq>|@").toString();
-        while((line = lineReader.readLine(prompt)) != null) {
-            if("quit".equals(line) || "exit".equals(line)) {
+        String prompt = Ansi.ansi().render("@|green bq> |@").toString();
+        LineReader reader = lineReaderProvider.get();
+        while((line = reader.readLine(prompt)) != null) {
+            ParsedCommand parsedCommand = commandLineParser.parse(line);
+            CommandOutcome commandOutcome = parsedCommand
+                    .getCommand().run(parsedCommand.getArguments());
+
+            if(commandOutcome.getException() != null) {
+                formatException(commandOutcome.getException());
+            }
+            if(commandOutcome.getExitCode() == ShellCommand.TERMINATING_EXIT_CODE) {
                 break;
             }
-            System.out.println("Command: " + line);
         }
+    }
+
+    private void formatException(Throwable exception) {
+        terminal.writer().println("Failed to run command");
+        exception.printStackTrace(terminal.writer());
     }
 
     private void printBanner() {
@@ -66,4 +84,5 @@ public class StartShellCommand extends CommandWithMetadata {
         } catch (IOException ignored) {
         }
     }
+
 }

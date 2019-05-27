@@ -1,12 +1,34 @@
 package io.bootique.tools.shell.module;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Optional;
+import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.inject.Binder;
+import com.google.inject.Injector;
 import com.google.inject.Module;
+import com.google.inject.Provider;
 import com.google.inject.Provides;
 import com.google.inject.Singleton;
 import io.bootique.BQCoreModule;
+import io.bootique.BootiqueException;
+import io.bootique.annotation.DefaultCommand;
+import io.bootique.command.Command;
+import io.bootique.command.CommandManager;
+import io.bootique.command.CommandManagerBuilder;
+import io.bootique.tools.shell.command.CommandLineParser;
+import io.bootique.tools.shell.command.DefaultCommandLineParser;
+import io.bootique.tools.shell.command.ErrorCommand;
+import io.bootique.tools.shell.command.ExitCommand;
+import io.bootique.tools.shell.command.HelpCommand;
+import io.bootique.tools.shell.command.NewCommand;
+import io.bootique.tools.shell.command.RunCommand;
+import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import org.fusesource.jansi.Ansi;
 import org.jline.reader.Completer;
@@ -32,7 +54,25 @@ public class BqShellModule implements Module {
     public void configure(Binder binder) {
         BQCoreModule.extend(binder)
                 .addCommand(StartShellCommand.class)
+                .addCommand(NewCommand.class)
+                .addCommand(RunCommand.class)
+                .addCommand(ErrorCommand.class)
+                .addCommand(ExitCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
+
+        binder.bind(CommandLineParser.class)
+                .to(DefaultCommandLineParser.class);
+    }
+
+    @Provides
+    @Singleton
+    CommandManager provideCommandManager(Set<Command> commands,
+                                         Injector injector,
+                                         @DefaultCommand Command defaultCommand) {
+        return new CommandManagerBuilder(commands)
+                .defaultCommand(Optional.of(defaultCommand))
+                .helpCommand(injector.getInstance(HelpCommand.class))
+                .build();
     }
 
     @Provides
@@ -48,11 +88,18 @@ public class BqShellModule implements Module {
 
     @Provides
     @Singleton
-    protected Completer createCompleter() {
+    protected Completer createCompleter(Map<String, ShellCommand> shellCommands) {
+        Object[] nodes = new Object[shellCommands.size()];
+        AtomicInteger counter = new AtomicInteger();
+        shellCommands.forEach((name, cmd) -> nodes[counter.getAndIncrement()] = name);
+
+        //TODO: create this tree programmatically
         return new TreeCompleter(
-                node("exit"),
-                node("help"),
-                node("new", node("project", "module"))
+                node("help", node(nodes)),
+                node("new", node("project", "module")),
+                node("run"),
+                node("info"),
+                node("exit")
         );
     }
 
@@ -66,10 +113,50 @@ public class BqShellModule implements Module {
     }
 
     @Provides
+    @Singleton
+    protected Map<String, ShellCommand> getCommands(CommandManager commandManager) {
+        Map<String, ShellCommand> result = new HashMap<>();
+        commandManager.getAllCommands().forEach((name, cmd) -> {
+            if(!cmd.isHidden()) {
+                Command command = cmd.getCommand();
+                if(command instanceof ShellCommand) {
+                    result.put(name, (ShellCommand)command);
+                }
+            }
+        });
+        return result;
+    }
+
+    @Provides
+    @Singleton
+    protected ShellCommand defaultCommand(CommandManager commandManager) {
+        ShellCommand[] command = new ShellCommand[1];
+        commandManager.getAllCommands().forEach((n, cmd) -> {
+            if(cmd.isHidden()) {
+                Command nextCandidate = cmd.getCommand();
+                if(nextCandidate instanceof ShellCommand) {
+                    if(command[0] != null) {
+                        throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
+                                , "Multiple default commands configured for shell: "
+                                + command[0].getMetadata().getName() + ", "
+                                + nextCandidate.getMetadata().getName());
+                    }
+                    command[0] = (ShellCommand) nextCandidate;
+                }
+            }
+        });
+
+        if(command[0] != null) {
+            return command[0];
+        }
+        throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
+                , "No default command configured for shell.");
+    }
+
+    @Provides
     @Banner
     @Singleton
     protected String createBanner() {
         return Ansi.ansi().render(BANNER_STRING).toString();
     }
-
 }
