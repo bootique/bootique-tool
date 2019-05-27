@@ -1,1 +1,2 @@
 io.bootique.tools.template.module.LiveTemplateModuleProvider
+io.bootique.tools.shell.module.BqShellModuleProvider

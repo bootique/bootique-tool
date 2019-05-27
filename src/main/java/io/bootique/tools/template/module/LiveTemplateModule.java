@@ -8,7 +8,6 @@ import com.google.inject.Singleton;
 import com.google.inject.multibindings.MapBinder;
 import io.bootique.BQCoreModule;
 import io.bootique.ConfigModule;
-import io.bootique.command.CommandManager;
 import io.bootique.config.ConfigurationFactory;
 import io.bootique.tools.template.DefaultPropertyService;
 import io.bootique.tools.template.PropertyService;
@@ -16,7 +15,6 @@ import io.bootique.tools.template.TemplateService;
 import io.bootique.tools.template.processor.JavaPackageProcessor;
 import io.bootique.tools.template.processor.MavenProcessor;
 import io.bootique.tools.template.processor.TemplateProcessor;
-import io.bootique.tools.template.shell.ShellCommand;
 import io.bootique.type.TypeRef;
 
 public class LiveTemplateModule extends ConfigModule {
@@ -26,9 +24,7 @@ public class LiveTemplateModule extends ConfigModule {
         binder.bind(PropertyService.class).to(DefaultPropertyService.class).in(Singleton.class);
 
         BQCoreModule.extend(binder)
-                .addCommand(NewProjectCommand.class)
-                .addCommand(ShellCommand.class)
-                .setDefaultCommand(ShellCommand.class);
+                .addCommand(NewProjectCommand.class);
 
         contributeProcessor(binder, "javaPackage", JavaPackageProcessor.class);
         contributeProcessor(binder, "maven", MavenProcessor.class);
