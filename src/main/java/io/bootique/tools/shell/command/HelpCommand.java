@@ -11,23 +11,22 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.application.OptionValueCardinality;
-import org.fusesource.jansi.Ansi;
-import org.jline.terminal.Terminal;
+import io.bootique.tools.shell.Shell;
 
 public class HelpCommand extends CommandWithMetadata implements ShellCommand {
 
     private static final String SUMMARY = "@|underline Summary:|@\n";
     private static final String INTRO = SUMMARY
-            + "@|green,bold,underline bq|@ is an interactive tool to create and manage Bootique projects.\n"
+            + "  @|green,bold,underline bq|@ is an interactive tool to create and manage Bootique projects.\n"
             + "@|underline Commands:|@";
 
     private static final String CMD_SYNOPSIS = "  @|green %s|@\t%s";
-    private static final String CMD_FULL = SUMMARY + "%s\n@|underline Usage|@:\n"
+    private static final String CMD_FULL = SUMMARY + "  %s\n@|underline Usage|@:\n"
             + "  @|green %s|@ @|cyan %s|@";
     private static final String OPT_SYNOPSIS = "  @|cyan %s|@\t%s";
 
     @Inject
-    private Terminal terminal;
+    private Shell shell;
 
     @Inject
     private Provider<Map<String, ShellCommand>> shellCommands;
@@ -55,7 +54,7 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
             }
         }
 
-        println(INTRO);
+        shell.println(INTRO);
         commandMap.forEach(((name, cmd) -> printCommandHelp(cmd, false)));
 
         return CommandOutcome.succeeded();
@@ -68,19 +67,19 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
                     .map(this::getOptionName)
                     .collect(Collectors.joining(" "));
             String info = String.format(CMD_FULL, metadata.getDescription(), metadata.getName(), options);
-            println(info);
+            shell.println(info);
             if(!metadata.getOptions().isEmpty()) {
-                println("@|underline Options:|@");
+                shell.println("@|underline Options:|@");
                 for (OptionMetadata optionMetadata : metadata.getOptions()) {
                     String optInfo = String.format(OPT_SYNOPSIS,
                             getOptionName(optionMetadata),
                             optionMetadata.getDescription());
-                    println(optInfo);
+                    shell.println(optInfo);
                 }
             }
         } else {
             String info = String.format(CMD_SYNOPSIS, metadata.getName(), metadata.getDescription());
-            println(info);
+            shell.println(info);
         }
     }
 
@@ -88,9 +87,5 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
         return md.getValueCardinality() == OptionValueCardinality.OPTIONAL
                 ? '[' + md.getName() + ']'
                 : md.getName();
-    }
-
-    private void println(String msg) {
-        terminal.writer().println(Ansi.ansi().render(msg));
     }
 }
