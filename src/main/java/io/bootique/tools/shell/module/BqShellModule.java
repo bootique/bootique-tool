@@ -29,7 +29,6 @@ import io.bootique.tools.shell.command.NewCommand;
 import io.bootique.tools.shell.command.RunCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
-import org.fusesource.jansi.Ansi;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -41,16 +40,9 @@ import static org.jline.builtins.Completers.TreeCompleter.*;
 
 public class BqShellModule implements Module {
 
-    private static final String BANNER_STRING =
-            "@|green  ____              _   _                    |@_\n" +
-            "@|green | __ )  ___   ___ | |_(_) __ _ _   _  ___|@  (_) ___\n" +
-            "@|green |  _ \\ / _ \\ / _ \\| __| |/ _` | | | |/ _ \\|@ | |/ _ \\\n" +
-            "@|green | |_) | (_) | (_) | |_| | (_| | |_| |  __/|@_| | (_) |\n" +
-            "@|green |____/ \\___/ \\___/ \\__|_|\\__, |\\__,_|\\___|@(_)_|\\___/\n" +
-            "@|green                             |_||@          shell @|cyan v0.1|@\n";
-
     @Override
     public void configure(Binder binder) {
+        // all commands
         BQCoreModule.extend(binder)
                 .addCommand(StartShellCommand.class)
                 .addCommand(NewCommand.class)
@@ -63,6 +55,9 @@ public class BqShellModule implements Module {
         binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
     }
 
+    /**
+     * Override default CommandManager to use own help command
+     */
     @Provides
     @Singleton
     CommandManager provideCommandManager(Set<Command> commands,
@@ -111,9 +106,13 @@ public class BqShellModule implements Module {
                 .build();
     }
 
+    /**
+     * Collect only shell commands from all commands registered in app
+     * @see ShellCommand
+     */
     @Provides
     @Singleton
-    Map<String, ShellCommand> getCommands(CommandManager commandManager) {
+    Map<String, ShellCommand> getShellCommands(CommandManager commandManager) {
         Map<String, ShellCommand> result = new HashMap<>();
         commandManager.getAllCommands().forEach((name, cmd) -> {
             if(!cmd.isHidden()) {
@@ -126,9 +125,12 @@ public class BqShellModule implements Module {
         return result;
     }
 
+    /**
+     * Fallback shell command to handle wrong input
+     */
     @Provides
     @Singleton
-    ShellCommand defaultCommand(CommandManager commandManager) {
+    ShellCommand defaultShellCommand(CommandManager commandManager) {
         ShellCommand[] command = new ShellCommand[1];
         commandManager.getAllCommands().forEach((n, cmd) -> {
             if(cmd.isHidden()) {
@@ -145,17 +147,10 @@ public class BqShellModule implements Module {
             }
         });
 
-        if(command[0] != null) {
-            return command[0];
+        if(command[0] == null) {
+            throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
+                    , "No default command configured for shell.");
         }
-        throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
-                , "No default command configured for shell.");
-    }
-
-    @Provides
-    @Banner
-    @Singleton
-    String createBanner() {
-        return Ansi.ansi().render(BANNER_STRING).toString();
+        return command[0];
     }
 }
