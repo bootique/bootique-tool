@@ -7,11 +7,11 @@ import com.google.inject.Module;
 import io.bootique.BQCoreModule;
 import io.bootique.BQModuleProvider;
 
-public class BqShellModuleProvider implements BQModuleProvider {
+public class BQShellModuleProvider implements BQModuleProvider {
 
     @Override
     public Module module() {
-        return new BqShellModule();
+        return new BQShellModule();
     }
 
     @Override

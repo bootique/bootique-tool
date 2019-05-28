@@ -1,6 +1,8 @@
 package io.bootique.tools.shell.command;
 
 import java.util.List;
+import java.util.Map;
+import java.util.Objects;
 
 import com.google.inject.Inject;
 import io.bootique.cli.Cli;
@@ -8,12 +10,12 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
-import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.artifact.ArtifactHandler;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
     @Inject
-    private Shell shell;
+    private Map<String, ArtifactHandler> artifactHandlers;
 
     public NewCommand() {
         super(CommandMetadata
@@ -39,10 +41,23 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
                     "Usage: new type name");
         }
 
+        String type = normalize(arguments.get(0));
+        String name = normalize(arguments.get(1));
 
-        shell.println(arguments.toString());
+        ArtifactHandler handler = artifactHandlers.get(type);
+        if(handler == null) {
+            return CommandOutcome.failed(-1, "Unknown artifact type: '" + type + "'\n"
+                + "Supported types: " + String.join(", ", artifactHandlers.keySet()));
+        }
 
-        return CommandOutcome.succeeded();
+        CommandOutcome outcome = handler.validate(name);
+        if(!outcome.isSuccess()) {
+            return outcome;
+        }
+        return handler.handle(name);
     }
 
+    private static String normalize(String string) {
+        return Objects.requireNonNull(string).trim().toLowerCase();
+    }
 }

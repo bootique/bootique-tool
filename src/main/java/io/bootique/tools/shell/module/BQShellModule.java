@@ -20,6 +20,8 @@ import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.artifact.NewModuleHandler;
+import io.bootique.tools.shell.artifact.NewProjectHandler;
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
 import io.bootique.tools.shell.command.ErrorCommand;
@@ -38,7 +40,11 @@ import org.jline.terminal.TerminalBuilder;
 import static org.jline.builtins.Completers.*;
 import static org.jline.builtins.Completers.TreeCompleter.*;
 
-public class BqShellModule implements Module {
+public class BQShellModule implements Module {
+
+    public static BQShellModuleExtender extend(Binder binder) {
+        return new BQShellModuleExtender(binder);
+    }
 
     @Override
     public void configure(Binder binder) {
@@ -50,6 +56,11 @@ public class BqShellModule implements Module {
                 .addCommand(ErrorCommand.class)
                 .addCommand(ExitCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
+
+        // new content handlers
+        extend(binder)
+                .addHandler("project", NewProjectHandler.class)
+                .addHandler("module", NewModuleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
         binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
