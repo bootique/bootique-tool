@@ -1,33 +1,26 @@
-package io.bootique.tools.shell.artifact;
+package io.bootique.tools.shell.content;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
-import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.artifact.NameParser;
 import io.bootique.tools.shell.template.DirOnlySaver;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MavenProcessor;
 
-public class NewMavenProjectHandler {
+public class MavenProjectHandler extends ContentHandler {
 
     private static final String DEFAULT_VERSION = "1.0-SNAPSHOT";
 
     @Inject
     private NameParser nameParser;
 
-    @Inject
-    private Shell shell;
-
-    protected final List<TemplatePipeline> pipelines = new ArrayList<>();
-
-    public NewMavenProjectHandler() {
+    public MavenProjectHandler() {
         // java sources
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/java/example/Application.java")
@@ -54,10 +47,7 @@ public class NewMavenProjectHandler {
         );
     }
 
-    protected void addPipeline(TemplatePipeline.Builder builder) {
-        pipelines.add(builder.build());
-    }
-
+    @Override
     public CommandOutcome handle(String name) {
         NameParser.ValidationResult validationResult = nameParser.validate(name);
         if(!validationResult.isValid()) {
