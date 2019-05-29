@@ -1,6 +1,8 @@
 package io.bootique.tools.shell.module;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -20,8 +22,9 @@ import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.artifact.GradleProjectHandler;
 import io.bootique.tools.shell.artifact.NewModuleHandler;
-import io.bootique.tools.shell.artifact.NewProjectHandler;
+import io.bootique.tools.shell.artifact.MavenProjectHandler;
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
 import io.bootique.tools.shell.command.ErrorCommand;
@@ -59,7 +62,8 @@ public class BQShellModule implements Module {
 
         // new content handlers
         extend(binder)
-                .addHandler("project", NewProjectHandler.class)
+                .addHandler("maven-project", MavenProjectHandler.class)
+                .addHandler("gradle-project", GradleProjectHandler.class)
                 .addHandler("module", NewModuleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
@@ -98,12 +102,22 @@ public class BQShellModule implements Module {
         AtomicInteger counter = new AtomicInteger();
         shellCommands.forEach((name, cmd) -> nodes[counter.getAndIncrement()] = name);
 
-        //TODO: create this tree programmatically
+        FileNameCompleter dirNameCompleter = new FileNameCompleter() {
+            protected boolean accept(Path path) {
+                try {
+                    return !Files.isHidden(path) && Files.isDirectory(path);
+                } catch (IOException e) {
+                    return false;
+                }
+            }
+        };
+
+        //TODO: create this from metadata
         return new TreeCompleter(
                 node("help", node(nodes)),
-                node("new", node("project", "module")),
-                node("run"),
-                node("info"),
+                node("new", node("maven-project", "gradle-project", "module")),
+                node("run", node(dirNameCompleter)),
+                node("info", node(dirNameCompleter)),
                 node("exit")
         );
     }
@@ -114,6 +128,7 @@ public class BQShellModule implements Module {
         return LineReaderBuilder.builder()
                 .terminal(terminal)
                 .completer(completer)
+                .option(LineReader.Option.AUTO_REMOVE_SLASH, true)
                 .build();
     }
 

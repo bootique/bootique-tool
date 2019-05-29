@@ -4,9 +4,7 @@ import io.bootique.tools.shell.command.ParsedCommand;
 
 public interface Shell {
 
-    Shell println(String template);
-
-    Shell println(Throwable exception);
+    void println(Object message);
 
     ParsedCommand readCommand();
 

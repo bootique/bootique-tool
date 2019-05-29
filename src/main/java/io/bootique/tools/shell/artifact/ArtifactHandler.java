@@ -2,10 +2,10 @@ package io.bootique.tools.shell.artifact;
 
 import io.bootique.command.CommandOutcome;
 
-public interface ArtifactHandler {
+public abstract class ArtifactHandler {
 
-    CommandOutcome validate(String name);
+    public abstract CommandOutcome validate(String name);
 
-    CommandOutcome handle(String name);
+    public abstract CommandOutcome handle(String name);
 
 }

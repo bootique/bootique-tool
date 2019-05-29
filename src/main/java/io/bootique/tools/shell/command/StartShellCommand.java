@@ -43,21 +43,25 @@ public class StartShellCommand extends CommandWithMetadata {
     private void commandLoop() {
         ParsedCommand parsedCommand;
         while((parsedCommand = shell.readCommand()) != null) {
-            CommandOutcome commandOutcome = parsedCommand.getCommand().run(parsedCommand.getArguments());
-            if(!commandOutcome.isSuccess()) {
-                failedCommandOutput(commandOutcome);
-                if(commandOutcome.getExitCode() == ShellCommand.TERMINATING_EXIT_CODE) {
-                    break;
+            try {
+                CommandOutcome commandOutcome = parsedCommand.getCommand().run(parsedCommand.getArguments());
+                if (!commandOutcome.isSuccess()) {
+                    if (commandOutcome.getExitCode() == ShellCommand.TERMINATING_EXIT_CODE) {
+                        break;
+                    }
+                    failedCommandOutput(commandOutcome);
                 }
+            } catch (Throwable ex) {
+                shell.println(ex);
             }
         }
     }
 
     private void failedCommandOutput(CommandOutcome commandOutcome) {
         if(commandOutcome.getMessage() != null) {
-            shell.println(commandOutcome.getMessage());
+            shell.println("@|red   < |@" + commandOutcome.getMessage());
         } else {
-            shell.println("Failed to run command");
+            shell.println("@|red   < |@" + "Failed to run command");
         }
         if(commandOutcome.getException() != null) {
             shell.println(commandOutcome.getException());

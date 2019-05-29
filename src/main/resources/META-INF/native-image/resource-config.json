@@ -4,6 +4,9 @@
     {"pattern":"META-INF/services/io.bootique.BQModuleProvider"}, 
     {"pattern":"META-INF/services/org.jline.terminal.spi.JansiSupport"}, 
     {"pattern":"org/jline/utils/capabilities.txt"}, 
-    {"pattern":"org/jline/utils/xterm-256color.caps"}
+    {"pattern":"org/jline/utils/xterm-256color.caps"}, 
+    {"pattern":"templates/maven-project/pom.xml"}, 
+    {"pattern":"templates/maven-project/src/main/java/example/Application.java"}, 
+    {"pattern":"templates/maven-project/src/test/java/example/ApplicationTest.java"}
   ]
 }

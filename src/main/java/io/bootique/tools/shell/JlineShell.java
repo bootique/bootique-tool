@@ -30,17 +30,63 @@ public class JlineShell implements Shell {
     }
 
     @Override
-    public Shell println(String template) {
-        terminal.writer().println(Ansi.ansi().render(template));
+    public void println(Object message) {
+        if(message instanceof String) {
+            terminal.writer().println(Ansi.ansi().render((String)message));
+        } else if(message instanceof Throwable) {
+            printException((Throwable)message, false);
+        } else {
+            terminal.writer().println(message.toString());
+        }
         terminal.flush();
-        return this;
     }
 
-    @Override
-    public Shell println(Throwable exception) {
-        exception.printStackTrace(terminal.writer());
-        terminal.flush();
-        return this;
+    private void printException(Throwable exception, boolean chained) {
+        String prompt = Ansi.ansi().render(" @|red   < |@").toString();
+        String message = compactPackageName(exception.getClass().getName());
+        if(exception.getMessage() != null) {
+            message += ": " + exception.getMessage();
+        }
+        terminal.writer().print(prompt);
+        if(chained) {
+            terminal.writer().print("Caused by ");
+        }
+        terminal.writer().println(message);
+        for(StackTraceElement element: exception.getStackTrace()) {
+            String src = element.isNativeMethod()
+                    ? "native"
+                    : compactPackageName(element.getFileName()) + ":" + element.getLineNumber();
+            String stack = prompt + "\tat "
+                    + compactPackageName(element.getClassName()) + "." + element.getMethodName()
+                    + "(" + src + ")";
+            terminal.writer().println(stack);
+        }
+        if(exception.getCause() != null) {
+            printException(exception.getCause(), true);
+        }
+    }
+
+    static String compactPackageName(String className) {
+        if(className == null) {
+            return "unknown";
+        }
+        int length = className.length();
+        int maxLength = 35;
+
+        String[] path = className.split("\\.");
+        StringBuilder sb = new StringBuilder();
+        for(int i=0; i<path.length-1; i++) {
+            String next = path[i];
+            if(length > maxLength) {
+                sb.append(next.charAt(0));
+                length -= next.length() - 1;
+            } else {
+                sb.append(next);
+            }
+            sb.append('.');
+        }
+        sb.append(path[path.length - 1]);
+        return sb.toString();
     }
 
     @Override

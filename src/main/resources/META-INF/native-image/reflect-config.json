@@ -12,6 +12,10 @@
   "methods":[{"name":"determineWhetherToQuote","parameterTypes":[] }]
 },
 {
+  "name":"com.google.inject.util.Modules$OverrideModule",
+  "allDeclaredMethods":true
+},
+{
   "name":"io.bootique.ApplicationDescription",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
@@ -32,6 +36,10 @@
 {
   "name":"io.bootique.annotation.DefaultCommand",
   "allDeclaredMethods":true
+},
+{
+  "name":"io.bootique.cli.NoArgsCli",
+  "allPublicMethods":true
 },
 {
   "name":"io.bootique.command.CommandWithMetadata",
@@ -138,58 +146,75 @@
   "name":"io.bootique.tools.Application"
 },
 {
-  "name":"io.bootique.tools.template.DefaultPropertyService",
+  "name":"io.bootique.tools.shell.JlineShell",
+  "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"io.bootique.tools.template.DefaultTemplateService",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.tools.template.module.LiveTemplateModule",
-  "allDeclaredMethods":true
-},
-{
-  "name":"io.bootique.tools.template.module.NewProjectCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.template.module.SourceSetFactory",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
-  "name":"io.bootique.tools.template.module.TemplateServiceFactory",
-  "allDeclaredFields":true,
-  "allDeclaredMethods":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true,
-  "allPublicConstructors":true
-},
-{
-  "name":"io.bootique.tools.template.processor.JavaPackageProcessor",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.template.processor.MavenProcessor",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.template.processor.XMLTemplateProcessor",
+  "name":"io.bootique.tools.shell.artifact.ArtifactHandler",
   "allDeclaredFields":true
 },
 {
-  "name":"io.bootique.tools.template.shell.ShellCommand",
+  "name":"io.bootique.tools.shell.artifact.GradleProjectHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.artifact.MavenProjectHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.artifact.NameParser",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.artifact.NewModuleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.DefaultCommandLineParser",
   "allDeclaredFields":true,
   "allPublicMethods":true,
   "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.ErrorCommand",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.ExitCommand",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.HelpCommand",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.NewCommand",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.RunCommand",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.StartShellCommand",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.module.BQShellModule",
+  "allDeclaredMethods":true
 },
 {
   "name":"java.io.File",
@@ -209,6 +234,10 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"java.util.HashMap",
+  "allPublicMethods":true
+},
+{
   "name":"java.util.HashSet",
   "allPublicMethods":true
 },
@@ -216,6 +245,18 @@
   "name":"java.util.LinkedHashMap",
   "allDeclaredMethods":true,
   "allDeclaredConstructors":true
+},
+{
+  "name":"org.jline.builtins.Completers$TreeCompleter",
+  "allPublicMethods":true
+},
+{
+  "name":"org.jline.reader.impl.LineReaderImpl",
+  "allPublicMethods":true
+},
+{
+  "name":"org.jline.terminal.impl.PosixSysTerminal",
+  "allPublicMethods":true
 },
 {
   "name":"sun.misc.Signal",

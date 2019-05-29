@@ -38,7 +38,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         List<String> arguments = cli.standaloneArguments();
         if(arguments.size() < 2) {
             return CommandOutcome.failed(-1, "Not enough arguments.\n" +
-                    "Usage: new type name");
+                    "   Usage: new type name");
         }
 
         String type = normalize(arguments.get(0));
