@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import com.google.inject.Binder;
 import com.google.inject.Injector;
@@ -22,6 +21,7 @@ import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.artifact.ArtifactHandler;
 import io.bootique.tools.shell.artifact.GradleProjectHandler;
 import io.bootique.tools.shell.artifact.NewModuleHandler;
 import io.bootique.tools.shell.artifact.MavenProjectHandler;
@@ -97,10 +97,9 @@ public class BQShellModule implements Module {
 
     @Provides
     @Singleton
-    Completer createCompleter(Map<String, ShellCommand> shellCommands) {
-        Object[] nodes = new Object[shellCommands.size()];
-        AtomicInteger counter = new AtomicInteger();
-        shellCommands.forEach((name, cmd) -> nodes[counter.getAndIncrement()] = name);
+    Completer createCompleter(Map<String, ShellCommand> shellCommands, Map<String, ArtifactHandler> handlerMap) {
+        Object[] cmdNodes = shellCommands.keySet().toArray();
+        Object[] newTypes = handlerMap.keySet().toArray();
 
         FileNameCompleter dirNameCompleter = new FileNameCompleter() {
             protected boolean accept(Path path) {
@@ -114,8 +113,8 @@ public class BQShellModule implements Module {
 
         //TODO: create this from metadata
         return new TreeCompleter(
-                node("help", node(nodes)),
-                node("new", node("maven-project", "gradle-project", "module")),
+                node("help", node(cmdNodes)),
+                node("new", node(newTypes)),
                 node("run", node(dirNameCompleter)),
                 node("info", node(dirNameCompleter)),
                 node("exit")
