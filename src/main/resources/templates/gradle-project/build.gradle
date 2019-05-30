@@ -1,0 +1,21 @@
+plugins {
+    id 'java'
+    id 'application'
+}
+
+group 'org.example'
+version '1.0-SNAPSHOT'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+mainClassName = "example.Application"
+
+dependencies {
+    implementation platform('io.bootique.bom:bootique-bom:1.0')
+    implementation 'io.bootique:bootique'
+    testImplementation 'io.bootique:bootique-test'
+    testImplementation 'junit:junit:4.12'
+}

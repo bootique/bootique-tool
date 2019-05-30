@@ -57,7 +57,7 @@ public class MavenProjectHandler extends ContentHandler {
         }
         NameParser.NameComponents components = nameParser.parse(name);
 
-        log("Generating new project @|bold " + components.getName() + "|@ ...");
+        log("Generating new Maven project @|bold " + components.getName() + "|@ ...");
 
         Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());
         if(Files.exists(outputRoot)) {
