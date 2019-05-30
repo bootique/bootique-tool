@@ -7,7 +7,7 @@ import java.nio.file.StandardOpenOption;
 
 public class TemplateFileSaver implements TemplateSaver {
     @Override
-    public void save(Template template) {
+    public void save(Template template, Properties properties) {
         try {
             Files.createDirectories(template.getPath().getParent());
             try(BufferedWriter bufferedWriter = Files

@@ -152,30 +152,6 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"io.bootique.tools.shell.artifact.ArtifactHandler",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.tools.shell.artifact.GradleProjectHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.artifact.MavenProjectHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.artifact.NameParser",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.artifact.NewModuleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
   "name":"io.bootique.tools.shell.command.DefaultCommandLineParser",
   "allDeclaredFields":true,
   "allPublicMethods":true,
@@ -210,6 +186,30 @@
   "name":"io.bootique.tools.shell.command.StartShellCommand",
   "allDeclaredFields":true,
   "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.ContentHandler",
+  "allDeclaredFields":true
+},
+{
+  "name":"io.bootique.tools.shell.content.GradleProjectHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.MavenProjectHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.ModuleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.NameParser",
+  "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {

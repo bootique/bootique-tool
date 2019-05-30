@@ -24,9 +24,10 @@ public class TemplatePipeline {
     }
 
     public void process(Properties properties) {
-        sources.forEach(source ->
-                saver.save(processor.process(loader.load(source, properties), properties))
-        );
+        sources.stream()
+                .map(source -> loader.load(source, properties))
+                .map(template -> processor.process(template, properties))
+                .forEach(template -> saver.save(template, properties));
     }
 
     public static Builder builder() {

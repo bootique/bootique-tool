@@ -6,8 +6,8 @@ import java.nio.file.Paths;
 
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
-import io.bootique.tools.shell.artifact.NameParser;
-import io.bootique.tools.shell.template.DirOnlySaver;
+import io.bootique.tools.shell.template.EmptyTemplateLoader;
+import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
@@ -38,12 +38,14 @@ public class MavenProjectHandler extends ContentHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/resources")
                 .source("src/test/resources")
-                .withSaver(new DirOnlySaver())
+                .withLoader(new EmptyTemplateLoader())
+                .withSaver(new TemplateDirOnlySaver())
         );
 
-        // copy files
+        // .gitignore
         addPipeline(TemplatePipeline.builder()
-                .source(".gitignore")
+                .source("gitignore")
+                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
         );
     }
 
@@ -54,6 +56,8 @@ public class MavenProjectHandler extends ContentHandler {
             return CommandOutcome.failed(-1, validationResult.getMessage());
         }
         NameParser.NameComponents components = nameParser.parse(name);
+
+        log("Generating new project @|bold " + components.getName() + "|@ ...");
 
         Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());
         if(Files.exists(outputRoot)) {
@@ -71,6 +75,8 @@ public class MavenProjectHandler extends ContentHandler {
                 .build();
 
         pipelines.forEach(p -> p.process(properties));
+
+        log("done.");
         return CommandOutcome.succeeded();
     }
 }

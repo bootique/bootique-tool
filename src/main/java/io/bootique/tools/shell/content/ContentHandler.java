@@ -11,12 +11,16 @@ import io.bootique.tools.shell.template.TemplatePipeline;
 public abstract class ContentHandler {
 
     @Inject
-    private Shell shell;
+    protected Shell shell;
 
     protected final List<TemplatePipeline> pipelines = new ArrayList<>();
 
     protected void addPipeline(TemplatePipeline.Builder builder) {
         pipelines.add(builder.build());
+    }
+
+    protected void log(String message) {
+        shell.println("@|green   <|@ " + message);
     }
 
     public abstract CommandOutcome handle(String name);

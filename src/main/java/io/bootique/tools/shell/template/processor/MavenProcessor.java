@@ -17,14 +17,26 @@ public class MavenProcessor extends XMLTemplateProcessor {
         XPath xpath = XPathFactory.newInstance().newXPath();
 
         try {
-            Node artefactId = (Node)xpath.evaluate("/project/artifactId", document, XPathConstants.NODE);
-            artefactId.setTextContent(properties.get("maven.artifactId"));
+            Node artifactId = (Node)xpath.evaluate("/project/artifactId", document, XPathConstants.NODE);
+            artifactId.setTextContent(properties.get("maven.artifactId"));
 
             Node groupId = (Node)xpath.evaluate("/project/groupId", document, XPathConstants.NODE);
-            groupId.setTextContent(properties.get("maven.groupId"));
+            String groupIdText = properties.get("maven.groupId");
+            if(groupIdText == null || groupIdText.trim().isEmpty()) {
+                groupId.setTextContent("example");
+            } else {
+                groupId.setTextContent(groupIdText);
+            }
 
             Node version = (Node)xpath.evaluate("/project/version", document, XPathConstants.NODE);
             version.setTextContent(properties.get("maven.version"));
+
+            Node mainClass = (Node)xpath.evaluate("/project/properties/main.class", document, XPathConstants.NODE);
+            String javaPackage = properties.get("java.package");
+            if(javaPackage != null && !javaPackage.isEmpty()) {
+                javaPackage += '.';
+            }
+            mainClass.setTextContent(javaPackage + "Application");
         } catch (XPathExpressionException ex) {
             throw new TemplateException("Unable to modify xml, is template a proper maven xml?", ex);
         }

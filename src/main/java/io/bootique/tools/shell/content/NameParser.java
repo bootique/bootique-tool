@@ -1,4 +1,4 @@
-package io.bootique.tools.shell.artifact;
+package io.bootique.tools.shell.content;
 
 import java.util.Objects;
 

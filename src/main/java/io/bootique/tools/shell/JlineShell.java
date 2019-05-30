@@ -42,7 +42,7 @@ public class JlineShell implements Shell {
     }
 
     private void printException(Throwable exception, boolean chained) {
-        String prompt = Ansi.ansi().render(" @|red   < |@").toString();
+        String prompt = Ansi.ansi().render("@|red   < |@").toString();
         String message = compactPackageName(exception.getClass().getName());
         if(exception.getMessage() != null) {
             message += ": " + exception.getMessage();

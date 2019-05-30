@@ -3,8 +3,12 @@
     {"pattern":"META-INF/native/osx/libjansi.jnilib"}, 
     {"pattern":"META-INF/services/io.bootique.BQModuleProvider"}, 
     {"pattern":"META-INF/services/org.jline.terminal.spi.JansiSupport"}, 
+    {"pattern":"com/sun/org/apache/xml/internal/serializer/Encodings.properties"}, 
+    {"pattern":"com/sun/org/apache/xml/internal/serializer/XMLEntities.properties"}, 
+    {"pattern":"com/sun/org/apache/xml/internal/serializer/output_xml.properties"}, 
     {"pattern":"org/jline/utils/capabilities.txt"}, 
     {"pattern":"org/jline/utils/xterm-256color.caps"}, 
+    {"pattern":"templates/maven-project/gitignore"}, 
     {"pattern":"templates/maven-project/pom.xml"}, 
     {"pattern":"templates/maven-project/src/main/java/example/Application.java"}, 
     {"pattern":"templates/maven-project/src/test/java/example/ApplicationTest.java"}

@@ -21,10 +21,6 @@ import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
-import io.bootique.tools.shell.artifact.ArtifactHandler;
-import io.bootique.tools.shell.artifact.GradleProjectHandler;
-import io.bootique.tools.shell.artifact.NewModuleHandler;
-import io.bootique.tools.shell.artifact.MavenProjectHandler;
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
 import io.bootique.tools.shell.command.ErrorCommand;
@@ -34,6 +30,10 @@ import io.bootique.tools.shell.command.NewCommand;
 import io.bootique.tools.shell.command.RunCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
+import io.bootique.tools.shell.content.ContentHandler;
+import io.bootique.tools.shell.content.GradleProjectHandler;
+import io.bootique.tools.shell.content.MavenProjectHandler;
+import io.bootique.tools.shell.content.ModuleHandler;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
@@ -64,7 +64,7 @@ public class BQShellModule implements Module {
         extend(binder)
                 .addHandler("maven-project", MavenProjectHandler.class)
                 .addHandler("gradle-project", GradleProjectHandler.class)
-                .addHandler("module", NewModuleHandler.class);
+                .addHandler("module", ModuleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
         binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
@@ -97,7 +97,7 @@ public class BQShellModule implements Module {
 
     @Provides
     @Singleton
-    Completer createCompleter(Map<String, ShellCommand> shellCommands, Map<String, ArtifactHandler> handlerMap) {
+    Completer createCompleter(Map<String, ShellCommand> shellCommands, Map<String, ContentHandler> handlerMap) {
         Object[] cmdNodes = shellCommands.keySet().toArray();
         Object[] newTypes = handlerMap.keySet().toArray();
 

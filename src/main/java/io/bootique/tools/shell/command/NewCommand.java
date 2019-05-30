@@ -10,12 +10,12 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
-import io.bootique.tools.shell.artifact.ArtifactHandler;
+import io.bootique.tools.shell.content.ContentHandler;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
     @Inject
-    private Map<String, ArtifactHandler> artifactHandlers;
+    private Map<String, ContentHandler> artifactHandlers;
 
     public NewCommand() {
         super(CommandMetadata
@@ -44,16 +44,12 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         String type = normalize(arguments.get(0));
         String name = normalize(arguments.get(1));
 
-        ArtifactHandler handler = artifactHandlers.get(type);
+        ContentHandler handler = artifactHandlers.get(type);
         if(handler == null) {
             return CommandOutcome.failed(-1, "Unknown artifact type: '" + type + "'\n"
                 + "Supported types: " + String.join(", ", artifactHandlers.keySet()));
         }
 
-        CommandOutcome outcome = handler.validate(name);
-        if(!outcome.isSuccess()) {
-            return outcome;
-        }
         return handler.handle(name);
     }
 
