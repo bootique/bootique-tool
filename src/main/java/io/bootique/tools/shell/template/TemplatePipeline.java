@@ -60,12 +60,12 @@ public class TemplatePipeline {
             return this;
         }
 
-        public Builder withLoader(TemplateLoader loader) {
+        public Builder loader(TemplateLoader loader) {
             this.loader = loader;
             return this;
         }
 
-        public Builder withSaver(TemplateSaver saver) {
+        public Builder saver(TemplateSaver saver) {
             this.saver = saver;
             return this;
         }

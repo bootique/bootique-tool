@@ -32,8 +32,8 @@ public class GradleProjectHandler extends ContentHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/resources")
                 .source("src/test/resources")
-                .withLoader(new EmptyTemplateLoader())
-                .withSaver(new TemplateDirOnlySaver())
+                .loader(new EmptyTemplateLoader())
+                .saver(new TemplateDirOnlySaver())
         );
 
         // .gitignore
