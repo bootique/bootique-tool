@@ -36,6 +36,9 @@ public class MavenProcessorTest {
                 "    <groupId>example-group</groupId>\n" +
                 "    <artifactId>example</artifactId>\n" +
                 "    <version>1.0-SNAPSHOT</version>\n" +
+                "    <properties>\n" +
+                "       <main.class>example.Application</main.class>\n" +
+                "    </properties>\n" +
                 "\n" +
                 "   <build>\n" +
                 "        <plugins>\n" +
@@ -61,6 +64,9 @@ public class MavenProcessorTest {
                 "    <groupId>io.bootique.tools</groupId>\n" +
                 "    <artifactId>bootique-tools</artifactId>\n" +
                 "    <version>0.26-SNAPSHOT</version>\n" +
+                "    <properties>\n" +
+                "       <main.class>io.bootique.tools.Application</main.class>\n" +
+                "    </properties>\n" +
                 "\n" +
                 "   <build>\n" +
                 "        <plugins>\n" +
@@ -76,6 +82,7 @@ public class MavenProcessorTest {
         Properties properties = Properties.builder()
                 .with("maven.artifactId", "bootique-tools")
                 .with("maven.groupId", "io.bootique.tools")
+                .with("java.package", "io.bootique.tools")
                 .with("maven.version", "0.26-SNAPSHOT")
                 .build();
 

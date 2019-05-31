@@ -15,7 +15,7 @@ public class TemplateResourceLoader implements TemplateLoader {
 
         InputStream stream = getClass().getClassLoader().getResourceAsStream(basePath + source);
         if(stream == null) {
-            throw new TemplateException("Unable to read resource " + source);
+            throw new TemplateException("Unable to read resource " + basePath + source);
         }
 
         StringBuilder content = new StringBuilder();

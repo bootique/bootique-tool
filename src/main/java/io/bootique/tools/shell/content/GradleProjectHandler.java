@@ -73,13 +73,16 @@ public class GradleProjectHandler extends ContentHandler {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
+        String mainClass = components.getJavaPackage().isEmpty()
+                ? "Application"
+                : components.getJavaPackage() + ".Application";
+
         Properties properties = Properties.builder()
                 .with("java.package", components.getJavaPackage())
-                .with("gradle.groupId", components.getJavaPackage())
-                .with("gradle.artifactId", components.getName())
-                .with("gradle.version", DEFAULT_VERSION)
+                .with("project.version", DEFAULT_VERSION)
                 .with("project.name", components.getName())
-                .with("input.path", "templates/maven-project/")
+                .with("project.mainClass", mainClass)
+                .with("input.path", "templates/gradle-project/")
                 .with("output.path", outputRoot)
                 .build();
 

@@ -4,10 +4,6 @@
   "allDeclaredFields":true
 },
 {
-  "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
-  "methods":[{"name":"<init>","parameterTypes":[] }]
-},
-{
   "name":"com.google.inject.internal.Annotations",
   "methods":[{"name":"determineWhetherToQuote","parameterTypes":[] }]
 },
@@ -26,7 +22,6 @@
 },
 {
   "name":"io.bootique.JsonNodeConfigurationFactoryProvider",
-  "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {
@@ -54,16 +49,7 @@
   "allPublicMethods":true
 },
 {
-  "name":"io.bootique.config.CliConfigurationSource",
-  "allPublicMethods":true
-},
-{
   "name":"io.bootique.config.TypesFactory",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.config.jackson.JsonNodeConfigurationFactory",
-  "allDeclaredFields":true,
   "allPublicMethods":true
 },
 {
@@ -75,18 +61,6 @@
   "allDeclaredFields":true
 },
 {
-  "name":"io.bootique.env.DefaultEnvironment",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.help.DefaultHelpGenerator",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.help.HelpCommand",
-  "allPublicMethods":true
-},
-{
   "name":"io.bootique.help.ValueObjectDescriptor",
   "allDeclaredFields":true
 },
@@ -96,10 +70,6 @@
 },
 {
   "name":"io.bootique.help.config.HelpConfigCommand",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.jackson.DefaultJacksonService",
   "allPublicMethods":true
 },
 {
@@ -160,6 +130,7 @@
 {
   "name":"io.bootique.tools.shell.command.ErrorCommand",
   "allDeclaredFields":true,
+  "allPublicMethods":true,
   "allDeclaredConstructors":true
 },
 {
@@ -229,22 +200,12 @@
   "methods":[{"name":"fromString","parameterTypes":["java.lang.String"] }]
 },
 {
-  "name":"java.util.ArrayList",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
   "name":"java.util.HashMap",
   "allPublicMethods":true
 },
 {
   "name":"java.util.HashSet",
   "allPublicMethods":true
-},
-{
-  "name":"java.util.LinkedHashMap",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
 },
 {
   "name":"org.jline.builtins.Completers$TreeCompleter",
@@ -272,5 +233,20 @@
 {
   "name":"sun.misc.Unsafe",
   "fields":[{"name":"theUnsafe"}]
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "allDeclaredConstructors" : true,
+  "allDeclaredMethods":true
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl",
+  "allDeclaredConstructors":true,
+  "allDeclaredMethods":true
+},
+{
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "allDeclaredConstructors":true,
+  "allDeclaredMethods":true
 }
 ]

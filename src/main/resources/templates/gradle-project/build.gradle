@@ -11,7 +11,7 @@ repositories {
     jcenter()
 }
 
-mainClassName = "example.Application"
+mainClassName = 'example.Application'
 
 dependencies {
     implementation platform('io.bootique.bom:bootique-bom:1.0')
