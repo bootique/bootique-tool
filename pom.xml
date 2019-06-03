@@ -96,23 +96,39 @@
                 <artifactId>maven-shade-plugin</artifactId>
                 <version>3.2.1</version>
             </plugin>
-            <plugin>
-                <groupId>com.oracle.substratevm</groupId>
-                <artifactId>native-image-maven-plugin</artifactId>
-                <version>19.0.0</version>
-                <executions>
-                    <execution>
-                        <goals>
-                            <goal>native-image</goal>
-                        </goals>
-                        <phase>package</phase>
-                        <configuration>
-                            <imageName>bq</imageName>
-                            <buildArgs>--no-server --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.command.Command</buildArgs>
-                        </configuration>
-                    </execution>
-                </executions>
-            </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>native-image</id>
+            <activation>
+                <property>
+                    <name>native</name>
+                </property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <groupId>com.oracle.substratevm</groupId>
+                        <artifactId>native-image-maven-plugin</artifactId>
+                        <version>19.0.0</version>
+                        <executions>
+                            <execution>
+                                <goals>
+                                    <goal>native-image</goal>
+                                </goals>
+                                <phase>package</phase>
+                                <configuration>
+                                    <imageName>bq</imageName>
+                                    <!-- - -no-server -->
+                                    <buildArgs>--report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
+                                </configuration>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+    </profiles>
 </project>

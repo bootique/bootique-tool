@@ -1,5 +1,7 @@
 package io.bootique.tools.shell.command;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -87,5 +89,10 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
         return md.getValueCardinality() == OptionValueCardinality.OPTIONAL
                 ? '[' + md.getName() + ']'
                 : md.getName();
+    }
+
+    @Override
+    public Collection<String> aliases() {
+        return Collections.singleton("?");
     }
 }

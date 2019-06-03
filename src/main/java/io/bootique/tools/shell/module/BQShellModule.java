@@ -143,7 +143,11 @@ public class BQShellModule implements Module {
             if(!cmd.isHidden()) {
                 Command command = cmd.getCommand();
                 if(command instanceof ShellCommand) {
-                    result.put(name, (ShellCommand)command);
+                    ShellCommand shellCommand = (ShellCommand) command;
+                    result.put(name, shellCommand);
+                    for(String alias : shellCommand.aliases()) {
+                        result.put(alias, shellCommand);
+                    }
                 }
             }
         });
