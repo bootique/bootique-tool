@@ -9,7 +9,7 @@ import io.bootique.tools.shell.template.Template;
 
 public class JavaPackageProcessor implements TemplateProcessor {
 
-    private static final String TEMPLATE_PACKAGE = "example";
+    static final String TEMPLATE_PACKAGE = "example";
 
     @Override
     public Template process(Template template, Properties properties) {
@@ -36,14 +36,15 @@ public class JavaPackageProcessor implements TemplateProcessor {
     Path outputPath(Template template, Properties properties) {
         Path input = template.getPath();
         String pathStr = input.toString();
-        Path packagePath = packageToPath(properties.get("java.package"));
-        char separator = File.separatorChar;
+        String separator = File.separatorChar == '\\'
+                ? "\\\\"
+                : File.separator;
+        Path packagePath = packageToPath(properties.get("java.package"), separator);
         pathStr = pathStr.replaceAll( separator + "?" + TEMPLATE_PACKAGE + separator, separator + packagePath.toString() + separator);
         return Paths.get(pathStr);
     }
 
-    Path packageToPath(String packageName) {
-        char separator = File.separatorChar;
-        return Paths.get(packageName.replace('.', separator));
+    Path packageToPath(String packageName, String separator) {
+        return Paths.get(packageName.replace(".", separator));
     }
 }
