@@ -3,28 +3,33 @@ package io.bootique.tools.shell.content;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.EnumSet;
 
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.template.BinaryContentLoader;
+import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
+import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 
-public class GradleProjectHandler extends ContentHandler {
-
-    private static final String DEFAULT_VERSION = "1.0-SNAPSHOT";
+public class GradleAppHandler extends ContentHandler {
 
     @Inject
     private NameParser nameParser;
 
-    public GradleProjectHandler() {
+    public GradleAppHandler() {
         // java sources
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/java/example/Application.java")
+                .source("src/main/java/example/ApplicationModuleProvider.java")
                 .source("src/test/java/example/ApplicationTest.java")
+                .source("src/test/java/example/ApplicationModuleProviderTest.java")
                 .processor(new JavaPackageProcessor())
         );
 
@@ -34,6 +39,11 @@ public class GradleProjectHandler extends ContentHandler {
                 .source("src/test/resources")
                 .loader(new EmptyTemplateLoader())
                 .saver(new TemplateDirOnlySaver())
+        );
+
+        addPipeline(TemplatePipeline.builder()
+                .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
+                .processor(new BQModuleProviderProcessor())
         );
 
         // .gitignore
@@ -46,8 +56,21 @@ public class GradleProjectHandler extends ContentHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("gradle/wrapper/gradle-wrapper.jar")
                 .source("gradle/wrapper/gradle-wrapper.properties")
+                .loader(new BinaryContentLoader())
+                .saver(new BinaryContentSaver())
+        );
+        addPipeline(TemplatePipeline.builder()
                 .source("gradlew")
                 .source("gradlew.bat")
+                .loader(new BinaryContentLoader())
+                .saver(new BinaryContentSaver(EnumSet.of(
+                        PosixFilePermission.OWNER_EXECUTE,
+                        PosixFilePermission.OWNER_READ,
+                        PosixFilePermission.GROUP_EXECUTE,
+                        PosixFilePermission.GROUP_READ,
+                        PosixFilePermission.OTHERS_EXECUTE,
+                        PosixFilePermission.OTHERS_READ
+                )))
         );
 
         // gradle scirpts
@@ -79,10 +102,10 @@ public class GradleProjectHandler extends ContentHandler {
 
         Properties properties = Properties.builder()
                 .with("java.package", components.getJavaPackage())
-                .with("project.version", DEFAULT_VERSION)
+                .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
                 .with("project.mainClass", mainClass)
-                .with("input.path", "templates/gradle-project/")
+                .with("input.path", "templates/gradle-app/")
                 .with("output.path", outputRoot)
                 .build();
 

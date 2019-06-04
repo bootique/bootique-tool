@@ -18,10 +18,10 @@ public class MavenProcessor extends XMLTemplateProcessor {
 
         try {
             Node artifactId = (Node)xpath.evaluate("/project/artifactId", document, XPathConstants.NODE);
-            artifactId.setTextContent(properties.get("maven.artifactId"));
+            artifactId.setTextContent(properties.get("project.name"));
 
             Node groupId = (Node)xpath.evaluate("/project/groupId", document, XPathConstants.NODE);
-            String groupIdText = properties.get("maven.groupId");
+            String groupIdText = properties.get("java.package");
             if(groupIdText == null || groupIdText.trim().isEmpty()) {
                 groupId.setTextContent("example");
             } else {
@@ -29,7 +29,7 @@ public class MavenProcessor extends XMLTemplateProcessor {
             }
 
             Node version = (Node)xpath.evaluate("/project/version", document, XPathConstants.NODE);
-            version.setTextContent(properties.get("maven.version"));
+            version.setTextContent(properties.get("project.version"));
 
             Node mainClass = (Node)xpath.evaluate("/project/properties/main.class", document, XPathConstants.NODE);
             String javaPackage = properties.get("java.package");

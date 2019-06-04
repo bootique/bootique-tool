@@ -8,7 +8,6 @@ public class Application implements Module {
 
     public static void main(String[] args) {
         Bootique.app(args)
-                .module(Application.class)
                 .autoLoadModules()
                 .exec()
                 .exit();

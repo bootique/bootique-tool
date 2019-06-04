@@ -63,7 +63,7 @@ public class MavenProcessorTest {
                 "\n" +
                 "    <groupId>io.bootique.tools</groupId>\n" +
                 "    <artifactId>bootique-tools</artifactId>\n" +
-                "    <version>0.26-SNAPSHOT</version>\n" +
+                "    <version>1.2</version>\n" +
                 "    <properties>\n" +
                 "       <main.class>io.bootique.tools.Application</main.class>\n" +
                 "    </properties>\n" +
@@ -80,10 +80,9 @@ public class MavenProcessorTest {
                 "</project>";
 
         Properties properties = Properties.builder()
-                .with("maven.artifactId", "bootique-tools")
-                .with("maven.groupId", "io.bootique.tools")
                 .with("java.package", "io.bootique.tools")
-                .with("maven.version", "0.26-SNAPSHOT")
+                .with("project.name", "bootique-tools")
+                .with("project.version", "1.2")
                 .build();
 
         String processed = processor

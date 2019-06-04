@@ -10,21 +10,22 @@ import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
+import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MavenProcessor;
 
-public class MavenProjectHandler extends ContentHandler {
-
-    private static final String DEFAULT_VERSION = "1.0-SNAPSHOT";
+public class MavenAppHandler extends ContentHandler {
 
     @Inject
     private NameParser nameParser;
 
-    public MavenProjectHandler() {
+    public MavenAppHandler() {
         // java sources
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/java/example/Application.java")
+                .source("src/main/java/example/ApplicationModuleProvider.java")
                 .source("src/test/java/example/ApplicationTest.java")
+                .source("src/test/java/example/ApplicationModuleProviderTest.java")
                 .processor(new JavaPackageProcessor())
         );
 
@@ -40,6 +41,11 @@ public class MavenProjectHandler extends ContentHandler {
                 .source("src/test/resources")
                 .loader(new EmptyTemplateLoader())
                 .saver(new TemplateDirOnlySaver())
+        );
+
+        addPipeline(TemplatePipeline.builder()
+                .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
+                .processor(new BQModuleProviderProcessor())
         );
 
         // .gitignore
@@ -66,11 +72,9 @@ public class MavenProjectHandler extends ContentHandler {
 
         Properties properties = Properties.builder()
                 .with("java.package", components.getJavaPackage())
-                .with("maven.groupId", components.getJavaPackage())
-                .with("maven.artifactId", components.getName())
-                .with("maven.version", DEFAULT_VERSION)
+                .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
-                .with("input.path", "templates/maven-project/")
+                .with("input.path", "templates/maven-app/")
                 .with("output.path", outputRoot)
                 .build();
 

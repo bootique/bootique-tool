@@ -31,8 +31,8 @@ import io.bootique.tools.shell.command.RunCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import io.bootique.tools.shell.content.ContentHandler;
-import io.bootique.tools.shell.content.GradleProjectHandler;
-import io.bootique.tools.shell.content.MavenProjectHandler;
+import io.bootique.tools.shell.content.GradleAppHandler;
+import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.ModuleHandler;
 import org.jline.reader.Completer;
 import org.jline.reader.LineReader;
@@ -62,9 +62,10 @@ public class BQShellModule implements Module {
 
         // new content handlers
         extend(binder)
-                .addHandler("maven-project", MavenProjectHandler.class)
-                .addHandler("gradle-project", GradleProjectHandler.class)
-                .addHandler("module", ModuleHandler.class);
+                .addHandler("maven-app", MavenAppHandler.class)
+                .addHandler("gradle-app", GradleAppHandler.class)
+                .addHandler("maven-module", ModuleHandler.class)
+                .addHandler("gradle-module", ModuleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
         binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
