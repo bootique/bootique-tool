@@ -149,11 +149,6 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"io.bootique.tools.shell.command.RunCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
   "name":"io.bootique.tools.shell.command.StartShellCommand",
   "allDeclaredFields":true,
   "allPublicMethods":true,
@@ -164,12 +159,12 @@
   "allDeclaredFields":true
 },
 {
-  "name":"io.bootique.tools.shell.content.GradleProjectHandler",
+  "name":"io.bootique.tools.shell.content.GradleAppHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {
-  "name":"io.bootique.tools.shell.content.MavenProjectHandler",
+  "name":"io.bootique.tools.shell.content.MavenAppHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
