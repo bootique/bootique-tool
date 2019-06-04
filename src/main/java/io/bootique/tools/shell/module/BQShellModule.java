@@ -1,8 +1,6 @@
 package io.bootique.tools.shell.module;
 
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -27,10 +25,8 @@ import io.bootique.tools.shell.command.ErrorCommand;
 import io.bootique.tools.shell.command.ExitCommand;
 import io.bootique.tools.shell.command.HelpCommand;
 import io.bootique.tools.shell.command.NewCommand;
-import io.bootique.tools.shell.command.RunCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
-import io.bootique.tools.shell.content.ContentHandler;
 import io.bootique.tools.shell.content.GradleAppHandler;
 import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.ModuleHandler;
@@ -55,7 +51,6 @@ public class BQShellModule implements Module {
         BQCoreModule.extend(binder)
                 .addCommand(StartShellCommand.class)
                 .addCommand(NewCommand.class)
-                .addCommand(RunCommand.class)
                 .addCommand(ErrorCommand.class)
                 .addCommand(ExitCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
@@ -98,26 +93,15 @@ public class BQShellModule implements Module {
 
     @Provides
     @Singleton
-    Completer createCompleter(Map<String, ShellCommand> shellCommands, Map<String, ContentHandler> handlerMap) {
-        Object[] cmdNodes = shellCommands.keySet().toArray();
-        Object[] newTypes = handlerMap.keySet().toArray();
-
-        FileNameCompleter dirNameCompleter = new FileNameCompleter() {
-            protected boolean accept(Path path) {
-                try {
-                    return !Files.isHidden(path) && Files.isDirectory(path);
-                } catch (IOException e) {
-                    return false;
-                }
-            }
-        };
-
-        //TODO: create this from metadata
+    Completer createCompleter(Map<String, ShellCommand> shellCommands) {
+        Object[] cmdNodes = shellCommands.values().stream()
+                .map(cmd -> cmd.getMetadata().getName())
+                .distinct()
+                .toArray();
+        Node appType = node("app", "module");
         return new TreeCompleter(
                 node("help", node(cmdNodes)),
-                node("new", node(newTypes)),
-                node("run", node(dirNameCompleter)),
-                node("info", node(dirNameCompleter)),
+                node("new", node("maven", appType), node("gradle", appType), node("app"), node("module")),
                 node("exit")
         );
     }

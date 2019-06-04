@@ -22,10 +22,10 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
             + "  @|green,bold,underline bq|@ is an interactive tool to create and manage Bootique projects.\n"
             + "@|underline Commands:|@";
 
-    private static final String CMD_SYNOPSIS = "  @|green %s|@\t%s";
+    private static final String CMD_SYNOPSIS = "  @|green %s|@\t\t%s";
     private static final String CMD_FULL = SUMMARY + "  %s\n@|underline Usage|@:\n"
             + "  @|green %s|@ @|cyan %s|@";
-    private static final String OPT_SYNOPSIS = "  @|cyan %s|@\t%s";
+    private static final String OPT_SYNOPSIS = "  @|cyan %s|@\t\t%s";
 
     @Inject
     private Shell shell;
@@ -51,18 +51,18 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
             String commandName = cli.standaloneArguments().get(0);
             ShellCommand command = commandMap.get(commandName);
             if(command != null) {
-                printCommandHelp(command, true);
+                printCommandHelp(commandName, command, true);
                 return CommandOutcome.succeeded();
             }
         }
 
         shell.println(INTRO);
-        commandMap.forEach(((name, cmd) -> printCommandHelp(cmd, false)));
+        commandMap.forEach(((name, cmd) -> printCommandHelp(name, cmd, false)));
 
         return CommandOutcome.succeeded();
     }
 
-    private void printCommandHelp(ShellCommand command, boolean full) {
+    private void printCommandHelp(String name, ShellCommand command, boolean full) {
         CommandMetadata metadata = command.getMetadata();
         if(full) {
             String options = metadata.getOptions().stream()
@@ -80,8 +80,10 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
                 }
             }
         } else {
-            String info = String.format(CMD_SYNOPSIS, metadata.getName(), metadata.getDescription());
-            shell.println(info);
+            if(name.equals(metadata.getName())) {
+                String info = String.format(CMD_SYNOPSIS, metadata.getName(), metadata.getDescription());
+                shell.println(info);
+            }
         }
     }
 
