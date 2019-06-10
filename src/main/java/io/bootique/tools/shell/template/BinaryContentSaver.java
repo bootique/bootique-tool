@@ -41,7 +41,7 @@ public class BinaryContentSaver implements TemplateSaver {
         if(!permissions.isEmpty()) {
             try {
                 Files.setPosixFilePermissions(template.getPath(), permissions);
-            } catch (IOException ignore) {
+            } catch (UnsupportedOperationException | IOException ignore) {
             }
         }
     }
