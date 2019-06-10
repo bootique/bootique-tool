@@ -169,7 +169,12 @@
   "allDeclaredConstructors":true
 },
 {
-  "name":"io.bootique.tools.shell.content.ModuleHandler",
+  "name":"io.bootique.tools.shell.content.MavenModuleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.GradleModuleHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
