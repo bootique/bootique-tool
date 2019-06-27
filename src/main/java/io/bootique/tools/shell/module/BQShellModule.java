@@ -1,6 +1,8 @@
 package io.bootique.tools.shell.module;
 
 import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -32,8 +34,10 @@ import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.MavenModuleHandler;
 import io.bootique.tools.shell.content.GradleModuleHandler;
 import org.jline.reader.Completer;
+import org.jline.reader.History;
 import org.jline.reader.LineReader;
 import org.jline.reader.LineReaderBuilder;
+import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
@@ -109,10 +113,33 @@ public class BQShellModule implements Module {
 
     @Provides
     @Singleton
-    LineReader createLineReader(Terminal terminal, Completer completer) {
+    History createHistory() {
+        DefaultHistory history = new DefaultHistory();
+        Thread historyHook = new Thread(() -> {
+            try {
+                history.save();
+            } catch (IOException ignore) {
+            }
+        });
+        Runtime.getRuntime().addShutdownHook(historyHook);
+        return history;
+    }
+
+    @Provides
+    @Singleton
+    @HistoryPath
+    Path getHistoryPath() {
+        return Paths.get(System.getProperty("user.home"), ".bq", "bq.history");
+    }
+
+    @Provides
+    @Singleton
+    LineReader createLineReader(Terminal terminal, Completer completer, History history, @HistoryPath Path historyPath) {
         return LineReaderBuilder.builder()
                 .terminal(terminal)
                 .completer(completer)
+                .history(history)
+                .variable(LineReader.HISTORY_FILE, historyPath)
                 .option(LineReader.Option.AUTO_REMOVE_SLASH, true)
                 .build();
     }
@@ -167,5 +194,8 @@ public class BQShellModule implements Module {
                     , "No default command configured for shell.");
         }
         return command[0];
+    }
+
+    @interface HistoryPath {
     }
 }
