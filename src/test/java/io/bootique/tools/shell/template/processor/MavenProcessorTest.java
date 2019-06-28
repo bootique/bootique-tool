@@ -88,6 +88,6 @@ public class MavenProcessorTest {
         String processed = processor
                 .processContent(new Template(Paths.get(""), content), properties);
 
-        assertEquals(expected, processed);
+        assertEquals(expected, processed.replaceAll("\r", ""));
     }
 }

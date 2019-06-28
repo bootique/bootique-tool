@@ -39,8 +39,12 @@ public class JavaPackageProcessor implements TemplateProcessor {
         String separator = File.separatorChar == '\\'
                 ? "\\\\"
                 : File.separator;
-        Path packagePath = packageToPath(properties.get("java.package"), separator);
-        pathStr = pathStr.replaceAll( separator + "?" + TEMPLATE_PACKAGE + separator, separator + packagePath.toString() + separator);
+        String packagePath = packageToPath(properties.get("java.package"), separator).toString();
+        if("\\\\".equals(separator)) {
+            // we need even more slashes, or next replaceAll call will eat them alive
+            packagePath = packagePath.replaceAll("\\\\", "\\\\\\\\");
+        }
+        pathStr = pathStr.replaceAll( separator + "?" + TEMPLATE_PACKAGE + separator, separator + packagePath + separator);
         return Paths.get(pathStr);
     }
 

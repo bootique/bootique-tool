@@ -55,14 +55,14 @@ public class JavaPackageProcessorTest {
 
     @Test
     public void outputPathSimple() {
-        Path path = Paths.get("tpl/example/MyClass.java");
+        Path path = Paths.get("tpl", "example", "MyClass.java");
         Path out = processor.outputPath(new Template(path, ""), properties);
         assertEquals(Paths.get("tpl", "io", "bootique", "test", "MyClass.java"), out);
     }
 
     @Test
     public void outputPathWindows() {
-        Path path = Paths.get("tpl\\example\\service\\MyClass.java");
+        Path path = Paths.get("tpl", "example", "service", "MyClass.java");
 
         String separator = "\\\\";
         String packagePath = properties.<String>get("java.package").replace(".", separator);
@@ -74,7 +74,7 @@ public class JavaPackageProcessorTest {
 
     @Test
     public void outputPathWithPackage() {
-        Path path = Paths.get("tpl/example/service/MyClass.java");
+        Path path = Paths.get("tpl", "example", "service", "MyClass.java");
         Path out = processor.outputPath(new Template(path, ""), properties);
         assertEquals(Paths.get("tpl", "io", "bootique", "test", "service", "MyClass.java"), out);
     }
