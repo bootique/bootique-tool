@@ -61,18 +61,6 @@ public class JavaPackageProcessorTest {
     }
 
     @Test
-    public void outputPathWindows() {
-        Path path = Paths.get("tpl", "example", "service", "MyClass.java");
-
-        String separator = "\\\\";
-        String packagePath = properties.<String>get("java.package").replace(".", separator);
-        String pathStr = path.toString().replaceAll(separator + "?" + JavaPackageProcessor.TEMPLATE_PACKAGE + separator,
-                separator + packagePath + separator);
-
-        assertEquals("tpl\\io\\bootique\\test\\service\\MyClass.java", pathStr);
-    }
-
-    @Test
     public void outputPathWithPackage() {
         Path path = Paths.get("tpl", "example", "service", "MyClass.java");
         Path out = processor.outputPath(new Template(path, ""), properties);
