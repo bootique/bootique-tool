@@ -11,11 +11,7 @@ public class BQShellModuleProvider implements BQModuleProvider {
 
     @Override
     public Module module() {
-        if(System.getProperty("os.name").toLowerCase().contains("win")) {
-            return new BQWinShellModule();
-        } else {
-            return new BQShellModule();
-        }
+        return new BQShellModule();
     }
 
     @Override

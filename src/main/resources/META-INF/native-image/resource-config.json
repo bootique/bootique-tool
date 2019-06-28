@@ -14,6 +14,8 @@
     {"pattern":"com/sun/org/apache/xml/internal/serializer/Encodings.properties"},
     {"pattern":"com/sun/org/apache/xml/internal/serializer/XMLEntities.properties"},
     {"pattern":"com/sun/org/apache/xml/internal/serializer/output_xml.properties"},
+    {"pattern":"org/fusesource/jansi/jansi.properties"},
+    {"pattern":"org/fusesource/jansi/jansi.txt"},
     {"pattern":"org/jline/utils/ansi.caps"},
     {"pattern":"org/jline/utils/capabilities.txt"},
     {"pattern":"org/jline/utils/colors.txt"},

@@ -220,17 +220,6 @@
   "allPublicMethods":true
 },
 {
-  "name":"sun.misc.Signal",
-  "methods":[
-    {"name":"<init>","parameterTypes":["java.lang.String"] }, 
-    {"name":"handle","parameterTypes":["sun.misc.Signal","sun.misc.SignalHandler"] }
-  ]
-},
-{
-  "name":"sun.misc.SignalHandler",
-  "fields":[{"name":"SIG_DFL"}]
-},
-{
   "name":"sun.misc.Unsafe",
   "fields":[{"name":"theUnsafe"}]
 },
