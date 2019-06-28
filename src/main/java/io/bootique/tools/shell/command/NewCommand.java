@@ -49,6 +49,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         String type;
         String name;
 
+        // TODO: deal with "new maven app" w/o name case
         if(argCount == 2) {
             tool = DEFAULT_TOOLSET;
             type = normalize(arguments.get(0));
@@ -67,6 +68,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         ContentHandler handler = artifactHandlers.get(templateType);
         if(handler == null) {
             return CommandOutcome.failed(-1, "Unknown artifact type: '" + type + "'\n"
+                    // TODO: format supported types properly
                     + "Supported types: " + String.join(", ", artifactHandlers.keySet()));
         }
 
