@@ -41,6 +41,12 @@ public class JlineShell implements Shell {
         terminal.flush();
     }
 
+    @Override
+    public String readln(String prompt) {
+        prompt = "  @|green >|@ " + prompt;
+        return lineReaderProvider.get().readLine(Ansi.ansi().render(prompt).toString());
+    }
+
     private void printException(Throwable exception, boolean chained) {
         String prompt = Ansi.ansi().render("@|red   < |@").toString();
         String message = compactPackageName(exception.getClass().getName());

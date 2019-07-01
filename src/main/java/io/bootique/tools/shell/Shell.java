@@ -6,6 +6,8 @@ public interface Shell {
 
     void println(Object message);
 
+    String readln(String prompt);
+
     ParsedCommand readCommand();
 
     void shutdown();
