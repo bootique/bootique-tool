@@ -19,9 +19,13 @@ import io.bootique.annotation.DefaultCommand;
 import io.bootique.command.Command;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
+import io.bootique.tools.shell.ConfigDir;
+import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.FileConfigService;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.CommandLineParser;
+import io.bootique.tools.shell.command.ConfigCommand;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
 import io.bootique.tools.shell.command.ErrorCommand;
 import io.bootique.tools.shell.command.ExitCommand;
@@ -41,8 +45,9 @@ import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
 
-import static org.jline.builtins.Completers.*;
-import static org.jline.builtins.Completers.TreeCompleter.*;
+import static org.jline.builtins.Completers.TreeCompleter;
+import static org.jline.builtins.Completers.TreeCompleter.Node;
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class BQShellModule implements Module {
 
@@ -58,6 +63,7 @@ public class BQShellModule implements Module {
                 .addCommand(NewCommand.class)
                 .addCommand(ErrorCommand.class)
                 .addCommand(ExitCommand.class)
+                .addCommand(ConfigCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
 
         // new content handlers
@@ -69,6 +75,7 @@ public class BQShellModule implements Module {
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
         binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
+        binder.bind(ConfigService.class).to(FileConfigService.class).in(Singleton.class);
     }
 
     /**
@@ -127,14 +134,15 @@ public class BQShellModule implements Module {
 
     @Provides
     @Singleton
-    @HistoryPath
-    Path getHistoryPath() {
-        return Paths.get(System.getProperty("user.home"), ".bq", "bq.history");
+    @ConfigDir
+    Path getConfigDirectory() {
+        return Paths.get(System.getProperty("user.home"), ".bq");
     }
 
     @Provides
     @Singleton
-    LineReader createLineReader(Terminal terminal, Completer completer, History history, @HistoryPath Path historyPath) {
+    LineReader createLineReader(Terminal terminal, Completer completer, History history, @ConfigDir Path configDirectory) {
+        Path historyPath = configDirectory.resolve("bq.history");
         return LineReaderBuilder.builder()
                 .terminal(terminal)
                 .completer(completer)
@@ -194,8 +202,5 @@ public class BQShellModule implements Module {
                     , "No default command configured for shell.");
         }
         return command[0];
-    }
-
-    @interface HistoryPath {
     }
 }
