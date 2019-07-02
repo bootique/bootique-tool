@@ -252,9 +252,5 @@
 {
   "name":"sun.misc.Unsafe",
   "fields":[{"name":"theUnsafe"}]
-},
-{
-  "name":"sun.nio.fs.UnixPath",
-  "allPublicMethods":true
 }
 ]
