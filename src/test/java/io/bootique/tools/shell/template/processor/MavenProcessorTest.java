@@ -38,6 +38,7 @@ public class MavenProcessorTest {
                 "    <version>1.0-SNAPSHOT</version>\n" +
                 "    <properties>\n" +
                 "       <main.class>example.Application</main.class>\n" +
+                "       <bootique.version>1.0</bootique.version>\n" +
                 "    </properties>\n" +
                 "\n" +
                 "   <build>\n" +
@@ -66,6 +67,7 @@ public class MavenProcessorTest {
                 "    <version>1.2</version>\n" +
                 "    <properties>\n" +
                 "       <main.class>io.bootique.tools.Application</main.class>\n" +
+                "       <bootique.version>1.2.3</bootique.version>\n" +
                 "    </properties>\n" +
                 "\n" +
                 "   <build>\n" +
@@ -83,6 +85,7 @@ public class MavenProcessorTest {
                 .with("java.package", "io.bootique.tools")
                 .with("project.name", "bootique-tools")
                 .with("project.version", "1.2")
+                .with("bq.version", "1.2.3")
                 .build();
 
         String processed = processor

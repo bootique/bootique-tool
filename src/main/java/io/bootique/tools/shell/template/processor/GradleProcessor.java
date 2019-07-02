@@ -13,10 +13,11 @@ public class GradleProcessor implements TemplateProcessor {
 
     public GradleProcessor() {
         // keys to replace in .gradle files
-        gradleKeyReplacement.put("group",               "java.package");
-        gradleKeyReplacement.put("version",             "project.version");
-        gradleKeyReplacement.put("rootProject.name",    "project.name");
-        gradleKeyReplacement.put("mainClassName",       "project.mainClass");
+        gradleKeyReplacement.put("group",                   "java.package");
+        gradleKeyReplacement.put("version",                 "project.version");
+        gradleKeyReplacement.put("rootProject.name",        "project.name");
+        gradleKeyReplacement.put("mainClassName",           "project.mainClass");
+        gradleKeyReplacement.put("implementation platform", "bq.version");
     }
 
     @Override
@@ -29,10 +30,15 @@ public class GradleProcessor implements TemplateProcessor {
             String line = lines[i];
             for(Map.Entry<String, String> replacement: gradleKeyReplacement.entrySet()) {
                 if(line.startsWith(replacement.getKey())) {
+                    String value = properties.get(replacement.getValue());
+                    if("implementation platform".equals(replacement.getKey())) {
+                        value = "io.bootique.bom:bootique-bom:" + value;
+                    }
+
                     int valueStart = line.indexOf("'");
                     int valueEnd = line.indexOf("'", valueStart + 1);
                     alternateLines[i] = line.substring(0, valueStart + 1)
-                            + properties.get(replacement.getValue())
+                            + value
                             + line.substring(valueEnd);
                     continue lines;
                 }
