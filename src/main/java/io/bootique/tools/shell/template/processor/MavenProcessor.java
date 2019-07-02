@@ -37,6 +37,9 @@ public class MavenProcessor extends XMLTemplateProcessor {
                 javaPackage += '.';
             }
             mainClass.setTextContent(javaPackage + "Application");
+
+            Node bqVersion = (Node)xpath.evaluate("/project/properties/bootique.version", document, XPathConstants.NODE);
+            bqVersion.setTextContent(properties.get("bq.version"));
         } catch (XPathExpressionException ex) {
             throw new TemplateException("Unable to modify xml, is template a proper maven xml?", ex);
         }

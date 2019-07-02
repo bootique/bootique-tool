@@ -12,6 +12,21 @@
   "allDeclaredMethods":true
 },
 {
+  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.ApplicationDescription",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
@@ -59,6 +74,10 @@
 {
   "name":"io.bootique.di.spi.InjectorAdapter",
   "allDeclaredFields":true
+},
+{
+  "name":"io.bootique.di.spi.InjectorAdapter$$Lambda$7/787604730",
+  "allDeclaredMethods":true
 },
 {
   "name":"io.bootique.help.ValueObjectDescriptor",
@@ -116,9 +135,20 @@
   "name":"io.bootique.tools.Application"
 },
 {
+  "name":"io.bootique.tools.shell.FileConfigService",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.tools.shell.JlineShell",
   "allDeclaredFields":true,
   "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.ConfigCommand",
+  "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {
@@ -164,17 +194,17 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"io.bootique.tools.shell.content.GradleModuleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.tools.shell.content.MavenAppHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
 {
   "name":"io.bootique.tools.shell.content.MavenModuleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.GradleModuleHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
@@ -216,6 +246,10 @@
   "allPublicMethods":true
 },
 {
+  "name":"org.jline.reader.impl.history.DefaultHistory",
+  "allPublicMethods":true
+},
+{
   "name":"org.jline.terminal.impl.PosixSysTerminal",
   "allPublicMethods":true
 },
@@ -224,18 +258,7 @@
   "fields":[{"name":"theUnsafe"}]
 },
 {
-  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
-  "allDeclaredConstructors" : true,
-  "allDeclaredMethods":true
-},
-{
-  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl",
-  "allDeclaredConstructors":true,
-  "allDeclaredMethods":true
-},
-{
-  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
-  "allDeclaredConstructors":true,
-  "allDeclaredMethods":true
+  "name":"sun.nio.fs.UnixPath",
+  "allPublicMethods":true
 }
 ]

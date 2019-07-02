@@ -9,8 +9,10 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
+import io.bootique.tools.shell.ArtifactType;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.Toolchain;
 import io.bootique.tools.shell.content.ContentHandler;
 import io.bootique.tools.shell.content.NameParser;
 
@@ -44,7 +46,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
     @Override
     public CommandOutcome run(Cli cli) {
-        Arguments arguments = Arguments.fromCliArguments(shell, cli.standaloneArguments());
+        Arguments arguments = Arguments.fromCliArguments(shell, config, cli.standaloneArguments());
         if(arguments == null) {
             return CommandOutcome.failed(-1, "Usage: new [tool] type name");
         }
@@ -60,38 +62,6 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         return handler.handle(arguments.components.getName());
     }
 
-    private enum Toolchain {
-        MAVEN,
-        GRADLE;
-
-        static Toolchain byName(String name) {
-            String upperCaseName = name.toUpperCase();
-            for(Toolchain next : values()) {
-                if(next.name().equals(upperCaseName)
-                    || next.name().startsWith(upperCaseName)) {
-                    return next;
-                }
-            }
-            return null;
-        }
-    }
-
-    private enum ArtifactType {
-        APP,
-        MODULE;
-
-        static ArtifactType byName(String name) {
-            String upperCaseName = name.toUpperCase();
-            for(ArtifactType next : values()) {
-                if(next.name().equals(upperCaseName)
-                    || next.name().startsWith(upperCaseName)) {
-                    return next;
-                }
-            }
-            return null;
-        }
-    }
-
     private static class Arguments {
         private final Toolchain toolchain;
         private final ArtifactType artifactType;
@@ -103,11 +73,10 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
             this.components = components;
         }
 
-        static Arguments fromCliArguments(Shell shell, List<String> arguments) {
-            Toolchain toolchain = null;
+        static Arguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
+            Toolchain toolchain = Toolchain.byName(configService.get(ConfigService.TOOLCHAIN));
             ArtifactType type = null;
             String name = "";
-
 
             if(arguments != null) {
                 // we have something ...
@@ -123,6 +92,9 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
                         toolchain = Toolchain.byName(arguments.get(0));
                         if(toolchain == null) {
                             type = ArtifactType.byName(arguments.get(0));
+                            if(type == null) {
+                                return null;
+                            }
                         }
                         break;
                     case 0:
@@ -141,7 +113,15 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
                 }
             }
 
-            return new Arguments(toolchain, type, new NameParser().parse(name));
+            NameParser.NameComponents nameComponents = new NameParser().parse(name);
+            if(nameComponents.getJavaPackage() == null) {
+                String defaultGroup = configService.get(ConfigService.GROUP_ID);
+                if(defaultGroup != null) {
+                    nameComponents = new NameParser
+                            .NameComponents(defaultGroup, nameComponents.getName(), nameComponents.getVersion());
+                }
+            }
+            return new Arguments(toolchain, type, nameComponents);
         }
     }
 }

@@ -111,7 +111,7 @@ public class NameParser {
 
         private final String version;
 
-        NameComponents(String javaPackage, String name, String version) {
+        public NameComponents(String javaPackage, String name, String version) {
             this.javaPackage = javaPackage;
             this.name = name;
             this.version = version;

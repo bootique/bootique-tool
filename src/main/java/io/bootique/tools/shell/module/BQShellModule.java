@@ -113,8 +113,13 @@ public class BQShellModule implements Module {
         Node appType = node("app", "module");
         return new TreeCompleter(
                 node("help", node(cmdNodes)),
-                node("new", node("maven", appType), node("gradle", appType), node("app"), node("module")),
-                node("exit")
+                node("new",
+                        node("maven", appType),
+                        node("gradle", appType),
+                        node("app"),
+                        node("module")),
+                node("exit"),
+                node("config")
         );
     }
 

@@ -6,6 +6,7 @@ import java.nio.file.Paths;
 
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.Properties;
@@ -18,6 +19,9 @@ public class MavenAppHandler extends ContentHandler {
 
     @Inject
     private NameParser nameParser;
+
+    @Inject
+    private ConfigService configService;
 
     public MavenAppHandler() {
         // java sources
@@ -76,6 +80,7 @@ public class MavenAppHandler extends ContentHandler {
                 .with("project.name", components.getName())
                 .with("input.path", "templates/maven-app/")
                 .with("output.path", outputRoot)
+                .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
                 .build();
 
         pipelines.forEach(p -> p.process(properties));

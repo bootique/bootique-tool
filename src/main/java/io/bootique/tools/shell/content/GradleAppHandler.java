@@ -8,6 +8,7 @@ import java.util.EnumSet;
 
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.BinaryContentLoader;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
@@ -22,6 +23,9 @@ public class GradleAppHandler extends ContentHandler {
 
     @Inject
     private NameParser nameParser;
+
+    @Inject
+    private ConfigService configService;
 
     public GradleAppHandler() {
         // java sources
@@ -107,6 +111,7 @@ public class GradleAppHandler extends ContentHandler {
                 .with("project.mainClass", mainClass)
                 .with("input.path", "templates/gradle-app/")
                 .with("output.path", outputRoot)
+                .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
                 .build();
 
         pipelines.forEach(p -> p.process(properties));

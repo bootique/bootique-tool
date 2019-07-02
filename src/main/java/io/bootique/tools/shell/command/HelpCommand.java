@@ -13,6 +13,7 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.application.OptionValueCardinality;
+import io.bootique.tools.shell.Formatter;
 import io.bootique.tools.shell.Shell;
 
 public class HelpCommand extends CommandWithMetadata implements ShellCommand {
@@ -22,10 +23,10 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
             + "  @|green,bold,underline bq|@ is an interactive tool to create and manage Bootique projects.\n"
             + "@|underline Commands:|@";
 
-    private static final String CMD_SYNOPSIS = "  @|green %s|@\t\t%s";
+    private static final String CMD_SYNOPSIS = "  @|green %s|@%s";
     private static final String CMD_FULL = SUMMARY + "  %s\n@|underline Usage|@:\n"
             + "  @|green %s|@ @|cyan %s|@";
-    private static final String OPT_SYNOPSIS = "  @|cyan %s|@\t\t%s";
+    private static final String OPT_SYNOPSIS = "  @|cyan %s|@%s";
 
     @Inject
     private Shell shell;
@@ -74,14 +75,15 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
                 shell.println("@|underline Options:|@");
                 for (OptionMetadata optionMetadata : metadata.getOptions()) {
                     String optInfo = String.format(OPT_SYNOPSIS,
-                            getOptionName(optionMetadata),
+                            Formatter.alignByColumns(getOptionName(optionMetadata)),
                             optionMetadata.getDescription());
                     shell.println(optInfo);
                 }
             }
         } else {
             if(name.equals(metadata.getName())) {
-                String info = String.format(CMD_SYNOPSIS, metadata.getName(), metadata.getDescription());
+                String info = String.format(CMD_SYNOPSIS,
+                        Formatter.alignByColumns(metadata.getName()), metadata.getDescription());
                 shell.println(info);
             }
         }
