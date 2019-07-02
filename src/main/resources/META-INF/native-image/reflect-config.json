@@ -76,10 +76,6 @@
   "allDeclaredFields":true
 },
 {
-  "name":"io.bootique.di.spi.InjectorAdapter$$Lambda$7/787604730",
-  "allDeclaredMethods":true
-},
-{
   "name":"io.bootique.help.ValueObjectDescriptor",
   "allDeclaredFields":true
 },
