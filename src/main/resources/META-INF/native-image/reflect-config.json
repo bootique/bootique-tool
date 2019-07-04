@@ -128,7 +128,7 @@
   "allPublicMethods":true
 },
 {
-  "name":"io.bootique.tools.Application"
+  "name":"io.bootique.tools.shell.Application"
 },
 {
   "name":"io.bootique.tools.shell.FileConfigService",
