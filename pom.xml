@@ -16,7 +16,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>io.bootique.tools.Application</main.class>
+        <main.class>io.bootique.tools.shell.Application</main.class>
         <bootique.version>1.0</bootique.version>
         <bootique.di.version>1.0-SNAPSHOT</bootique.di.version>
         <jline.version>3.11.0</jline.version>

@@ -1,4 +1,4 @@
-package io.bootique.tools;
+package io.bootique.tools.shell;
 
 import java.util.logging.Level;
 import java.util.logging.LogManager;
