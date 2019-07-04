@@ -6,6 +6,7 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.tools.shell.Shell;
+import org.jline.reader.UserInterruptException;
 
 public class StartShellCommand extends CommandWithMetadata {
 
@@ -51,6 +52,8 @@ public class StartShellCommand extends CommandWithMetadata {
                     }
                     failedCommandOutput(commandOutcome);
                 }
+            } catch (UserInterruptException ignore) {
+                // ctrl-c break of current command..
             } catch (Throwable ex) {
                 shell.println(ex);
             }

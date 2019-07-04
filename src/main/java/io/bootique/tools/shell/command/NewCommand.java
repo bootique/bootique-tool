@@ -74,7 +74,8 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         }
 
         static Arguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
-            Toolchain toolchain = Toolchain.byName(configService.get(ConfigService.TOOLCHAIN));
+            Toolchain defaultToolchain = Toolchain.byName(configService.get(ConfigService.TOOLCHAIN));
+            Toolchain toolchain = null;
             ArtifactType type = null;
             String name = "";
 
@@ -86,31 +87,36 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
                     case 2:
                         type = ArtifactType.byName(arguments.get(1));
                         if(type == null) {
-                            name = arguments.get(1);
+                            if(name == null) {
+                                name = arguments.get(1);
+                            } else {
+                                return null;
+                            }
                         }
                     case 1:
                         toolchain = Toolchain.byName(arguments.get(0));
                         if(toolchain == null) {
                             type = ArtifactType.byName(arguments.get(0));
-                            if(type == null) {
-                                return null;
-                            }
                         }
                         break;
                     case 0:
-                        while (toolchain == null) {
-                            toolchain = Toolchain.byName(shell.readln("Toolchain ([M]aven or [G]radle): "));
-                        }
-                        while (type == null) {
-                            type = ArtifactType.byName(shell.readln("Artifact type ([A]pp or [M]odule): "));
-                        }
-                        while (name.equals("")) {
-                            name = shell.readln("Artifact name (group:name:version): ");
-                        }
                         break;
                     default:
                         return null;
                 }
+            }
+
+            if(toolchain == null) {
+                toolchain = defaultToolchain;
+            }
+            while (toolchain == null) {
+                toolchain = Toolchain.byName(shell.readln("Toolchain ([M]aven or [G]radle): "));
+            }
+            while (type == null) {
+                type = ArtifactType.byName(shell.readln("Artifact type ([A]pp or [M]odule): "));
+            }
+            while (name.equals("")) {
+                name = shell.readln("Artifact name (group:name:version): ");
             }
 
             NameParser.NameComponents nameComponents = new NameParser().parse(name);

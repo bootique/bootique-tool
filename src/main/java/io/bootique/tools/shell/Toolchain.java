@@ -5,6 +5,9 @@ public enum Toolchain {
     GRADLE;
 
     public static Toolchain byName(String name) {
+        if(name == null || name.isEmpty()) {
+            return null;
+        }
         String upperCaseName = name.toUpperCase();
         for (Toolchain next : values()) {
             if (next.name().equals(upperCaseName)
