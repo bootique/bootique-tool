@@ -18,9 +18,6 @@ import io.bootique.tools.shell.template.processor.MavenProcessor;
 public class MavenAppHandler extends ContentHandler {
 
     @Inject
-    private NameParser nameParser;
-
-    @Inject
     private ConfigService configService;
 
     public MavenAppHandler() {
@@ -60,13 +57,7 @@ public class MavenAppHandler extends ContentHandler {
     }
 
     @Override
-    public CommandOutcome handle(String name) {
-        NameParser.ValidationResult validationResult = nameParser.validate(name);
-        if(!validationResult.isValid()) {
-            return CommandOutcome.failed(-1, validationResult.getMessage());
-        }
-        NameParser.NameComponents components = nameParser.parse(name);
-
+    public CommandOutcome handle(NameComponents components) {
         log("Generating new Maven project @|bold " + components.getName() + "|@ ...");
 
         Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());
@@ -78,6 +69,7 @@ public class MavenAppHandler extends ContentHandler {
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
+                .with("module.name", "Application")
                 .with("input.path", "templates/maven-app/")
                 .with("output.path", outputRoot)
                 .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))

@@ -45,6 +45,12 @@
     {"pattern":"templates/maven-app/src/main/java/example/ApplicationModuleProvider.java"},
     {"pattern":"templates/maven-app/src/main/resources/META-INF/services/io.bootique.BQModuleProvider"},
     {"pattern":"templates/maven-app/src/test/java/example/ApplicationTest.java"},
-    {"pattern":"templates/maven-app/src/test/java/example/ApplicationModuleProviderTest.java"}
+    {"pattern":"templates/maven-app/src/test/java/example/ApplicationModuleProviderTest.java"},
+    {"pattern":"templates/maven-module/gitignore"},
+    {"pattern":"templates/maven-module/pom.xml"},
+    {"pattern":"templates/maven-module/src/main/java/example/MyModule.java"},
+    {"pattern":"templates/maven-module/src/main/java/example/MyModuleProvider.java"},
+    {"pattern":"templates/maven-module/src/main/resources/META-INF/services/io.bootique.BQModuleProvider"},
+    {"pattern":"templates/maven-module/src/test/java/example/MyModuleProviderTest.java"}
   ]
 }

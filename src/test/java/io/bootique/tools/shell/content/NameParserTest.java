@@ -54,7 +54,7 @@ public class NameParserTest {
 
     @Test
     public void parseNameOnly() {
-        NameParser.NameComponents components = parser.parse("name");
+        NameComponents components = parser.parse("name");
         assertEquals("", components.getJavaPackage());
         assertEquals("name", components.getName());
         assertEquals("1.0-SNAPSHOT", components.getVersion());
@@ -62,7 +62,7 @@ public class NameParserTest {
 
     @Test
     public void parseNamePackage() {
-        NameParser.NameComponents components = parser.parse("my.package:my-name");
+        NameComponents components = parser.parse("my.package:my-name");
         assertEquals("my.package", components.getJavaPackage());
         assertEquals("my-name", components.getName());
         assertEquals("1.0-SNAPSHOT", components.getVersion());
@@ -70,7 +70,7 @@ public class NameParserTest {
 
     @Test
     public void parseNamePackageVersion() {
-        NameParser.NameComponents components = parser.parse("io.bootique:demo5:1.1-SNAPSHOT");
+        NameComponents components = parser.parse("io.bootique:demo5:1.1-SNAPSHOT");
         assertEquals("io.bootique", components.getJavaPackage());
         assertEquals("demo5", components.getName());
         assertEquals("1.1-SNAPSHOT", components.getVersion());

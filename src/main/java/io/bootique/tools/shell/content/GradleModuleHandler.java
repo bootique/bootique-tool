@@ -4,7 +4,7 @@ import io.bootique.command.CommandOutcome;
 
 public class GradleModuleHandler extends ContentHandler {
     @Override
-    public CommandOutcome handle(String name) {
+    public CommandOutcome handle(NameComponents components) {
         return CommandOutcome.failed(-1, "Not yet implemented");
     }
 }

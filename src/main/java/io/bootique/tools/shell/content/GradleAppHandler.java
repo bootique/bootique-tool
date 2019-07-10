@@ -86,13 +86,7 @@ public class GradleAppHandler extends ContentHandler {
     }
 
     @Override
-    public CommandOutcome handle(String name) {
-        NameParser.ValidationResult validationResult = nameParser.validate(name);
-        if(!validationResult.isValid()) {
-            return CommandOutcome.failed(-1, validationResult.getMessage());
-        }
-        NameParser.NameComponents components = nameParser.parse(name);
-
+    public CommandOutcome handle(NameComponents components) {
         log("Generating new Gradle project @|bold " + components.getName() + "|@ ...");
 
         Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());

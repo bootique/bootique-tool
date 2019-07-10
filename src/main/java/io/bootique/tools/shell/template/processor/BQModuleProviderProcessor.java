@@ -11,6 +11,7 @@ public class BQModuleProviderProcessor implements TemplateProcessor {
         String[] processedLines = new String[lines.length];
         for(int i=0; i<lines.length; i++) {
             processedLines[i] = lines[i].replaceFirst("^example", properties.get("java.package"));
+            processedLines[i] = processedLines[i].replaceFirst("ApplicationProvider$", properties.get("module.name") + "Provider");
         }
         return template.withContent(String.join("\n", processedLines));
     }

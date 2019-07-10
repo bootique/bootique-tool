@@ -23,5 +23,5 @@ public abstract class ContentHandler {
         shell.println("@|green   <|@ " + message);
     }
 
-    public abstract CommandOutcome handle(String name);
+    public abstract CommandOutcome handle(NameComponents name);
 }
