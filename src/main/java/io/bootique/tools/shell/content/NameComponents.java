@@ -25,4 +25,9 @@ public class NameComponents {
     public String getVersion() {
         return version;
     }
+
+    @Override
+    public String toString() {
+        return javaPackage + ':' + name + ':' + version;
+    }
 }

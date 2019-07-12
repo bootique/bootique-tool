@@ -9,7 +9,7 @@ import java.util.EnumSet;
 import com.google.inject.Inject;
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.template.BinaryContentLoader;
+import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -60,13 +60,13 @@ public class GradleAppHandler extends ContentHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("gradle/wrapper/gradle-wrapper.jar")
                 .source("gradle/wrapper/gradle-wrapper.properties")
-                .loader(new BinaryContentLoader())
+                .loader(new BinaryResourceLoader())
                 .saver(new BinaryContentSaver())
         );
         addPipeline(TemplatePipeline.builder()
                 .source("gradlew")
                 .source("gradlew.bat")
-                .loader(new BinaryContentLoader())
+                .loader(new BinaryResourceLoader())
                 .saver(new BinaryContentSaver(EnumSet.of(
                         PosixFilePermission.OWNER_EXECUTE,
                         PosixFilePermission.OWNER_READ,

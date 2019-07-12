@@ -3,19 +3,12 @@ package io.bootique.tools.shell.template;
 import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 
-public class BinaryContentLoader implements TemplateLoader {
-
-    @Override
-    public BinaryTemplate load(String source, Properties properties) {
-        String basePath = properties.get("input.path");
-
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(basePath + source);
-        if(stream == null) {
-            throw new TemplateException("Unable to read resource " + basePath + source);
-        }
-
+/**
+ * @since 4.2
+ */
+public abstract class BinaryLoader implements TemplateLoader {
+    byte[] loadContent(InputStream stream) throws IOException {
         byte[] content = null;
         try(BufferedInputStream bis = new BufferedInputStream(stream)) {
             int available;
@@ -34,11 +27,7 @@ public class BinaryContentLoader implements TemplateLoader {
                     content = newContent;
                 }
             }
-        } catch (IOException ex) {
-            throw new TemplateException("Unable to read resource " + source, ex);
         }
-
-        Path output = properties.get("output.path");
-        return new BinaryTemplate(output.resolve(source), content);
+        return content;
     }
 }

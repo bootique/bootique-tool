@@ -13,7 +13,7 @@ public class BinaryContentLoaderTest {
 
     @Test
     public void testLoad() {
-        BinaryContentLoader loader = new BinaryContentLoader();
+        BinaryResourceLoader loader = new BinaryResourceLoader();
 
         Properties properties = Properties.builder()
                 .with("input.path", "templates/gradle-app/gradle/wrapper/")
