@@ -27,6 +27,11 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+  "allDeclaredMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.ApplicationDescription",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
