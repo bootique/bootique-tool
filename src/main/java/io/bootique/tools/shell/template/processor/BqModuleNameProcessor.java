@@ -14,8 +14,9 @@ public class BqModuleNameProcessor implements TemplateProcessor {
 
     private String replaceModuleName(String content, Properties properties) {
         String moduleName = properties.get("module.name");
-        content = content.replaceFirst("(?m)^public class MyModule(.*)$", "public class " + moduleName + "$1");
-        content = content.replaceFirst("(?m)^(\\s+)return new MyModule\\(\\)(.*)$", "$1return new " + moduleName + "()$2");
+//        content = content.replaceFirst("(?m)^public class MyModule(.*)$", "public class " + moduleName + "$1");
+//        content = content.replaceFirst("(?m)^(\\s+)return new MyModule\\(\\)(.*)$", "$1return new " + moduleName + "()$2");
+        content = content.replaceAll("MyModule", moduleName);
         return content;
     }
 }
