@@ -1,0 +1,169 @@
+// Licensed to ObjectStyle LLC under one
+// or more contributor license agreements.  See the NOTICE file
+// distributed with this work for additional information
+// regarding copyright ownership.  The ObjectStyle LLC licenses
+// this file to you under the Apache License, Version 2.0 (the
+// "License"); you may not use this file except in compliance
+// with the License.  You may obtain a copy of the License at
+//
+//   http://www.apache.org/licenses/LICENSE-2.0
+//
+// Unless required by applicable law or agreed to in writing,
+// software distributed under the License is distributed on an
+// "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+// KIND, either express or implied.  See the License for the
+// specific language governing permissions and limitations
+// under the License.
+
+:toc:
+
+= Bq tool Documentation
+
+== Chapter 1. What is bq?
+
+bq is an interactive tool to create and manage Bootique projects.
+
+== Chapter 2. Installation
+
+=== Mac
+
+All you need to install bq on Mac is to run:
+[source,shell script]
+----
+brew install bq
+----
+
+=== Linux
+
+==== CentOS
+To install bq on CentOS you need to add bintray repo to your yum sources:
+[source,shell script]
+----
+wget https://bintray.com/bootique/bq -O bq-rpm.repo
+sudo mv bq-rpm.repo /etc/yum.repos.d/
+----
+And then run:
+[source,shell script]
+----
+yum install bq
+----
+
+==== Ubuntu
+Installation algorithm is similar to installation on CentOS.
+Add bintray repo to apt sources:
+[source,shell script]
+----
+echo "deb [trusted=yes] http://dl.bintray.com/bootique/bq [dist] [component]" | tee -a /etc/apt/sources.list.d/bootique.list
+----
+And then install:
+[source,shell script]
+----
+apt-get update
+apt-get install bq
+----
+
+=== Windows
+
+Chocolatey is require to be installed on your PC.
+Then run:
+[source,shell script]
+----
+choco install bq
+----
+
+== Chapter 3. How to use
+
+Bq tool generates Bootique project or module.
+
+Run bq:
+[source,shell script]
+----
+bq
+----
+
+After it user is getting to bq command line.
+
+Command to show help:
+
+[source,shell script]
+----
+help
+----
+
+Command to exit:
+[source,shell script]
+----
+exit
+----
+
+User can create configuration. This configuration will be saved and can be reused in next sessions.
+
+Command to show configs:
+[source,shell script]
+----
+config
+----
+
+Set group-id:
+[source,shell script]
+----
+config group-id io.bootique.test
+----
+
+Set Bootique version to use:
+[source,shell script]
+----
+config bq-version 1.0
+----
+
+Set default toolchain to use. Can be either Maven or Gradle:
+[source,shell script]
+----
+config toolchain maven
+----
+
+=== Maven
+To create new Maven project:
+[source,shell script]
+----
+new maven app io.bootique.test:bq-test:1.0
+----
+or in a short way:
+[source,shell script]
+----
+new m a io.bootique.test:bq-test:1.0
+----
+
+To create Maven module:
+[source,shell script]
+----
+new maven module io.bootique.test:bq-test:1.0
+----
+or in a short way:
+[source,shell script]
+----
+new m m io.bootique.test:bq-test:1.0
+----
+
+=== Gradle
+To create new Gradle project:
+[source,shell script]
+----
+new gradle app io.bootique.test:bq-test:1.0
+----
+or in a short way:
+[source,shell script]
+----
+new g a io.bootique.test:bq-test:1.0
+----
+
+To create Gradle module:
+[source,shell script]
+----
+new gradle module io.bootique.test:bq-test:1.0
+----
+or in a short way:
+[source,shell script]
+----
+new g m io.bootique.test:bq-test:1.0
+----

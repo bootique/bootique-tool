@@ -79,6 +79,10 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>test</module>
+    </modules>
+
     <build>
         <plugins>
             <plugin>
