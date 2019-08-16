@@ -15,8 +15,8 @@
 
 docs:
   - file: index.adoc
-name: bq-docs
-meta:
-  title: Bq tool documentation
-  keywords: bootique, bq
-  description: Bq tool documentation
+    name: bq-docs
+    meta:
+      title: Bq tool documentation
+      keywords: bootique, bq
+      description: Bq tool documentation
