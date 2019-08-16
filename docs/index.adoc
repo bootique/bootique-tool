@@ -19,11 +19,11 @@
 
 = Bq tool Documentation
 
-== Chapter 1. What is bq?
+== What is bq?
 
 bq is an interactive tool to create and manage Bootique projects.
 
-== Chapter 2. Installation
+== Installation
 
 === Mac
 
@@ -71,7 +71,7 @@ Then run:
 choco install bq
 ----
 
-== Chapter 3. How to use
+== How to use
 
 Bq tool generates Bootique project or module.
 
