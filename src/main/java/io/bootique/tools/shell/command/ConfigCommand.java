@@ -43,9 +43,10 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                 .build());
 
         Map<String, String> params = new HashMap<>();
-        params.put(ConfigService.TOOLCHAIN,  "Default toolchain to use. Can be either Maven or Gradle.");
-        params.put(ConfigService.BQ_VERSION, "Bootique version to use.");
-        params.put(ConfigService.GROUP_ID,   "Default artifact group id to use.");
+        params.put(ConfigService.TOOLCHAIN,    "Default toolchain to use. Can be either Maven or Gradle.");
+        params.put(ConfigService.JAVA_VERSION, "Java version to use.");
+        params.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
+        params.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
         supportedParams = Collections.unmodifiableMap(params);
     }
 

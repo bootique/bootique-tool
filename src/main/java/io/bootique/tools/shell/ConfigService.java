@@ -3,6 +3,7 @@ package io.bootique.tools.shell;
 public interface ConfigService {
 
     String TOOLCHAIN = "toolchain";
+    String JAVA_VERSION = "java-version";
     String BQ_VERSION = "bq-version";
     String GROUP_ID = "group-id";
 

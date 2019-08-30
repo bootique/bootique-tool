@@ -17,10 +17,11 @@
         <bootique.version>1.0</bootique.version>
         <junit.version>4.12</junit.version>
 
-        <jar.plugin.version>3.1.1</jar.plugin.version>
+        <compiler.plugin.version>3.8.1</compiler.plugin.version>
+        <jar.plugin.version>3.1.2</jar.plugin.version>
         <shade.plugin.version>3.2.1</shade.plugin.version>
-        <surefire.plugin.version>2.22.1</surefire.plugin.version>
-        <failsafe.plugin.version>2.22.1</failsafe.plugin.version>
+        <surefire.plugin.version>2.22.2</surefire.plugin.version>
+        <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
     </properties>
 
     <dependencyManagement>
@@ -55,6 +56,10 @@
 
     <build>
         <plugins>
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>${compiler.plugin.version</version>
+            </plugin>
             <plugin>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>${surefire.plugin.version}</version>

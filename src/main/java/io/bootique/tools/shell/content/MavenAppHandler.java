@@ -39,6 +39,7 @@ public class MavenAppHandler extends AppHandler {
                 .with("input.path", "templates/maven-app/")
                 .with("output.path", outputRoot)
                 .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION, "11"))
                 .build();
     }
 }

@@ -40,6 +40,12 @@ public class MavenProcessor extends XMLTemplateProcessor {
 
             Node bqVersion = (Node)xpath.evaluate("/project/properties/bootique.version", document, XPathConstants.NODE);
             bqVersion.setTextContent(properties.get("bq.version"));
+
+            Node source = (Node)xpath.evaluate("/project/properties/maven.compiler.source", document, XPathConstants.NODE);
+            source.setTextContent(properties.get("java.version"));
+
+            Node target = (Node)xpath.evaluate("/project/properties/maven.compiler.target", document, XPathConstants.NODE);
+            target.setTextContent(properties.get("java.version"));
         } catch (XPathExpressionException ex) {
             throw new TemplateException("Unable to modify xml, is template a proper maven xml?", ex);
         }
