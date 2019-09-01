@@ -33,23 +33,31 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
 
     <dependencies>
+
+        <!-- compile dependencies -->
         <dependency>
             <groupId>io.bootique</groupId>
             <artifactId>bootique</artifactId>
         </dependency>
-        <dependency>
-            <groupId>io.bootique</groupId>
-            <artifactId>bootique-test</artifactId>
-            <scope>test</scope>
-        </dependency>
+
+        <!-- test dependencies -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.bootique</groupId>
+            <artifactId>bootique-test</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
