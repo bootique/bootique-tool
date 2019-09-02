@@ -37,6 +37,8 @@ public class GradleProcessor implements TemplateProcessor {
         gradleKeyReplacement.put("rootProject.name",        "project.name");
         gradleKeyReplacement.put("mainClassName",           "project.mainClass");
         gradleKeyReplacement.put("implementation platform", "bq.version");
+        gradleKeyReplacement.put("sourceCompatibility", "java.version");
+        gradleKeyReplacement.put("targetCompatibility", "java.version");
     }
 
     @Override
