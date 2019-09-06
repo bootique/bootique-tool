@@ -1,0 +1,62 @@
+# Licensed to ObjectStyle LLC under one or more
+# contributor license agreements. See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ObjectStyle LLC licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+init:
+  - cinst graalvm
+  - set PATH=C:\Program Files\GraalVM\graalvm-ce-19.1.0\bin;%PATH%
+
+image: Visual Studio 2015
+
+build_script:
+  - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+  - mvn clean package -P native-image
+  - mvn clean package -P assembly
+  - ls
+
+before_deploy:
+  - ps: |
+      # Create Chocolately Package
+
+      # Because the bits need to be signed by MSFT, we are no longer using
+      # the compiled version, but instead we'll use the one from the WDK.
+      # The only problem is that the WDK versions aren't signed by MSFT either.
+
+       Copy-Item -Path .\target\bq.exe `
+        -Destination .\release-test.portable\bq.exe
+
+      Set-Location -Path .\release-test.portable\
+      (Get-Content '.\bq.portable.nuspec' -Raw).Replace("<version>1.0</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME)</version>") | Out-File '.\bq.portable.nuspec'
+      Choco Pack
+      Push-AppveyorArtifact ".\bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg"
+
+deploy:
+  - provider: BinTray
+    username: ntimofeev
+    api_key:
+      secure: NEED to ENCRYPT BY APPVEYOR
+    subject: bootique
+    repo: bq
+    package: bq
+    version: $(APPVEYOR_REPO_TAG_NAME)
+    publish: true
+    override: true
+    explode: true
+    on:
+      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
+
+after_deploy:
+  - ps: |
+    #      Set-Location -Path .\release-test.portable\
+#      choco apikey -k [API_KEY_HERE] -source https://push.chocolatey.org/
+#      choco push package-name.1.1.0.nupkg -s https://push.chocolatey.org/
