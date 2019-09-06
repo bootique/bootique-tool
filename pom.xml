@@ -28,7 +28,7 @@
 
     <groupId>io.bootique.tools</groupId>
     <artifactId>bq</artifactId>
-    <version>0.5-SNAPSHOT</version>
+    <version>0.5</version>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
@@ -147,7 +147,7 @@
         <connection>scm:git:https://github.com/bootique/bootique-tool.git</connection>
         <developerConnection>scm:git:https://github.com/bootique/bootique-tool.git</developerConnection>
         <url>https://github.com/bootique/bootique-tool</url>
-        <tag>0.1</tag>
+        <tag>0.5</tag>
     </scm>
 
     <profiles>
