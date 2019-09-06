@@ -37,10 +37,9 @@ script:
     fi
 
 before_deploy:
-  - if [ $TRAVIS_OS_NAME == "linux" ]; then
-    chmod +x ./update-version.sh;
+  - chmod +x ./update-version.sh;
     ./update-version.sh;
-    fi
+
 
 deploy:
   - provider: bintray

@@ -7,8 +7,11 @@ VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
 cd ../
 
-sed -i "s/template_version/$VERSION/g" deploy-deb.json
-sed -i "s/template_tag/$VERSION/g" deploy-deb.json
+sed -i "s/template_version/$VERSION/g" deploy-deb-config.json
+sed -i "s/template_tag/$VERSION/g" deploy-deb-config.json
 
-sed -i "s/template_version/$VERSION/g" deploy-rpm.json
-sed -i "s/template_tag/$VERSION/g" deploy-rpm.json
+sed -i "s/template_version/$VERSION/g" deploy-rpm-config.json
+sed -i "s/template_tag/$VERSION/g" deploy-rpm-config.json
+
+sed -i "s/template_version/$VERSION/g" deploy-mac-config.json
+sed -i "s/template_tag/$VERSION/g" deploy-mac-config.json
