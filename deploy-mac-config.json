@@ -20,7 +20,8 @@
 
   "files":
   [
-    {"includePattern": "target\/(.*\.zip)", "uploadPattern": "/$1"}
+    {"includePattern": "target\/(.*\.zip)", "uploadPattern": "/$1"},
+    {"includePattern": "target\/(bq-*\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }

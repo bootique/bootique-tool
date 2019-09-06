@@ -25,7 +25,8 @@
         "deb_distribution": "vivid",
         "deb_component": "main",
         "deb_architecture": "amd64"}
-    }
+    },
+    {"includePattern": "target\/(bq-*\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }
