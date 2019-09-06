@@ -43,17 +43,20 @@ before_deploy:
     fi
 
 deploy:
-  - provider: script
+  - provider: bintray
+    file: deploy-mac-config.json
+    user: bootique
+    key:
+      secure: $BINTRAY_API_KEY
+    #    passphrase:
+    #      secure: aRddMXp9914VHcEyTh3xA6WEiDl/ayU8CSRL0bGQ5Bkf/z3Vke8zDj+VindcDew3BwKBg+vSuXez8/rGX50Tya0UQ9Gx6wL84bgYGWnQ2C2ZvKuj2pVCFYqJ9Q7ARiMQrHsVxieLrhABU7b2s0Uc2BE8RaQjNbQVWCwiNcmi901Q3FDOwuve9b3OkbJVKDC4jQiQsXgGoYCCXXhXZX1W493TI0Mtto6EZ5Z5b65U0Qe42j0WexpSXLjDtdqzDFwb+1ourR+sXrJ/NbPFH/D6W5IbGX8B6oLOVmRk3Rz1hfgvNuiRjlOUOSgTiYUctTs4UE3bqjRuD9n+MJp9Mwy4qa88CGX7Qs9QR2LPj7OJvMxAuEe3ZYZlKb0/3EYUCDJb/t8Xc4VZvnFAHm4/PpsesG/G2x6IVi96jb2KojPUG0mmR8UW+THLFYl/DFLO/6YtBb75luebkdwHY8nzYHI24f4LoW2A7mUUNcZcyoVAMPjK/hi8FgsLd1BxozI/uE2wdk/Ie/da2mccgOs369wZflgXDILcqy/gXBHVDVwfsoKC57TlUbJhtkrAl7zcP0O7ImKNYIDQ8IQfMyXkC+vUsNVce+r2DVcExs4rMIJhkDwMkGtU/nmSjbCzgA73odeDTQkXfnrd5YtXEHGUg3BiAK0Paopn4684Vg7WQcDjyQs=
     skip_cleanup: true
-    script:
-      cd target;
-      curl -X PUT --basic -u bootique:$BINTRAY_API_KEY https://api.bintray.com/content/bootique/bq/bq/$TRAVIS_TAG/bq-$TRAVIS_TAG.zip?publish=1
     on:
       branch: master
       condition: $TRAVIS_OS_NAME == "osx"
       tags: true
   - provider: bintray
-    file: deploy-deb.json
+    file: deploy-deb-config.json
     user: bootique
     key:
       secure: $BINTRAY_API_KEY
@@ -65,7 +68,7 @@ deploy:
       condition: $TRAVIS_OS_NAME == "linux"
       tags: true
   - provider: bintray
-    file: deploy-rpm.json
+    file: deploy-rpm-config.json
     user: bootique
     key:
       secure: $BINTRAY_API_KEY
