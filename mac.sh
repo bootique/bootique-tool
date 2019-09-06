@@ -6,6 +6,5 @@ sudo mv graalvm-ce-19.1.1 /Library/Java/JavaVirtualMachines
 export PATH=/Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home/bin:$PATH
 export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home
 /Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home/bin/gu install native-image
-java -version
 mvn clean package -Pnative-image
 mvn package -P assembly
