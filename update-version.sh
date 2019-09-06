@@ -12,6 +12,3 @@ sed -i "s/template_tag/$VERSION/g" deploy-deb-config.json
 
 sed -i "s/template_version/$VERSION/g" deploy-rpm-config.json
 sed -i "s/template_tag/$VERSION/g" deploy-rpm-config.json
-
-sed -i "s/template_version/$VERSION/g" deploy-mac-config.json
-sed -i "s/template_tag/$VERSION/g" deploy-mac-config.json
