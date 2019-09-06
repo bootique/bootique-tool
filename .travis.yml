@@ -12,12 +12,24 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+env:
+  global:
+    #Api key for bintray
+    - secure: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
+
+os:
+  - linux
+  - osx
 
 language: java
-
-jdk:
-  - openjdk8
-
-script: mvn verify
-
 install: true
+
+script:
+  - if [ $TRAVIS_OS_NAME == "osx" ]; then
+    chmod +x ./mac.sh;
+    ./mac.sh;
+    fi
+  - if [ $TRAVIS_OS_NAME == "linux" ]; then
+    chmod +x ./linux.sh;
+    ./linux.sh;
+    fi
