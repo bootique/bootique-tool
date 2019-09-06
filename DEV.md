@@ -41,3 +41,10 @@ native-image --no-server --report-unsupported-elements-at-runtime --no-fallback 
 ```bash 
 java -agentlib:native-image-agent=config-merge-dir=src/main/resources/META-INF/native-image/ -jar target/bq-1.0-SNAPSHOT.jar
 ```
+
+## How to deploy
+
+```bash 
+mvn release:prepare -DignoreSnapshots=true -Dtag=TAG_SAME_WITH_RELEASE_VERSION -DreleaseVersion=RELEASE_VERSION -DdevelopmentVersion=NEXT_DEV_VERSION
+mvn release:perform -Darguments="-Dmaven.deploy.skip=true"
+```
