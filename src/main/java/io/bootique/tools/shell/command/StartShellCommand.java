@@ -19,6 +19,8 @@
 
 package io.bootique.tools.shell.command;
 
+import java.util.ResourceBundle;
+
 import com.google.inject.Inject;
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
@@ -29,14 +31,15 @@ import org.jline.reader.UserInterruptException;
 
 public class StartShellCommand extends CommandWithMetadata {
 
+    private static ResourceBundle bundle = ResourceBundle.getBundle("io.bootique.tools.shell.build");
+
     private static final String BANNER_STRING =
             "@|green  ____              _   _                    |@_\n" +
             "@|green | __ )  ___   ___ | |_(_) __ _ _   _  ___|@  (_) ___\n" +
             "@|green |  _ \\ / _ \\ / _ \\| __| |/ _` | | | |/ _ \\|@ | |/ _ \\\n" +
             "@|green | |_) | (_) | (_) | |_| | (_| | |_| |  __/|@_| | (_) |\n" +
             "@|green |____/ \\___/ \\___/ \\__|_|\\__, |\\__,_|\\___|@(_)_|\\___/\n" +
-            "@|green                             |_||@          shell @|cyan v0.1|@\n";
-
+            "@|green                             |_||@          shell @|cyan v" + bundle.getString("bq.build.version") + "|@\n";
 
     @Inject
     private Shell shell;

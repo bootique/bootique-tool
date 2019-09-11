@@ -1,6 +1,6 @@
 {
   "bundles": [
-    {"name":"com/sun/org/apache/xml/internal/security/resource/xmlsecurity"},
+    {"name":"io.bootique.tools.shell.build"},
     {"name":"joptsimple.ExceptionMessages"}
   ],
   "resources":[
