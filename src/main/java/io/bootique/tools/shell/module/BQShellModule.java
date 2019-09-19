@@ -128,7 +128,7 @@ public class BQShellModule implements Module {
         Object[] cmdNodes = shellCommands.values().stream()
                 .map(cmd -> cmd.getMetadata().getName())
                 .distinct()
-                .toArray();
+                .toArray(String[]::new);
         Node appType = node("app", "module");
         return new TreeCompleter(
                 node("help", node(cmdNodes)),

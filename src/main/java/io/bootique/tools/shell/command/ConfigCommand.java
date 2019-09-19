@@ -101,7 +101,6 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                     shell.println("No value is set for @|bold " + param + "|@");
                 } else {
                     shell.println(param + " = " + value);
-
                 }
             }
         } else {
