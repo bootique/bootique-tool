@@ -20,21 +20,21 @@ export JAVA_HOME=/usr/lib/jvm/graalvm-ce-19.1.1
 export PATH=${JAVA_HOME}/bin:$PATH
 ${JAVA_HOME}/bin/gu install native-image
 java -version
-mvn clean install
+
+mvn install -Pnative-image
+
 NAME=$(basename $(find . -type f -name 'bq-*.jar'))
-mvn clean package -Pnative-image
+VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
 mkdir bq-deb
 cd bq-deb
-mv ../target/bq .
+mv ../../target/bq .
 
 PACK_NAME=$(ls)
 chmod +x ${PACK_NAME}
 mkdir packageroot
 mkdir packageroot/DEBIAN
 touch packageroot/DEBIAN/control
-
-VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
 echo "Package: $PACK_NAME
 Version: $VERSION
@@ -54,9 +54,9 @@ sudo apt-get install -f
 
 DEB_PACK=$(find . -type f -name 'bq-*.deb')
 echo ${DEB_PACK}
-cp ${DEB_PACK} ../target/
+cp ${DEB_PACK} ../../target/
 
-cd ../target
+cd ../../target
 
 # convert to rpm
 sudo apt-get update

@@ -14,12 +14,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cd target
+cd ../target || exit
 
 NAME=$(basename $(find . -type f -name 'bq-*.jar'))
 VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
-cd ../
+cd ../deploy || exit
 
 sed -i '.bak' "s/template_version/$VERSION/g" deploy-mac-config.json
 sed -i '.bak' "s/template_tag/$VERSION/g" deploy-mac-config.json

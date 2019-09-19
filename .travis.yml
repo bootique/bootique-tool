@@ -30,28 +30,28 @@ install: true
 
 script:
   - if [ $TRAVIS_OS_NAME == "osx" ]; then
-    chmod +x ./mac.sh;
-    ./mac.sh;
+    chmod +x ./deploy/mac.sh;
+    ./deploy/mac.sh;
     fi
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
-    chmod +x ./linux.sh;
-    ./linux.sh;
+    chmod +x ./deploy/linux.sh;
+    ./deploy/linux.sh;
     fi
 
 before_deploy:
   - if [ $TRAVIS_OS_NAME == "osx" ]; then
-    chmod +x ./update-mac-version.sh;
-    ./update-mac-version.sh;
+    chmod +x ./deploy/update-mac-version.sh;
+    ./deploy/update-mac-version.sh;
     fi
   - if [ $TRAVIS_OS_NAME == "linux" ]; then
-    chmod +x ./update-version.sh;
-    ./update-version.sh;
+    chmod +x ./deploy/update-version.sh;
+    ./deploy/update-version.sh;
     fi
 
 
 deploy:
   - provider: bintray
-    file: deploy-mac-config.json
+    file: deploy/deploy-mac-config.json
     user: ntimofeev
     key:
       secure: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
@@ -63,7 +63,7 @@ deploy:
       condition: $TRAVIS_OS_NAME == "osx"
       tags: true
   - provider: bintray
-    file: deploy-deb-config.json
+    file: deploy/deploy-deb-config.json
     user: ntimofeev
     key:
       secure: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
@@ -75,7 +75,7 @@ deploy:
       condition: $TRAVIS_OS_NAME == "linux"
       tags: true
   - provider: bintray
-    file: deploy-rpm-config.json
+    file: deploy/deploy-rpm-config.json
     user: ntimofeev
     key:
       secure: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
@@ -89,6 +89,6 @@ deploy:
 
 after_deploy:
   - if [ $TRAVIS_OS_NAME == "osx" ]; then
-    chmod +x ./update-homebrew.sh;
-    ./update-homebrew.sh;
+    chmod +x ./deploy/update-homebrew.sh;
+    ./deploy/update-homebrew.sh;
     fi

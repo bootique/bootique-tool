@@ -20,11 +20,11 @@ mkdir temp-homebrew
 CHECKSUM=$(echo "$(shasum -a 256 target/${NAME})" | awk '{print $1;}')
 echo ${CHECKSUM}
 
-cd temp-homebrew
+cd temp-homebrew || exit
 git clone https://github.com/bootique-tools/homebrew-repo
-cd homebrew-repo
+cd homebrew-repo || exit
 git remote add origin-deploy https://${GITHUB_TOKEN}@github.com/bootique-tools/homebrew-repo.git
-cd Formula
+cd Formula || exit
 
 cat bq.rb
 

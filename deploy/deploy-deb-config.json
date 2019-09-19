@@ -1,7 +1,7 @@
 {
   "package": {
-    "name": "bq",
-    "repo": "bq",
+    "name": "bq-deb",
+    "repo": "bq-deb",
     "subject": "bootique",
     "website_url": "https://bootique.io",
     "issue_tracker_url": "https://github.com/bootique/bootique-tool/issues",
@@ -21,8 +21,13 @@
 
   "files":
   [
-    {"includePattern": "target\/(.*\.zip)", "uploadPattern": "/$1"},
-    {"includePattern": "target\/(bq-.*\.jar)", "uploadPattern": "/$1"}
+    {"includePattern": "target\/(.*\\.deb)", "uploadPattern": "/$1",
+      "matrixParams": {
+        "deb_distribution": "vivid",
+        "deb_component": "main",
+        "deb_architecture": "amd64"}
+    },
+    {"includePattern": "target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }
