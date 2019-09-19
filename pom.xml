@@ -40,6 +40,13 @@
         <jline.version>3.11.0</jline.version>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/bootique/bootique-tool.git</connection>
+        <developerConnection>scm:git:https://github.com/bootique/bootique-tool.git</developerConnection>
+        <url>https://github.com/bootique/bootique-tool</url>
+        <tag>HEAD</tag>
+    </scm>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
@@ -148,13 +155,6 @@
             </plugin>
         </plugins>
     </build>
-
-    <scm>
-        <connection>scm:git:https://github.com/bootique/bootique-tool.git</connection>
-        <developerConnection>scm:git:https://github.com/bootique/bootique-tool.git</developerConnection>
-        <url>https://github.com/bootique/bootique-tool</url>
-        <tag>0.1</tag>
-    </scm>
 
     <profiles>
         <profile>
