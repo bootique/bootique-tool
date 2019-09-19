@@ -46,11 +46,20 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
     @Inject
     private Shell shell;
 
-    private final Map<String, String> supportedParams;
+    private static final Map<String, String> SUPPORTED_PARAMS;
+    static {
+        Map<String, String> params = new HashMap<>();
+        params.put(ConfigService.TOOLCHAIN,    "Default toolchain to use. Can be either Maven or Gradle.");
+        params.put(ConfigService.JAVA_VERSION, "Java version to use.");
+        params.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
+        params.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
+        SUPPORTED_PARAMS = Collections.unmodifiableMap(params);
+    }
 
     public ConfigCommand() {
         super(CommandMetadata.builder("config")
-                .description("Read or set global config")
+                .description("Read or set global config. Available parameters: "
+                        + String.join(", ", SUPPORTED_PARAMS.keySet()))
                 .addOption(OptionMetadata.builder("param")
                         .description("parameter name, optional")
                         .valueOptional()
@@ -60,13 +69,6 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                         .valueOptional()
                         .build())
                 .build());
-
-        Map<String, String> params = new HashMap<>();
-        params.put(ConfigService.TOOLCHAIN,    "Default toolchain to use. Can be either Maven or Gradle.");
-        params.put(ConfigService.JAVA_VERSION, "Java version to use.");
-        params.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
-        params.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
-        supportedParams = Collections.unmodifiableMap(params);
     }
 
     @Override
@@ -105,16 +107,16 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         } else {
             // get all
             shell.println("@|underline Available configuration options:|@");
-            supportedParams.forEach(this::formatConfigParameter);
+            SUPPORTED_PARAMS.forEach(this::formatConfigParameter);
         }
 
         return CommandOutcome.succeeded();
     }
 
     private CommandOutcome validate(String param, String value) {
-        if(!supportedParams.containsKey(param)) {
+        if(!SUPPORTED_PARAMS.containsKey(param)) {
             return CommandOutcome.failed(-1, "Unsupported option @|bold " + param
-                    + "|@. Available parameters: " + String.join(", ", supportedParams.keySet()));
+                    + "|@. Available parameters: " + String.join(", ", SUPPORTED_PARAMS.keySet()));
         }
 
         if(ConfigService.TOOLCHAIN.equals(param)) {
