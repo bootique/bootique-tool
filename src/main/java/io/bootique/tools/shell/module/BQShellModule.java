@@ -138,7 +138,11 @@ public class BQShellModule implements Module {
                         node("app"),
                         node("module")),
                 node("exit"),
-                node("config")
+                node("config",
+                        node(ConfigService.JAVA_VERSION),
+                        node(ConfigService.BQ_VERSION),
+                        node(ConfigService.TOOLCHAIN),
+                        node(ConfigService.GROUP_ID))
         );
     }
 
