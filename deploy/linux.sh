@@ -28,7 +28,7 @@ VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
 mkdir bq-deb
 cd bq-deb
-mv ../../target/bq .
+mv ../target/bq .
 
 PACK_NAME=$(ls)
 chmod +x ${PACK_NAME}
@@ -54,9 +54,9 @@ sudo apt-get install -f
 
 DEB_PACK=$(find . -type f -name 'bq-*.deb')
 echo ${DEB_PACK}
-cp ${DEB_PACK} ../../target/
+cp ${DEB_PACK} ../target/
 
-cd ../../target
+cd ../target
 
 # convert to rpm
 sudo apt-get update
