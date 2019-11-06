@@ -27,17 +27,19 @@
     </parent>
 
     <groupId>io.bootique.tools</groupId>
-    <artifactId>bq</artifactId>
+    <artifactId>bootique-tool-parent</artifactId>
     <version>0.92-SNAPSHOT</version>
+
+    <packaging>pom</packaging>
 
     <properties>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <main.class>io.bootique.tools.shell.Application</main.class>
-        <bootique.version>1.0</bootique.version>
-        <bootique.di.version>1.0-SNAPSHOT</bootique.di.version>
+        <bootique.version>1.1</bootique.version>
+        <bootique.di.version>2.0-SNAPSHOT</bootique.di.version>
         <jline.version>3.11.0</jline.version>
+        <native.image.plugin.version>19.2.0</native.image.plugin.version>
     </properties>
 
     <scm>
@@ -46,6 +48,11 @@
         <url>https://github.com/bootique/bootique-tool</url>
         <tag>HEAD</tag>
     </scm>
+
+    <modules>
+        <module>bootique-tool</module>
+        <module>bootique-tool-docs</module>
+    </modules>
 
     <dependencyManagement>
         <dependencies>
@@ -56,190 +63,26 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <dependency>
+                <groupId>io.bootique.di</groupId>
+                <artifactId>guice-over-bootique-di</artifactId>
+                <version>${bootique.di.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jline</groupId>
+                <artifactId>jline-terminal-jansi</artifactId>
+                <version>${jline.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jline</groupId>
+                <artifactId>jline-reader</artifactId>
+                <version>${jline.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>org.jline</groupId>
+                <artifactId>jline-builtins</artifactId>
+                <version>${jline.version}</version>
+            </dependency>
         </dependencies>
     </dependencyManagement>
-
-    <dependencies>
-        <dependency>
-            <groupId>io.bootique</groupId>
-            <artifactId>bootique</artifactId>
-            <scope>compile</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>com.google.inject</groupId>
-                    <artifactId>guice</artifactId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>io.bootique.di</groupId>
-            <artifactId>guice-over-bootique-di</artifactId>
-            <version>${bootique.di.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jline</groupId>
-            <artifactId>jline-terminal-jansi</artifactId>
-            <version>${jline.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jline</groupId>
-            <artifactId>jline-reader</artifactId>
-            <version>${jline.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.jline</groupId>
-            <artifactId>jline-builtins</artifactId>
-            <version>${jline.version}</version>
-        </dependency>
-
-        <dependency>
-            <groupId>io.bootique</groupId>
-            <artifactId>bootique-test</artifactId>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <scope>test</scope>
-        </dependency>
-    </dependencies>
-
-    <build>
-        <resources>
-            <resource>
-                <directory>src/main/resources</directory>
-                <filtering>true</filtering>
-            </resource>
-        </resources>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.1.2</version>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.1</version>
-                <configuration>
-                    <filters>
-                        <filter>
-                            <artifact>*:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.SF</exclude>
-                                <exclude>META-INF/*.DSA</exclude>
-                                <exclude>META-INF/*.RSA</exclude>
-                            </excludes>
-                        </filter>
-                        <filter>
-                            <artifact>io.bootique.tools:bq</artifact>
-                            <excludes>
-                                <exclude>org/jline/utils/Signals*</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
-            </plugin>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-release-plugin</artifactId>
-                <version>2.5.3</version>
-                <configuration>
-                    <tagNameFormat>${project.version}</tagNameFormat>
-                </configuration>
-            </plugin>
-        </plugins>
-    </build>
-
-    <profiles>
-        <profile>
-            <id>native-image</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>com.oracle.substratevm</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
-                        <version>19.2.0</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>native-image</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <imageName>bq</imageName>
-                                    <!-- - -no-server -->
-                                    <buildArgs>--report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
-                                </configuration>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>windows</id>
-            <activation>
-                <os>
-                    <family>windows</family>
-                </os>
-            </activation>
-            <build>
-                <plugins>
-                    <plugin>
-                        <groupId>org.apache.maven.plugins</groupId>
-                        <artifactId>maven-shade-plugin</artifactId>
-                        <configuration>
-                            <filters>
-                                <filter>
-                                    <artifact>*:*</artifact>
-                                    <excludes>
-                                        <exclude>META-INF/*.SF</exclude>
-                                        <exclude>META-INF/*.DSA</exclude>
-                                        <exclude>META-INF/*.RSA</exclude>
-                                    </excludes>
-                                </filter>
-                                <filter>
-                                    <artifact>org.jline:jline-terminal</artifact>
-                                    <excludes>
-                                        <exclude>org/jline/utils/Signals*</exclude>
-                                    </excludes>
-                                </filter>
-                            </filters>
-                        </configuration>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-        <profile>
-            <id>assembly</id>
-            <build>
-                <plugins>
-                    <plugin>
-                        <artifactId>maven-assembly-plugin</artifactId>
-                        <version>2.5.3</version>
-                        <configuration>
-                            <descriptor>src/main/resources/assembly/assemblies.xml</descriptor>
-                            <finalName>${project.name}-${project.version}</finalName>
-                            <appendAssemblyId>false</appendAssemblyId>
-                        </configuration>
-                        <executions>
-                            <execution>
-                                <id>create-archive</id>
-                                <phase>package</phase>
-                                <goals>
-                                    <goal>single</goal>
-                                </goals>
-                            </execution>
-                        </executions>
-                    </plugin>
-                </plugins>
-            </build>
-        </profile>
-    </profiles>
 </project>

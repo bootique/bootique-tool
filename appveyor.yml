@@ -30,7 +30,7 @@ before_deploy:
       # the compiled version, but instead we'll use the one from the WDK.
       # The only problem is that the WDK versions aren't signed by MSFT either.
 
-       Copy-Item -Path .\target\bq.exe `
+      Copy-Item -Path .\bootique-tool\target\bq.exe `
         -Destination .\release-test.portable\bq.exe
 
       Set-Location -Path .\release-test.portable\

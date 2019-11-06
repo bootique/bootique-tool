@@ -21,13 +21,13 @@
 
   "files":
   [
-    {"includePattern": "target\/(.*\\.deb)", "uploadPattern": "/$1",
+    {"includePattern": "bootique-tool\/target\/(.*\\.deb)", "uploadPattern": "/$1",
       "matrixParams": {
         "deb_distribution": "vivid",
         "deb_component": "main",
         "deb_architecture": "amd64"}
     },
-    {"includePattern": "target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
+    {"includePattern": "bootique-tool/target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }

@@ -21,8 +21,8 @@
 
   "files":
   [
-    {"includePattern": "target\/(.*\\.rpm)", "uploadPattern": "/$1"},
-    {"includePattern": "target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
+    {"includePattern": "bootique-tool\/target\/(.*\\.rpm)", "uploadPattern": "/$1"},
+    {"includePattern": "bootique-tool\/target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }
