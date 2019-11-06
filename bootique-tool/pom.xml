@@ -198,7 +198,7 @@
                         <version>2.5.3</version>
                         <configuration>
                             <descriptor>src/main/resources/assembly/assemblies.xml</descriptor>
-                            <finalName>${project.name}-${project.version}</finalName>
+                            <finalName>${project.artifactId}-${project.version}</finalName>
                             <appendAssemblyId>false</appendAssemblyId>
                         </configuration>
                         <executions>
