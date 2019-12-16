@@ -21,7 +21,8 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;

@@ -25,9 +25,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-/**
- * @since 4.2
- */
 public class BinaryContentLoaderTest {
 
     @Test

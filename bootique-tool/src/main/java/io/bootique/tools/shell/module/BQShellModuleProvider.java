@@ -22,19 +22,19 @@ package io.bootique.tools.shell.module;
 import java.util.Collection;
 import java.util.Collections;
 
-import com.google.inject.Module;
 import io.bootique.BQCoreModule;
 import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
 
 public class BQShellModuleProvider implements BQModuleProvider {
 
     @Override
-    public Module module() {
+    public BQModule module() {
         return new BQShellModule();
     }
 
     @Override
-    public Collection<Class<? extends Module>> overrides() {
+    public Collection<Class<? extends BQModule>> overrides() {
         return Collections.singleton(BQCoreModule.class);
     }
 }

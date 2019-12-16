@@ -19,20 +19,16 @@
 
 package io.bootique.tools.shell.content;
 
+import javax.inject.Inject;
 import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
 import java.io.FileInputStream;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.Deque;
 import java.util.LinkedList;
 
-import com.google.inject.Inject;
-import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.Shell;
-import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplateException;
 import io.bootique.tools.shell.template.TemplatePipeline;

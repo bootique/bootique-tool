@@ -22,7 +22,8 @@ package io.bootique.tools.shell.content;
 import java.util.ArrayList;
 import java.util.List;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.TemplatePipeline;

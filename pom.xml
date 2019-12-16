@@ -36,8 +36,7 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <bootique.version>1.1</bootique.version>
-        <bootique.di.version>2.0-SNAPSHOT</bootique.di.version>
+        <bootique.version>2.0-SNAPSHOT</bootique.version>
         <jline.version>3.11.0</jline.version>
         <native.image.plugin.version>19.2.0</native.image.plugin.version>
     </properties>
@@ -62,11 +61,6 @@
                 <version>${bootique.version}</version>
                 <type>pom</type>
                 <scope>import</scope>
-            </dependency>
-            <dependency>
-                <groupId>io.bootique.di</groupId>
-                <artifactId>guice-over-bootique-di</artifactId>
-                <version>${bootique.di.version}</version>
             </dependency>
             <dependency>
                 <groupId>org.jline</groupId>

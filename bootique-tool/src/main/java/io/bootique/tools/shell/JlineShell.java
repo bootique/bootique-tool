@@ -21,8 +21,9 @@ package io.bootique.tools.shell;
 
 import java.io.IOException;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.ParsedCommand;
 import org.fusesource.jansi.Ansi;

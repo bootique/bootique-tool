@@ -23,8 +23,9 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import com.google.inject.Inject;
-import com.google.inject.Provider;
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 import io.bootique.command.CommandOutcome;
 
 import static java.util.Collections.*;

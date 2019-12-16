@@ -23,7 +23,8 @@ import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;

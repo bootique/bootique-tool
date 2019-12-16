@@ -21,7 +21,8 @@ package io.bootique.tools.shell.command;
 
 import java.util.ResourceBundle;
 
-import com.google.inject.Inject;
+import javax.inject.Inject;
+
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;

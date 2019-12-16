@@ -27,17 +27,18 @@ import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
 
-import com.google.inject.Binder;
-import com.google.inject.Injector;
-import com.google.inject.Module;
-import com.google.inject.Provides;
-import com.google.inject.Singleton;
+import javax.inject.Singleton;
+
 import io.bootique.BQCoreModule;
 import io.bootique.BootiqueException;
 import io.bootique.annotation.DefaultCommand;
 import io.bootique.command.Command;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
+import io.bootique.di.BQModule;
+import io.bootique.di.Binder;
+import io.bootique.di.Injector;
+import io.bootique.di.Provides;
 import io.bootique.tools.shell.ConfigDir;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.FileConfigService;
@@ -68,7 +69,7 @@ import static org.jline.builtins.Completers.TreeCompleter;
 import static org.jline.builtins.Completers.TreeCompleter.Node;
 import static org.jline.builtins.Completers.TreeCompleter.node;
 
-public class BQShellModule implements Module {
+public class BQShellModule implements BQModule {
 
     public static BQShellModuleExtender extend(Binder binder) {
         return new BQShellModuleExtender(binder);
@@ -92,9 +93,9 @@ public class BQShellModule implements Module {
                 .addHandler("maven-module", MavenModuleHandler.class)
                 .addHandler("gradle-module", GradleModuleHandler.class);
 
-        binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).in(Singleton.class);
-        binder.bind(Shell.class).to(JlineShell.class).in(Singleton.class);
-        binder.bind(ConfigService.class).to(FileConfigService.class).in(Singleton.class);
+        binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
+        binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();
+        binder.bind(ConfigService.class).to(FileConfigService.class).inSingletonScope();
     }
 
     /**
