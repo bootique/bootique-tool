@@ -38,6 +38,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <bootique.version>2.0-SNAPSHOT</bootique.version>
         <jline.version>3.11.0</jline.version>
+        <mustache.java.version>0.9.6</mustache.java.version>
         <native.image.plugin.version>19.2.0</native.image.plugin.version>
     </properties>
 
@@ -76,6 +77,11 @@
                 <groupId>org.jline</groupId>
                 <artifactId>jline-builtins</artifactId>
                 <version>${jline.version}</version>
+            </dependency>
+            <dependency>
+                <groupId>com.github.spullara.mustache.java</groupId>
+                <artifactId>compiler</artifactId>
+                <version>${mustache.java.version}</version>
             </dependency>
         </dependencies>
     </dependencyManagement>

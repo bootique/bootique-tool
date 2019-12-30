@@ -45,6 +45,10 @@ public final class Properties {
         return (T)props.getOrDefault(name, defaultValue);
     }
 
+    public Map<String, Object> asMap() {
+        return props;
+    }
+
     public static class Builder {
 
         private final Map<String, Object> props = new HashMap<>();
