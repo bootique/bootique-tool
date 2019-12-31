@@ -21,6 +21,7 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
 
     public CdCommand() {
         super(CommandMetadata.builder("cd")
+                .description("Change working directory")
                 .addOption(OptionMetadata.builder("path")
                         .description("command name, required")
                         .valueRequired()

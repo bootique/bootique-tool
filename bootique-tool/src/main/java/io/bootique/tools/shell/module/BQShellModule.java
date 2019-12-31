@@ -52,6 +52,7 @@ import io.bootique.tools.shell.command.ErrorCommand;
 import io.bootique.tools.shell.command.ExitCommand;
 import io.bootique.tools.shell.command.HelpCommand;
 import io.bootique.tools.shell.command.NewCommand;
+import io.bootique.tools.shell.command.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import io.bootique.tools.shell.content.GradleAppHandler;
@@ -88,6 +89,7 @@ public class BQShellModule implements BQModule {
                 .addCommand(ExitCommand.class)
                 .addCommand(ConfigCommand.class)
                 .addCommand(CdCommand.class)
+                .addCommand(PwdCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
 
         // new content handlers
@@ -151,7 +153,8 @@ public class BQShellModule implements BQModule {
                         node(ConfigService.BQ_VERSION),
                         node(ConfigService.TOOLCHAIN),
                         node(ConfigService.GROUP_ID)),
-                node("cd", node(new Completers.DirectoriesCompleter(Paths.get(System.getProperty("user.dir")))))
+                node("cd", node(new Completers.DirectoriesCompleter(Paths.get(System.getProperty("user.dir"))))),
+                node("pwd")
         );
     }
 
