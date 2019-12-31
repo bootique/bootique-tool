@@ -19,15 +19,43 @@
 
 package io.bootique.tools.shell;
 
+import java.nio.file.Path;
+
 import io.bootique.tools.shell.command.ParsedCommand;
 
-public interface Shell {
+/**
+ * A simple interactive Shell interface.
+ */
+public interface Shell extends AutoCloseable {
 
+    /**
+     * If message is a throwable, it's printed with stack trace,
+     * all other objects converted to string via {@link Object#toString()} method.
+     *
+     * @param message to print
+     */
     void println(Object message);
 
+    /**
+     * @param prompt to show before input
+     * @return input string
+     */
     String readln(String prompt);
 
+    /**
+     * read and parse command from command line
+     * @return parsed command
+     */
     ParsedCommand readCommand();
 
-    void shutdown();
+    /**
+     * @return current working directory
+     */
+    Path workingDir();
+
+    /**
+     * @param newPath to set as a working dir
+     * @return old working dir
+     */
+    Path changeWorkingDir(Path newPath);
 }

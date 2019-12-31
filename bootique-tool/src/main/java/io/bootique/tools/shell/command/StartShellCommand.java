@@ -53,13 +53,18 @@ public class StartShellCommand extends CommandWithMetadata {
         );
     }
 
+    @SuppressWarnings("ReturnInsideFinallyBlock")
     @Override
     public CommandOutcome run(Cli cli) {
         try {
             shell.println(BANNER_STRING);
             commandLoop();
         } finally {
-            shell.shutdown();
+            try {
+                shell.close();
+            } catch (Exception ex) {
+                return CommandOutcome.failed(-1, ex);
+            }
         }
         return CommandOutcome.succeeded();
     }

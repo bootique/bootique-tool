@@ -1,6 +1,8 @@
 package io.bootique.tools.shell.command;
 
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -32,7 +34,19 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
             return CommandOutcome.failed(-1, "Usage: cd path");
         }
 
-        shell.println("Changing dir to " + args.get(0));
+        String newPath = args.get(0);
+        Path path;
+        if(newPath.startsWith("/")) {
+            path = Paths.get(newPath);
+        } else if(newPath.startsWith("~")) {
+            // TODO: resolve user home dir, and test it natively
+            path = shell.workingDir().resolve(Paths.get(newPath.substring(1)));
+        } else {
+            path = shell.workingDir().resolve(Paths.get(newPath));
+        }
+
+        shell.changeWorkingDir(path);
+        shell.println("@|green   <|@ Changing working dir to @|bold " + path.toString() + "|@");
 
         return CommandOutcome.succeeded();
     }

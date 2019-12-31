@@ -19,7 +19,8 @@
 
 package io.bootique.tools.shell;
 
-import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import javax.inject.Inject;
 import javax.inject.Provider;
@@ -45,8 +46,11 @@ public class JlineShell implements Shell {
 
     private final String prompt;
 
+    private Path workingDir;
+
     public JlineShell() {
         prompt = Ansi.ansi().render("@|green bq> |@").toString();
+        workingDir = Paths.get(System.getProperty("user.dir"));
     }
 
     @Override
@@ -130,10 +134,19 @@ public class JlineShell implements Shell {
     }
 
     @Override
-    public void shutdown() {
-        try {
-            terminal.close();
-        } catch (IOException ignored) {
-        }
+    public Path workingDir() {
+        return workingDir;
+    }
+
+    @Override
+    public Path changeWorkingDir(Path newPath) {
+        Path oldDir = workingDir;
+        workingDir = newPath;
+        return oldDir;
+    }
+
+    @Override
+    public void close() throws Exception {
+        terminal.close();
     }
 }
