@@ -20,6 +20,7 @@
 package io.bootique.tools.shell;
 
 public enum ArtifactType {
+    MULTIMODULE,
     APP,
     MODULE;
 

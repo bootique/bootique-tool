@@ -44,6 +44,7 @@ import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.FileConfigService;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.command.CdCommand;
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.ConfigCommand;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
@@ -57,6 +58,8 @@ import io.bootique.tools.shell.content.GradleAppHandler;
 import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.MavenModuleHandler;
 import io.bootique.tools.shell.content.GradleModuleHandler;
+import io.bootique.tools.shell.content.MavenMultimoduleHandler;
+import org.jline.builtins.Completers;
 import org.jline.reader.Completer;
 import org.jline.reader.History;
 import org.jline.reader.LineReader;
@@ -84,6 +87,7 @@ public class BQShellModule implements BQModule {
                 .addCommand(ErrorCommand.class)
                 .addCommand(ExitCommand.class)
                 .addCommand(ConfigCommand.class)
+                .addCommand(CdCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
 
         // new content handlers
@@ -91,7 +95,8 @@ public class BQShellModule implements BQModule {
                 .addHandler("maven-app", MavenAppHandler.class)
                 .addHandler("gradle-app", GradleAppHandler.class)
                 .addHandler("maven-module", MavenModuleHandler.class)
-                .addHandler("gradle-module", GradleModuleHandler.class);
+                .addHandler("gradle-module", GradleModuleHandler.class)
+                .addHandler("maven-multimodule", MavenMultimoduleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();
@@ -106,7 +111,7 @@ public class BQShellModule implements BQModule {
     CommandManager provideCommandManager(Set<Command> commands,
                                          Injector injector,
                                          @DefaultCommand Command defaultCommand) {
-        return new CommandManagerBuilder(commands)
+        return new CommandManagerBuilder<>(commands)
                 .defaultCommand(Optional.of(defaultCommand))
                 .helpCommand(injector.getInstance(HelpCommand.class))
                 .build();
@@ -130,20 +135,23 @@ public class BQShellModule implements BQModule {
                 .map(cmd -> cmd.getMetadata().getName())
                 .distinct()
                 .toArray(String[]::new);
-        Node appType = node("app", "module");
+        Node appType = node("app", "module", "multimodule");
+
         return new TreeCompleter(
                 node("help", node(cmdNodes)),
                 node("new",
                         node("maven", appType),
                         node("gradle", appType),
                         node("app"),
-                        node("module")),
+                        node("module"),
+                        node("multimodule")),
                 node("exit"),
                 node("config",
                         node(ConfigService.JAVA_VERSION),
                         node(ConfigService.BQ_VERSION),
                         node(ConfigService.TOOLCHAIN),
-                        node(ConfigService.GROUP_ID))
+                        node(ConfigService.GROUP_ID)),
+                node("cd", node(new Completers.DirectoriesCompleter(Paths.get(System.getProperty("user.dir")))))
         );
     }
 

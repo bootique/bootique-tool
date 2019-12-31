@@ -91,7 +91,7 @@ class NewCommandArguments {
             toolchain = Toolchain.byName(shell.readln("Toolchain ([M]aven or [G]radle): "));
         }
         while (type == null) {
-            type = ArtifactType.byName(shell.readln("Artifact type ([A]pp or [M]odule): "));
+            type = ArtifactType.byName(shell.readln("Artifact type ([a]pp, [m]odule or multimodule): "));
         }
         while (name == null) {
             name = shell.readln("Artifact name (group:name:version): ");

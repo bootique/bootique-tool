@@ -25,7 +25,7 @@ import java.util.Collections;
 import io.bootique.command.Command;
 
 /**
- * Marker interface that denotes commands available in interactive shell.
+ * A marker interface that denotes commands available in the interactive shell.
  */
 public interface ShellCommand extends Command {
 
