@@ -46,7 +46,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
     public NewCommand() {
         super(CommandMetadata
                 .builder("new")
-                .description("Create new Bootique artifact.")
+                .description("Create new Bootique artifact")
                 .addOption(OptionMetadata.builder("tool")
                         .description("Toolset to use, supported tools: @|bold maven, gradle|@")
                         .valueOptional())

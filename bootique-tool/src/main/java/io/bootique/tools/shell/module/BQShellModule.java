@@ -44,7 +44,7 @@ import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.FileConfigService;
 import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
-import io.bootique.tools.shell.command.CdCommand;
+import io.bootique.tools.shell.command.terminal.CdCommand;
 import io.bootique.tools.shell.command.CommandLineParser;
 import io.bootique.tools.shell.command.ConfigCommand;
 import io.bootique.tools.shell.command.DefaultCommandLineParser;
@@ -52,7 +52,8 @@ import io.bootique.tools.shell.command.ErrorCommand;
 import io.bootique.tools.shell.command.ExitCommand;
 import io.bootique.tools.shell.command.HelpCommand;
 import io.bootique.tools.shell.command.NewCommand;
-import io.bootique.tools.shell.command.PwdCommand;
+import io.bootique.tools.shell.command.terminal.LsCommand;
+import io.bootique.tools.shell.command.terminal.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import io.bootique.tools.shell.content.GradleAppHandler;
@@ -83,13 +84,16 @@ public class BQShellModule implements BQModule {
     public void configure(Binder binder) {
         // all commands
         BQCoreModule.extend(binder)
+                // bootique CLI
                 .addCommand(StartShellCommand.class)
                 .addCommand(NewCommand.class)
                 .addCommand(ErrorCommand.class)
                 .addCommand(ExitCommand.class)
                 .addCommand(ConfigCommand.class)
+                // terminal-like commands
                 .addCommand(CdCommand.class)
                 .addCommand(PwdCommand.class)
+                .addCommand(LsCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
 
         // new content handlers
@@ -154,7 +158,8 @@ public class BQShellModule implements BQModule {
                         node(ConfigService.TOOLCHAIN),
                         node(ConfigService.GROUP_ID)),
                 node("cd", node(new Completers.DirectoriesCompleter(Paths.get(System.getProperty("user.dir"))))),
-                node("pwd")
+                node("pwd"),
+                node("ls")
         );
     }
 

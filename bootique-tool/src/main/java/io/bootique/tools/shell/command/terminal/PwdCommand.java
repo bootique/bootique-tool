@@ -1,4 +1,4 @@
-package io.bootique.tools.shell.command;
+package io.bootique.tools.shell.command.terminal;
 
 
 import java.nio.file.Path;
@@ -12,6 +12,7 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.command.ShellCommand;
 
 public class PwdCommand extends CommandWithMetadata implements ShellCommand {
 

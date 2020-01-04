@@ -1,4 +1,4 @@
-package io.bootique.tools.shell.command;
+package io.bootique.tools.shell.command.terminal;
 
 
 import java.nio.file.Path;
@@ -13,6 +13,7 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.command.ShellCommand;
 
 public class CdCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -38,12 +39,12 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
         String newPath = args.get(0);
         Path path;
         if(newPath.startsWith("/")) {
-            path = Paths.get(newPath);
+            path = Paths.get(newPath).toAbsolutePath().normalize();
         } else if(newPath.startsWith("~")) {
             // TODO: resolve user home dir, and test it natively
-            path = shell.workingDir().resolve(Paths.get(newPath.substring(1)));
+            path = shell.workingDir().resolve(Paths.get(newPath.substring(1))).toAbsolutePath().normalize();
         } else {
-            path = shell.workingDir().resolve(Paths.get(newPath));
+            path = shell.workingDir().resolve(Paths.get(newPath)).toAbsolutePath().normalize();
         }
 
         shell.changeWorkingDir(path);
