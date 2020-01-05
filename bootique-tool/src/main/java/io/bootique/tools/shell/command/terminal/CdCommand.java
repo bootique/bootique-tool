@@ -1,6 +1,7 @@
 package io.bootique.tools.shell.command.terminal;
 
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
@@ -47,6 +48,10 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
             path = shell.workingDir().resolve(Paths.get(fullPath)).toAbsolutePath().normalize();
         } else {
             path = shell.workingDir().resolve(Paths.get(newPath)).toAbsolutePath().normalize();
+        }
+
+        if(!Files.exists(path)) {
+            return CommandOutcome.failed(-1, "No such directory");
         }
 
         shell.changeWorkingDir(path);

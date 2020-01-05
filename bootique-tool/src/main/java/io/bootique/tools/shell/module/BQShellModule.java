@@ -61,7 +61,6 @@ import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.MavenModuleHandler;
 import io.bootique.tools.shell.content.GradleModuleHandler;
 import io.bootique.tools.shell.content.MavenMultimoduleHandler;
-import org.jline.builtins.Completers;
 import org.jline.reader.Completer;
 import org.jline.reader.History;
 import org.jline.reader.LineReader;
@@ -107,6 +106,7 @@ public class BQShellModule implements BQModule {
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();
         binder.bind(ConfigService.class).to(FileConfigService.class).inSingletonScope();
+        binder.bind(PathCompleter.class).inSingletonScope();
     }
 
     /**
@@ -136,7 +136,7 @@ public class BQShellModule implements BQModule {
 
     @Provides
     @Singleton
-    Completer createCompleter(Map<String, ShellCommand> shellCommands) {
+    Completer createCompleter(Map<String, ShellCommand> shellCommands, PathCompleter pathCompleter) {
         Object[] cmdNodes = shellCommands.values().stream()
                 .map(cmd -> cmd.getMetadata().getName())
                 .distinct()
@@ -157,7 +157,7 @@ public class BQShellModule implements BQModule {
                         node(ConfigService.BQ_VERSION),
                         node(ConfigService.TOOLCHAIN),
                         node(ConfigService.GROUP_ID)),
-                node("cd", node(new Completers.DirectoriesCompleter(Paths.get(System.getProperty("user.dir"))))),
+                node("cd", node(pathCompleter)),
                 node("pwd"),
                 node("ls")
         );
