@@ -41,8 +41,10 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
         if(newPath.startsWith("/")) {
             path = Paths.get(newPath).toAbsolutePath().normalize();
         } else if(newPath.startsWith("~")) {
-            // TODO: resolve user home dir, and test it natively
-            path = shell.workingDir().resolve(Paths.get(newPath.substring(1))).toAbsolutePath().normalize();
+            // TODO: test this in native build
+            String homePath = System.getProperty("user.home");
+            String fullPath = homePath + newPath.substring(1);
+            path = shell.workingDir().resolve(Paths.get(fullPath)).toAbsolutePath().normalize();
         } else {
             path = shell.workingDir().resolve(Paths.get(newPath)).toAbsolutePath().normalize();
         }
