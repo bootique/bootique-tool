@@ -178,6 +178,24 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"io.bootique.tools.shell.command.terminal.CdCommand",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.terminal.LsCommand",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.terminal.PwdCommand",
+  "allDeclaredFields":true,
+  "allPublicMethods":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.tools.shell.content.ContentHandler",
   "allDeclaredFields":true
 },
@@ -202,6 +220,11 @@
   "allDeclaredConstructors":true
 },
 {
+  "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
   "name":"io.bootique.tools.shell.content.NameParser",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
@@ -209,6 +232,10 @@
 {
   "name":"io.bootique.tools.shell.module.BQShellModule",
   "allDeclaredMethods":true
+},
+{
+  "name":"io.bootique.tools.shell.module.PathCompleter",
+  "allDeclaredConstructors":true
 },
 {
   "name":"java.io.File",

@@ -57,6 +57,8 @@
     {"pattern":"templates/maven-module/src/main/java/example/MyModule.java"},
     {"pattern":"templates/maven-module/src/main/java/example/MyModuleProvider.java"},
     {"pattern":"templates/maven-module/src/main/resources/META-INF/services/io.bootique.BQModuleProvider"},
-    {"pattern":"templates/maven-module/src/test/java/example/MyModuleProviderTest.java"}
+    {"pattern":"templates/maven-module/src/test/java/example/MyModuleProviderTest.java"},
+    {"pattern":"templates/maven-multimodule/gitignore"},
+    {"pattern":"templates/maven-multimodule/pom.xml"}
   ]
 }

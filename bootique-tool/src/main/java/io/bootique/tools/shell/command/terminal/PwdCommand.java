@@ -1,16 +1,11 @@
 package io.bootique.tools.shell.command.terminal;
 
-
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.List;
 import javax.inject.Inject;
 
 import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
-import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.ShellCommand;
 
