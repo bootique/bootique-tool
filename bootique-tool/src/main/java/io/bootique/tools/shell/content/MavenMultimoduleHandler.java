@@ -36,7 +36,7 @@ public class MavenMultimoduleHandler extends ContentHandler {
     public CommandOutcome handle(NameComponents name) {
         log("Generating new Maven project @|bold " + name.getName() + "|@ ...");
 
-        Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(name.getName());
+        Path outputRoot = shell.workingDir().resolve(name.getName());
         if(Files.exists(outputRoot)) {
             return CommandOutcome.failed(-1, "Directory '" + name.getName() + "' already exists");
         }

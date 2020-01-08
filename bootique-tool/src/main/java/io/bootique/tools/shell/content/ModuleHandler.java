@@ -72,8 +72,7 @@ public abstract class ModuleHandler extends ContentHandler {
 
     @Override
     public CommandOutcome handle(NameComponents components) {
-        Path path = Paths.get(System.getProperty("user.dir"));
-        Path parentFile = path.resolve(getBuildFileName());
+        Path parentFile = shell.workingDir().resolve(getBuildFileName());
 
         if(!Files.exists(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
@@ -86,7 +85,7 @@ public abstract class ModuleHandler extends ContentHandler {
 
         log("Generating new " + getBuildSystemName() + " module @|bold " + components.getName() + "|@ ...");
 
-        Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());
+        Path outputRoot = shell.workingDir().resolve(components.getName());
         if(Files.exists(outputRoot)) {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }

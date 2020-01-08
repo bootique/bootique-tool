@@ -71,7 +71,7 @@ public abstract class AppHandler extends ContentHandler {
     public CommandOutcome handle(NameComponents components) {
         log("Generating new " + getBuildSystemName() + " project @|bold " + components.getName() + "|@ ...");
 
-        Path outputRoot = Paths.get(System.getProperty("user.dir")).resolve(components.getName());
+        Path outputRoot = shell.workingDir().resolve(components.getName());
         if(Files.exists(outputRoot)) {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
