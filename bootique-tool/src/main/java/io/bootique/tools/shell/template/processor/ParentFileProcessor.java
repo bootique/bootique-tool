@@ -21,6 +21,7 @@ package io.bootique.tools.shell.template.processor;
 
 import java.io.IOException;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
@@ -50,7 +51,7 @@ public abstract class ParentFileProcessor implements TemplateProcessor {
 
     protected Charset tryToDetectCharset(byte[] content) {
         if(content == null || content.length < 2) {
-            return Charset.forName("UTF-8");
+            return StandardCharsets.UTF_8;
         }
         // 1. Check BOM
         //        UTF-8 	    EF BB BF
@@ -61,19 +62,19 @@ public abstract class ParentFileProcessor implements TemplateProcessor {
         switch (content[0] & 0xFF) {
             case 0xEF:
                 if((content[1] & 0xFF) == 0xBB && (content[2] & 0xFF) == 0xBF) {
-                    return Charset.forName("UTF-8");
+                    return StandardCharsets.UTF_8;
                 }
                 break;
             case 0xFE:
                 if((content[1] & 0xFF) == 0xFF) {
-                    return Charset.forName("UTF-16BE");
+                    return StandardCharsets.UTF_16BE;
                 }
             case 0xFF:
                 if((content[1] & 0xFF) == 0xFE) {
                     if(content[2] == 0x00 && content[3] == 0x00) {
                         return Charset.forName("UTF-32LE");
                     } else {
-                        return Charset.forName("UTF-16LE");
+                        return StandardCharsets.UTF_16LE;
                     }
                 }
             case 0x00:

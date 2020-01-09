@@ -21,9 +21,6 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 
-import javax.inject.Inject;
-
-import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MavenProcessor;
@@ -31,9 +28,6 @@ import io.bootique.tools.shell.template.processor.MavenProcessor;
 public class MavenAppHandler extends AppHandler {
 
     private static final String BUILD_SYSTEM = "Maven";
-
-    @Inject
-    private ConfigService configService;
 
     public MavenAppHandler() {
         super();
@@ -50,16 +44,8 @@ public class MavenAppHandler extends AppHandler {
     }
 
     @Override
-    protected Properties getProperties(NameComponents components, Path outputRoot) {
-        return Properties.builder()
-                .with("java.package", components.getJavaPackage())
-                .with("project.version", components.getVersion())
-                .with("project.name", components.getName())
-                .with("module.name", "Application")
-                .with("input.path", "templates/maven-app/")
-                .with("output.path", outputRoot)
-                .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
-                .with("java.version", configService.get(ConfigService.JAVA_VERSION, "11"))
-                .build();
+    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
+        return super.getPropertiesBuilder(components, outputRoot)
+                .with("module.name", "Application");
     }
 }

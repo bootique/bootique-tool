@@ -94,13 +94,13 @@ public abstract class ModuleHandler extends ContentHandler {
         pipelines.forEach(p -> p.process(properties));
 
         // additional pipeline for parent build file. can't keep it static as location of parent build file is unknown before execution
-        TemplatePipeline parentPipeLine = TemplatePipeline.builder()
+        TemplatePipeline parentPipeline = TemplatePipeline.builder()
                 .source(parentFile.toString())
                 .processor(getTemplateProcessorForParent())
                 .loader(new BinaryFileLoader())
-                .saver((tpl, props) -> {}) // everything is done by processor, to protect content as much as possible
+                .saver((tpl, props) -> {}) // everything is done by the processor, to protect content as much as possible
                 .build();
-        parentPipeLine.process(properties);
+        parentPipeline.process(properties);
 
         log("done.");
         return CommandOutcome.succeeded();

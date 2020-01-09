@@ -45,6 +45,18 @@ public class NameComponents {
         return version;
     }
 
+    public NameComponents withName(String name) {
+        return new NameComponents(javaPackage, name, version);
+    }
+
+    public NameComponents withJavaPackage(String javaPackage) {
+        return new NameComponents(javaPackage, name, version);
+    }
+
+    public NameComponents withVersion(String version) {
+        return new NameComponents(javaPackage, name, version);
+    }
+
     @Override
     public String toString() {
         return javaPackage + ':' + name + ':' + version;

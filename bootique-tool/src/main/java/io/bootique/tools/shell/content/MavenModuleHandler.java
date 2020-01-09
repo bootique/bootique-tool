@@ -134,19 +134,19 @@ public class MavenModuleHandler extends ModuleHandler {
         }
 
         @Override
-        public void characters (char chars[], int start, int length) {
+        public void characters (char[] chars, int start, int length) {
             switch (currentPath()) {
                 case "project.groupId":
                     String javaPackage = new String(chars, start, length);
-                    components = new NameComponents(javaPackage, components.getName(), components.getVersion());
+                    components = components.withJavaPackage(javaPackage);
                     break;
                 case "project.version":
                     String version = new String(chars, start, length);
-                    components = new NameComponents(components.getJavaPackage(), components.getName(), version);
+                    components = components.withVersion(version);
                     break;
                 case "project.artifactId":
                     String name = new String(chars, start, length);
-                    components = new NameComponents(components.getJavaPackage(), name, components.getVersion());
+                    components = components.withName(name);
                     break;
             }
         }

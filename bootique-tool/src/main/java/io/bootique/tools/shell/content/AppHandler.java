@@ -21,9 +21,11 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
@@ -32,6 +34,9 @@ import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 
 public abstract class AppHandler extends ContentHandler {
+
+    @Inject
+    private ConfigService configService;
 
     public AppHandler() {
         // java sources
@@ -65,7 +70,16 @@ public abstract class AppHandler extends ContentHandler {
 
     protected abstract String getBuildSystemName();
 
-    protected abstract Properties getProperties(NameComponents components, Path outputRoot);
+    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
+        return Properties.builder()
+                .with("java.package", components.getJavaPackage())
+                .with("project.version", components.getVersion())
+                .with("project.name", components.getName())
+                .with("input.path", "templates/maven-app/")
+                .with("output.path", outputRoot)
+                .with("bq.version", configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION))
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION));
+    }
 
     @Override
     public CommandOutcome handle(NameComponents components) {
@@ -76,7 +90,7 @@ public abstract class AppHandler extends ContentHandler {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
-        Properties properties = getProperties(components, outputRoot);
+        Properties properties = getPropertiesBuilder(components, outputRoot).build();
         pipelines.forEach(p -> p.process(properties));
 
         log("done.");
