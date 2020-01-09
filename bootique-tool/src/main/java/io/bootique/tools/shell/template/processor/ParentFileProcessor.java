@@ -19,13 +19,8 @@
 
 package io.bootique.tools.shell.template.processor;
 
-import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardCopyOption;
-import java.nio.file.StandardOpenOption;
 
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.BinaryTemplate;
@@ -90,39 +85,14 @@ public abstract class ParentFileProcessor implements TemplateProcessor {
     public Template process(Template template, Properties properties) {
         BinaryTemplate binaryTemplate = (BinaryTemplate)template;
         validateContent(binaryTemplate);
-        // backup parent build file
-        Path backup = template.getPath()
-                .getParent()
-                .resolve(template
-                        .getPath()
-                        .getFileName().toString() + ".bq-backup");
 
+        byte[] content = binaryTemplate.getBinaryContent();
+        Charset charset = detectCharset(content);
         try {
-            Files.copy(template.getPath(), backup, StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-        } catch (IOException ex) {
-            throw new TemplateException("Unable to create parent build file backup", ex);
-        }
-
-        try {
-            byte[] content = binaryTemplate.getBinaryContent();
-            Charset charset = detectCharset(content);
             byte[] modifiedContent = processParentFile(content, charset, properties);
-            Files.write(template.getPath(), modifiedContent, StandardOpenOption.WRITE, StandardOpenOption.TRUNCATE_EXISTING, StandardOpenOption.SYNC);
+            return binaryTemplate.withContent(modifiedContent);
         } catch (Exception ex) {
-            // rollback parent build file
-            try {
-                Files.move(backup, template.getPath(), StandardCopyOption.ATOMIC_MOVE ,StandardCopyOption.COPY_ATTRIBUTES, StandardCopyOption.REPLACE_EXISTING);
-            } catch (IOException ex2) {
-                ex.addSuppressed(ex2);
-            }
-            throw new TemplateException("Unable to update parent build file", ex);
-        } finally {
-            try {
-                Files.delete(backup);
-            } catch (IOException ex3) {
-                // todo: should log this...
-            }
+            throw new TemplateException("Unable to process parent build file", ex);
         }
-        return template;
     }
 }

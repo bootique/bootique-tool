@@ -24,10 +24,13 @@ import java.nio.file.Path;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MavenProcessor;
+import io.bootique.tools.shell.template.processor.ParentPomProcessor;
+import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
 public class MavenAppHandler extends AppHandler {
 
     private static final String BUILD_SYSTEM = "Maven";
+    private static final String BUILD_FILE = "pom.xml";
 
     public MavenAppHandler() {
         super();
@@ -41,6 +44,16 @@ public class MavenAppHandler extends AppHandler {
     @Override
     protected String getBuildSystemName() {
         return BUILD_SYSTEM;
+    }
+
+    @Override
+    protected TemplateProcessor getTemplateProcessorForParent() {
+        return new ParentPomProcessor(shell);
+    }
+
+    @Override
+    protected String getBuildFileName() {
+        return BUILD_FILE;
     }
 
     @Override

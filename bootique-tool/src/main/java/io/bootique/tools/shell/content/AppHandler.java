@@ -26,12 +26,15 @@ import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
+import io.bootique.tools.shell.template.SafeBinaryContentSaver;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
+import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
 public abstract class AppHandler extends ContentHandler {
 
@@ -70,6 +73,10 @@ public abstract class AppHandler extends ContentHandler {
 
     protected abstract String getBuildSystemName();
 
+    protected abstract TemplateProcessor getTemplateProcessorForParent();
+
+    protected abstract String getBuildFileName();
+
     protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
@@ -84,6 +91,14 @@ public abstract class AppHandler extends ContentHandler {
     public CommandOutcome handle(NameComponents components) {
         log("Generating new " + getBuildSystemName() + " project @|bold " + components.getName() + "|@ ...");
 
+        Path parentFile = shell.workingDir().resolve(getBuildFileName());
+        if(Files.exists(parentFile)) {
+            if(!Files.isWritable(parentFile)) {
+                return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
+                        " file is not writable.");
+            }
+        }
+
         Path outputRoot = shell.workingDir().resolve(components.getName());
         if(Files.exists(outputRoot)) {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
@@ -91,6 +106,18 @@ public abstract class AppHandler extends ContentHandler {
 
         Properties properties = getPropertiesBuilder(components, outputRoot).build();
         pipelines.forEach(p -> p.process(properties));
+
+        if(Files.exists(parentFile)) {
+            // an additional pipeline for parent build file.
+            // can't keep it static as a location of parent build file is unknown before execution
+            TemplatePipeline parentPipeline = TemplatePipeline.builder()
+                    .source(parentFile.toString())
+                    .processor(getTemplateProcessorForParent())
+                    .loader(new BinaryFileLoader())
+                    .saver(new SafeBinaryContentSaver())
+                    .build();
+            parentPipeline.process(properties);
+        }
 
         log("done.");
         return CommandOutcome.succeeded();

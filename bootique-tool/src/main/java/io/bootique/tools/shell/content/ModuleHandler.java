@@ -26,6 +26,7 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
+import io.bootique.tools.shell.template.SafeBinaryContentSaver;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
@@ -83,7 +84,7 @@ public abstract class ModuleHandler extends ContentHandler {
 
         if(!Files.exists(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                    " file not found. Can add module only in existing project.");
+                    " file not found. Can add a module only in existing project.");
         }
         if(!Files.isWritable(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
@@ -100,12 +101,13 @@ public abstract class ModuleHandler extends ContentHandler {
         Properties properties = buildProperties(components, outputRoot, parentFile).build();
         pipelines.forEach(p -> p.process(properties));
 
-        // additional pipeline for parent build file. can't keep it static as location of parent build file is unknown before execution
+        // an additional pipeline for parent build file.
+        // can't keep it static as a location of parent build file is unknown before execution
         TemplatePipeline parentPipeline = TemplatePipeline.builder()
                 .source(parentFile.toString())
                 .processor(getTemplateProcessorForParent())
                 .loader(new BinaryFileLoader())
-                .saver((tpl, props) -> {}) // everything is done by the processor, to protect content as much as possible
+                .saver(new SafeBinaryContentSaver())
                 .build();
         parentPipeline.process(properties);
 
