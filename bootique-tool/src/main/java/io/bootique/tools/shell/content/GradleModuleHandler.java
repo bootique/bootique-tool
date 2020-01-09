@@ -29,7 +29,6 @@ import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
-import io.bootique.tools.shell.util.Utils;
 
 public class GradleModuleHandler extends ModuleHandler {
 
@@ -57,15 +56,9 @@ public class GradleModuleHandler extends ModuleHandler {
     }
 
     @Override
-    protected Properties buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
-        return Properties.builder()
-                .with("java.package", components.getJavaPackage())
-                .with("project.version", components.getVersion())
-                .with("project.name", components.getName())
-                .with("module.name", Utils.moduleNameFromArtifactName(components.getName()))
-                .with("input.path", "templates/gradle-module/")
-                .with("output.path", outputRoot)
-                .build();
+    protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+        return super.buildProperties(components, outputRoot, parentFile)
+                .with("input.path", "templates/gradle-module/");
     }
 
     @Override

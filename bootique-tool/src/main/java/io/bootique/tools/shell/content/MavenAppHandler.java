@@ -46,6 +46,7 @@ public class MavenAppHandler extends AppHandler {
     @Override
     protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
         return super.getPropertiesBuilder(components, outputRoot)
-                .with("module.name", "Application");
+                .with("module.name", "Application")
+                .with("input.path", "templates/maven-app/");
     }
 }

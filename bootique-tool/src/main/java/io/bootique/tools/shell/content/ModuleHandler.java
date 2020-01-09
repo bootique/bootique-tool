@@ -21,7 +21,6 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.template.BinaryFileLoader;
@@ -34,6 +33,7 @@ import io.bootique.tools.shell.template.processor.BqModuleNameProcessor;
 import io.bootique.tools.shell.template.processor.BqModulePathProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
+import io.bootique.tools.shell.util.Utils;
 
 public abstract class ModuleHandler extends ContentHandler {
 
@@ -66,7 +66,14 @@ public abstract class ModuleHandler extends ContentHandler {
 
     protected abstract String getBuildSystemName();
 
-    protected abstract Properties buildProperties(NameComponents components, Path outputRoot, Path parentFile);
+    protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+        return Properties.builder()
+                .with("java.package", components.getJavaPackage())
+                .with("project.version", components.getVersion())
+                .with("project.name", components.getName())
+                .with("module.name", Utils.moduleNameFromArtifactName(components.getName()))
+                .with("output.path", outputRoot);
+    }
 
     protected abstract TemplateProcessor getTemplateProcessorForParent();
 
@@ -90,7 +97,7 @@ public abstract class ModuleHandler extends ContentHandler {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
-        Properties properties = buildProperties(components, outputRoot, parentFile);
+        Properties properties = buildProperties(components, outputRoot, parentFile).build();
         pipelines.forEach(p -> p.process(properties));
 
         // additional pipeline for parent build file. can't keep it static as location of parent build file is unknown before execution

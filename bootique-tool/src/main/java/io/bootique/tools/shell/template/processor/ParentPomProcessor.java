@@ -96,7 +96,7 @@ public class ParentPomProcessor extends ParentFileProcessor {
     protected void validateContent(BinaryTemplate template) {
         Pattern pattern = Pattern.compile("<packaging>\\s*pom\\s*</packaging>");
         if(!pattern.matcher(template.getContent()).matches()) {
-            shell.println("@|red   <|@ " + "Try to add module to application project");
+            shell.println("@|red   <|@ @|bold Warning!|@ Trying to add a module to the application project.\n\tParent pom.xml should use @|bold pom|@ packaging.");
         }
     }
 

@@ -75,7 +75,6 @@ public abstract class AppHandler extends ContentHandler {
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
-                .with("input.path", "templates/maven-app/")
                 .with("output.path", outputRoot)
                 .with("bq.version", configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION))
                 .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION));

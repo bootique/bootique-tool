@@ -35,7 +35,6 @@ import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MavenModuleProcessor;
 import io.bootique.tools.shell.template.processor.ParentPomProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
-import io.bootique.tools.shell.util.Utils;
 import org.xml.sax.Attributes;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
@@ -70,20 +69,14 @@ public class MavenModuleHandler extends ModuleHandler {
     }
 
     @Override
-    protected Properties buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+    protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         NameComponents parentNameComponents = getParentPomNameComponents(parentFile);
 
-        return Properties.builder()
-                .with("java.package", components.getJavaPackage())
-                .with("project.version", components.getVersion())
-                .with("project.name", components.getName())
-                .with("module.name", Utils.moduleNameFromArtifactName(components.getName()))
+        return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/maven-module/")
-                .with("output.path", outputRoot)
                 .with("parent.group", parentNameComponents.getJavaPackage())
                 .with("parent.name", parentNameComponents.getName())
-                .with("parent.version", parentNameComponents.getVersion())
-                .build();
+                .with("parent.version", parentNameComponents.getVersion());
     }
 
     @Override

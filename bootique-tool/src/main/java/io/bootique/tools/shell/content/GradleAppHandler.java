@@ -76,6 +76,7 @@ public class GradleAppHandler extends AppHandler {
                 : components.getJavaPackage() + ".Application";
 
         return super.getPropertiesBuilder(components, outputRoot)
+                .with("input.path", "templates/gradle-app/")
                 .with("project.mainClass", mainClass);
     }
 }
