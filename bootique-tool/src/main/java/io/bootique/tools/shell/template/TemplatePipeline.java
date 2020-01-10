@@ -21,29 +21,30 @@ package io.bootique.tools.shell.template;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.Predicate;
 
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
 public class TemplatePipeline {
 
     private final List<String> sources;
-
     private final TemplateProcessor processor;
-
     private final TemplateLoader loader;
-
     private final TemplateSaver saver;
+    private final Predicate<Properties> filter;
 
     private TemplatePipeline(List<String> sources, TemplateProcessor processor,
-                             TemplateLoader loader, TemplateSaver saver) {
+                             TemplateLoader loader, TemplateSaver saver, Predicate<Properties> filter) {
         this.sources = sources;
         this.processor = processor;
         this.loader = loader;
         this.saver = saver;
+        this.filter = filter;
     }
 
     public void process(Properties properties) {
         sources.stream()
+                .filter(source -> filter.test(properties))
                 .map(source -> loader.load(source, properties))
                 .map(template -> processor.process(template, properties))
                 .forEach(template -> saver.save(template, properties));
@@ -59,6 +60,7 @@ public class TemplatePipeline {
         private TemplateProcessor processor;
         private TemplateLoader loader;
         private TemplateSaver saver;
+        private Predicate<Properties> filter;
 
         private Builder() {
             sources = new ArrayList<>();
@@ -89,6 +91,11 @@ public class TemplatePipeline {
             return this;
         }
 
+        public Builder filter(Predicate<Properties> filter) {
+            this.filter = filter;
+            return this;
+        }
+
         public TemplatePipeline build() {
             if(sources.isEmpty()) {
                 throw new TemplateException("No sources set for template pipeline");
@@ -102,7 +109,10 @@ public class TemplatePipeline {
             if(saver == null) {
                 saver = new TemplateFileSaver();
             }
-            return new TemplatePipeline(sources, processor, loader, saver);
+            if(filter == null) {
+                filter = properties -> true;
+            }
+            return new TemplatePipeline(sources, processor, loader, saver, filter);
         }
 
     }

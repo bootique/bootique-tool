@@ -66,6 +66,7 @@ public abstract class AppHandler extends ContentHandler {
 
         // .gitignore
         addPipeline(TemplatePipeline.builder()
+                .filter(properties -> !properties.get("parent", false))
                 .source("gitignore")
                 .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
         );
