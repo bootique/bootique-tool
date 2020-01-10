@@ -42,6 +42,8 @@ import org.xml.sax.helpers.DefaultHandler;
 
 public class ParentPomProcessor extends ParentFileProcessor {
 
+    private final Pattern pomPackagingPattern = Pattern.compile("<packaging>\\s*pom\\s*</packaging>");
+
     public ParentPomProcessor(Shell shell) {
         super(shell);
     }
@@ -93,10 +95,13 @@ public class ParentPomProcessor extends ParentFileProcessor {
     }
 
     @Override
-    protected void validateContent(BinaryTemplate template) {
-        Pattern pattern = Pattern.compile("<packaging>\\s*pom\\s*</packaging>");
-        if(!pattern.matcher(template.getContent()).matches()) {
-            shell.println("@|red   <|@ @|bold Warning!|@ Trying to add a module to the application project.\n\tParent pom.xml should use @|bold pom|@ packaging.");
+    protected void validateContent(BinaryTemplate template, Charset charset) {
+        String content = new String(template.getBinaryContent(), charset);
+        if(!pomPackagingPattern.matcher(content).find()) {
+            shell.println(
+                    "@|red   <|@ @|bold Warning!|@ Trying to add a module to the application project.\n" +
+                    "@|red   <|@ Parent pom.xml should use @|bold pom|@ packaging."
+            );
         }
     }
 

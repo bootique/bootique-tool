@@ -66,10 +66,19 @@ public abstract class AppHandler extends ContentHandler {
 
         // .gitignore
         addPipeline(TemplatePipeline.builder()
-                .filter(properties -> !properties.get("parent", false))
+                .filter((s, properties) -> !properties.get("parent", false))
                 .source("gitignore")
                 .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
         );
+
+        // parent build file
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> properties.get("parent", false))
+                .source(p -> p.get("parent.path", ""))
+                // lazy processor as shell is not set by the creation time
+                .processor((t, p) -> getTemplateProcessorForParent().process(t, p))
+                .loader(new BinaryFileLoader())
+                .saver(new SafeBinaryContentSaver()));
     }
 
     protected abstract String getBuildSystemName();
@@ -112,20 +121,9 @@ public abstract class AppHandler extends ContentHandler {
 
         Properties properties = getPropertiesBuilder(components, outputRoot, parentFileExists ? parentFile : null)
                 .with("parent", parentFileExists)
+                .with("parent.path", parentFile.toString())
                 .build();
         pipelines.forEach(p -> p.process(properties));
-
-        if(parentFileExists) {
-            // an additional pipeline for parent build file.
-            // can't keep it static as a location of parent build file is unknown before execution
-            TemplatePipeline.builder()
-                    .source(parentFile.toString())
-                    .processor(getTemplateProcessorForParent())
-                    .loader(new BinaryFileLoader())
-                    .saver(new SafeBinaryContentSaver())
-                    .build()
-                    .process(properties);
-        }
 
         log("done.");
         return CommandOutcome.succeeded();

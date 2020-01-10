@@ -40,14 +40,14 @@ public class GradleAppHandler extends AppHandler {
         super();
         // gradle wrapper
         addPipeline(TemplatePipeline.builder()
-                .filter(properties -> !properties.get("parent", false))
+                .filter((s, properties) -> !properties.get("parent", false))
                 .source("gradle/wrapper/gradle-wrapper.jar")
                 .source("gradle/wrapper/gradle-wrapper.properties")
                 .loader(new BinaryResourceLoader())
                 .saver(new BinaryContentSaver())
         );
         addPipeline(TemplatePipeline.builder()
-                .filter(properties -> !properties.get("parent", false))
+                .filter((s, properties) -> !properties.get("parent", false))
                 .source("gradlew")
                 .source("gradlew.bat")
                 .loader(new BinaryResourceLoader())
@@ -67,7 +67,7 @@ public class GradleAppHandler extends AppHandler {
                 .processor(new GradleProcessor())
         );
         addPipeline(TemplatePipeline.builder()
-                .filter(properties -> !properties.get("parent", false))
+                .filter((s, properties) -> !properties.get("parent", false))
                 .source("settings.gradle")
                 .processor(new GradleProcessor())
         );

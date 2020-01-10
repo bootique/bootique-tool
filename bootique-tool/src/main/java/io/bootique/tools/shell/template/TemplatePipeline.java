@@ -21,20 +21,21 @@ package io.bootique.tools.shell.template;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.function.Predicate;
+import java.util.function.BiPredicate;
+import java.util.function.Function;
 
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
 public class TemplatePipeline {
 
-    private final List<String> sources;
+    private final List<Function<Properties, String>> sources;
     private final TemplateProcessor processor;
     private final TemplateLoader loader;
     private final TemplateSaver saver;
-    private final Predicate<Properties> filter;
+    private final BiPredicate<String, Properties> filter;
 
-    private TemplatePipeline(List<String> sources, TemplateProcessor processor,
-                             TemplateLoader loader, TemplateSaver saver, Predicate<Properties> filter) {
+    private TemplatePipeline(List<Function<Properties, String>> sources, TemplateProcessor processor,
+                             TemplateLoader loader, TemplateSaver saver, BiPredicate<String, Properties> filter) {
         this.sources = sources;
         this.processor = processor;
         this.loader = loader;
@@ -44,7 +45,8 @@ public class TemplatePipeline {
 
     public void process(Properties properties) {
         sources.stream()
-                .filter(source -> filter.test(properties))
+                .map(source -> source.apply(properties))
+                .filter(source -> filter.test(source, properties))
                 .map(source -> loader.load(source, properties))
                 .map(template -> processor.process(template, properties))
                 .forEach(template -> saver.save(template, properties));
@@ -56,17 +58,22 @@ public class TemplatePipeline {
 
     public static class Builder {
 
-        private List<String> sources;
+        private List<Function<Properties, String>> sources;
         private TemplateProcessor processor;
         private TemplateLoader loader;
         private TemplateSaver saver;
-        private Predicate<Properties> filter;
+        private BiPredicate<String, Properties> filter;
 
         private Builder() {
             sources = new ArrayList<>();
         }
 
         public Builder source(String source) {
+            sources.add(properties -> source);
+            return this;
+        }
+
+        public Builder source(Function<Properties, String> source) {
             sources.add(source);
             return this;
         }
@@ -91,7 +98,7 @@ public class TemplatePipeline {
             return this;
         }
 
-        public Builder filter(Predicate<Properties> filter) {
+        public Builder filter(BiPredicate<String, Properties> filter) {
             this.filter = filter;
             return this;
         }
@@ -110,7 +117,7 @@ public class TemplatePipeline {
                 saver = new TemplateFileSaver();
             }
             if(filter == null) {
-                filter = properties -> true;
+                filter = (s, properties) -> true;
             }
             return new TemplatePipeline(sources, processor, loader, saver, filter);
         }

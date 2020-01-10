@@ -42,7 +42,7 @@ public abstract class ParentFileProcessor implements TemplateProcessor {
                                                 Charset charset,
                                                 Properties properties) throws Exception;
 
-    protected abstract void validateContent(BinaryTemplate template);
+    protected abstract void validateContent(BinaryTemplate template, Charset charset);
 
     protected Charset tryToDetectCharset(byte[] content) {
         if(content == null || content.length < 2) {
@@ -84,10 +84,11 @@ public abstract class ParentFileProcessor implements TemplateProcessor {
     @Override
     public Template process(Template template, Properties properties) {
         BinaryTemplate binaryTemplate = (BinaryTemplate)template;
-        validateContent(binaryTemplate);
-
         byte[] content = binaryTemplate.getBinaryContent();
         Charset charset = detectCharset(content);
+
+        validateContent(binaryTemplate, charset);
+
         try {
             byte[] modifiedContent = processParentFile(content, charset, properties);
             return binaryTemplate.withContent(modifiedContent);

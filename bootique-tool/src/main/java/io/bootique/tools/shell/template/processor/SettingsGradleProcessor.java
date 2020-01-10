@@ -55,7 +55,7 @@ public class SettingsGradleProcessor extends ParentFileProcessor {
     }
 
     @Override
-    protected void validateContent(BinaryTemplate template) {
+    protected void validateContent(BinaryTemplate template, Charset charset) {
         // do nothing
     }
 }
