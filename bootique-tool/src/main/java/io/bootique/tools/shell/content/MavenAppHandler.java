@@ -23,7 +23,7 @@ import java.nio.file.Path;
 
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.MavenProcessor;
+import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.ParentPomProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
@@ -32,12 +32,15 @@ public class MavenAppHandler extends AppHandler {
     private static final String BUILD_SYSTEM = "Maven";
     private static final String BUILD_FILE = "pom.xml";
 
+    private final PomParser parentPomParser;
+
     public MavenAppHandler() {
         super();
+        this.parentPomParser = new PomParser();
         // pom.xml
         addPipeline(TemplatePipeline.builder()
                 .source("pom.xml")
-                .processor(new MavenProcessor())
+                .processor(new MustacheTemplateProcessor())
         );
     }
 
@@ -57,9 +60,17 @@ public class MavenAppHandler extends AppHandler {
     }
 
     @Override
-    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
-        return super.getPropertiesBuilder(components, outputRoot)
+    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot, Path parentFile) {
+        Properties.Builder builder = super.getPropertiesBuilder(components, outputRoot, parentFile)
                 .with("module.name", "Application")
                 .with("input.path", "templates/maven-app/");
+        if(parentFile != null) {
+            NameComponents parentNameComponents = parentPomParser.parse(parentFile);
+            builder.with("parent.group", parentNameComponents.getJavaPackage())
+                    .with("parent.name", parentNameComponents.getName())
+                    .with("parent.version", parentNameComponents.getVersion());
+        }
+
+        return builder;
     }
 }

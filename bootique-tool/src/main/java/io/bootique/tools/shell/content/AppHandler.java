@@ -77,14 +77,20 @@ public abstract class AppHandler extends ContentHandler {
 
     protected abstract String getBuildFileName();
 
-    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot) {
+    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot, Path parentFile) {
+        String mainClass = components.getJavaPackage().isEmpty()
+                ? "Application"
+                : components.getJavaPackage() + ".Application";
+
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
+                .with("project.mainClass", mainClass)
                 .with("output.path", outputRoot)
                 .with("bq.version", configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION))
                 .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION));
+
     }
 
     @Override
@@ -92,11 +98,10 @@ public abstract class AppHandler extends ContentHandler {
         log("Generating new " + getBuildSystemName() + " project @|bold " + components.getName() + "|@ ...");
 
         Path parentFile = shell.workingDir().resolve(getBuildFileName());
-        if(Files.exists(parentFile)) {
-            if(!Files.isWritable(parentFile)) {
-                return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                        " file is not writable.");
-            }
+        boolean parentFileExists = Files.exists(parentFile);
+        if(parentFileExists && !Files.isWritable(parentFile)) {
+            return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
+                    " file is not writable.");
         }
 
         Path outputRoot = shell.workingDir().resolve(components.getName());
@@ -104,19 +109,21 @@ public abstract class AppHandler extends ContentHandler {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
-        Properties properties = getPropertiesBuilder(components, outputRoot).build();
+        Properties properties = getPropertiesBuilder(components, outputRoot, parentFileExists ? parentFile : null)
+                .with("parent", parentFileExists)
+                .build();
         pipelines.forEach(p -> p.process(properties));
 
-        if(Files.exists(parentFile)) {
+        if(parentFileExists) {
             // an additional pipeline for parent build file.
             // can't keep it static as a location of parent build file is unknown before execution
-            TemplatePipeline parentPipeline = TemplatePipeline.builder()
+            TemplatePipeline.builder()
                     .source(parentFile.toString())
                     .processor(getTemplateProcessorForParent())
                     .loader(new BinaryFileLoader())
                     .saver(new SafeBinaryContentSaver())
-                    .build();
-            parentPipeline.process(properties);
+                    .build()
+                    .process(properties);
         }
 
         log("done.");
