@@ -1,0 +1,22 @@
+allprojects {
+    repositories {
+        jcenter()
+        mavenCentral()
+    }
+
+    group '{{java.package}}'
+    version '{{project.version}}'
+}
+
+subprojects {
+    apply plugin: 'java'
+
+    sourceCompatibility = '{{java.version}}'
+    targetCompatibility = '{{java.version}}'
+
+    dependencies {
+        implementation platform('io.bootique.bom:bootique-bom:{{bq.version}}')
+        testImplementation 'junit:junit:4.12'
+    }
+}
+

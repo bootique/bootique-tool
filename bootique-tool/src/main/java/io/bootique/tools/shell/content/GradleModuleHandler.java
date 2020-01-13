@@ -26,7 +26,6 @@ import javax.inject.Inject;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
@@ -40,9 +39,7 @@ public class GradleModuleHandler extends ModuleHandler {
 
     public GradleModuleHandler() {
         super();
-        addPipeline(TemplatePipeline.builder()
-                .source("build.gradle")
-                .processor(new GradleProcessor()));
+        addPipeline(TemplatePipeline.builder().source("build.gradle"));
     }
 
     @Override

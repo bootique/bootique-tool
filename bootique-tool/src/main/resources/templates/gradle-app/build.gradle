@@ -1,23 +1,33 @@
 plugins {
+    {{^parent}}
     id 'java'
+    {{/parent}}
     id 'application'
 }
 
-group 'org.example'
-version '1.0-SNAPSHOT'
+{{^parent}}
+group '{{java.package}}'
+version '{{project.version}}'
 
 repositories {
     mavenCentral()
     jcenter()
 }
 
-mainClassName = 'example.Application'
-sourceCompatibility = '11'
-targetCompatibility = '11'
+{{/parent}}
+mainClassName = '{{project.mainClass}}'
+{{^parent}}
+sourceCompatibility = '{{java.version}}'
+targetCompatibility = '{{java.version}}'
+{{/parent}}
 
 dependencies {
-    implementation platform('io.bootique.bom:bootique-bom:1.0')
+    {{^parent}}
+    implementation platform('io.bootique.bom:bootique-bom:{{bq.version}}')
+    {{/parent}}
     implementation 'io.bootique:bootique'
     testImplementation 'io.bootique:bootique-test'
+    {{^parent}}
     testImplementation 'junit:junit:4.12'
+    {{/parent}}
 }

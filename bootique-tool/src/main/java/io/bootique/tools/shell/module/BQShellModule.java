@@ -57,6 +57,7 @@ import io.bootique.tools.shell.command.terminal.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import io.bootique.tools.shell.content.GradleAppHandler;
+import io.bootique.tools.shell.content.GradleMultimoduleHandler;
 import io.bootique.tools.shell.content.MavenAppHandler;
 import io.bootique.tools.shell.content.MavenModuleHandler;
 import io.bootique.tools.shell.content.GradleModuleHandler;
@@ -101,7 +102,8 @@ public class BQShellModule implements BQModule {
                 .addHandler("gradle-app", GradleAppHandler.class)
                 .addHandler("maven-module", MavenModuleHandler.class)
                 .addHandler("gradle-module", GradleModuleHandler.class)
-                .addHandler("maven-multimodule", MavenMultimoduleHandler.class);
+                .addHandler("maven-multimodule", MavenMultimoduleHandler.class)
+                .addHandler("gradle-multimodule", GradleMultimoduleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();

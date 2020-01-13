@@ -84,7 +84,7 @@ public abstract class ModuleHandler extends ContentHandler {
 
         if(!Files.exists(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                    " file not found. Can add a module only in existing project.");
+                    " file not found. Can add a new module only to the existing project.");
         }
         if(!Files.isWritable(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +

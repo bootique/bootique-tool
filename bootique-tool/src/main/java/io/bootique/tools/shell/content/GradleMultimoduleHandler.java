@@ -19,10 +19,15 @@
 
 package io.bootique.tools.shell.content;
 
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 
+import javax.inject.Inject;
+
+import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -32,23 +37,22 @@ import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public class GradleAppHandler extends AppHandler {
+public class GradleMultimoduleHandler extends ContentHandler {
 
-    private static final String BUILD_SYSTEM = "Gradle";
-    private static final String BUILD_FILE = "settings.gradle";
+    private final ConfigService configService;
 
-    public GradleAppHandler() {
-        super();
+    @Inject
+    public GradleMultimoduleHandler(ConfigService configService) {
+        this.configService = configService;
+
         // gradle wrapper
         addPipeline(TemplatePipeline.builder()
-                .filter((s, properties) -> !properties.get("parent", false))
                 .source("gradle/wrapper/gradle-wrapper.jar")
                 .source("gradle/wrapper/gradle-wrapper.properties")
                 .loader(new BinaryResourceLoader())
                 .saver(new BinaryContentSaver())
         );
         addPipeline(TemplatePipeline.builder()
-                .filter((s, properties) -> !properties.get("parent", false))
                 .source("gradlew")
                 .source("gradlew.bat")
                 .loader(new BinaryResourceLoader())
@@ -62,36 +66,43 @@ public class GradleAppHandler extends AppHandler {
                 )))
         );
 
+        // .gitignore
+        addPipeline(TemplatePipeline.builder()
+                .source("gitignore")
+                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
+        );
+
         // gradle scripts
         addPipeline(TemplatePipeline.builder()
                 .source("build.gradle")
+                .source("settings.gradle")
                 .processor(new MustacheTemplateProcessor())
         );
-        addPipeline(TemplatePipeline.builder()
-                .filter((s, properties) -> !properties.get("parent", false))
-                .source("settings.gradle")
-                .processor(new GradleProcessor())
-        );
     }
 
     @Override
-    protected String getBuildSystemName() {
-        return BUILD_SYSTEM;
-    }
+    public CommandOutcome handle(NameComponents name) {
+        log("Generating new Gradle project @|bold " + name.getName() + "|@ ...");
 
-    @Override
-    protected String getBuildFileName() {
-        return BUILD_FILE;
-    }
+        Path outputRoot = shell.workingDir().resolve(name.getName());
+        if(Files.exists(outputRoot)) {
+            return CommandOutcome.failed(-1, "Directory '" + name.getName() + "' already exists");
+        }
 
-    @Override
-    protected TemplateProcessor getTemplateProcessorForParent() {
-        return new SettingsGradleProcessor(shell);
-    }
+        Properties properties = Properties.builder()
+                .with("java.package", name.getJavaPackage())
+                .with("project.version", name.getVersion())
+                .with("project.name", name.getName())
+                .with("input.path", "templates/gradle-multimodule/")
+                .with("output.path", outputRoot)
+                .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION, "11"))
+                .build();
 
-    @Override
-    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot, Path parentFile) {
-        return super.getPropertiesBuilder(components, outputRoot, parentFile)
-                .with("input.path", "templates/gradle-app/");
+        pipelines.forEach(p -> p.process(properties));
+
+        log("done.");
+
+        return CommandOutcome.succeeded();
     }
 }

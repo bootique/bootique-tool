@@ -59,6 +59,13 @@
     {"pattern":"templates/maven-module/src/main/resources/META-INF/services/io.bootique.BQModuleProvider"},
     {"pattern":"templates/maven-module/src/test/java/example/MyModuleProviderTest.java"},
     {"pattern":"templates/maven-multimodule/gitignore"},
-    {"pattern":"templates/maven-multimodule/pom.xml"}
+    {"pattern":"templates/maven-multimodule/pom.xml"},
+    {"pattern":"templates/gradle-multimodule/build.gradle"},
+    {"pattern":"templates/gradle-multimodule/gitignore"},
+    {"pattern":"templates/gradle-multimodule/gradle/wrapper/gradle-wrapper.jar"},
+    {"pattern":"templates/gradle-multimodule/gradle/wrapper/gradle-wrapper.properties"},
+    {"pattern":"templates/gradle-multimodule/gradlew"},
+    {"pattern":"templates/gradle-multimodule/gradlew.bat"},
+    {"pattern":"templates/gradle-multimodule/settings.gradle"}
   ]
 }

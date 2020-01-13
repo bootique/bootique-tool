@@ -200,6 +200,10 @@
   "allDeclaredFields":true
 },
 {
+  "name":"io.bootique.tools.shell.content.AppHandler",
+  "allDeclaredFields":true
+},
+{
   "name":"io.bootique.tools.shell.content.GradleAppHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
@@ -221,6 +225,11 @@
 },
 {
   "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
+  "allDeclaredFields":true,
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.content.GradleMultimoduleHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true
 },
