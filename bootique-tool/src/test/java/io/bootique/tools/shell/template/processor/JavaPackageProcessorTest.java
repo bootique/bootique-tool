@@ -48,7 +48,6 @@ public class JavaPackageProcessorTest {
         Template template = new Template(Paths.get("example", "MyClass.java"), "package example;");
         Template result = processor.process(template, properties);
 
-        assertEquals("package io.bootique.test;", result.getContent());
         assertEquals(Paths.get("/io", "bootique", "test", "MyClass.java"), result.getPath());
     }
 
@@ -61,7 +60,7 @@ public class JavaPackageProcessorTest {
                 "    private JavaPackageProcessor processor;" +
                 "}";
 
-        String expected = "package io.bootique.test.service;\n" +
+        String expected = "package example.service;\n" +
                 "import io.bootique.test.service.io.MyClass;" +
                 "import io.bootique.test.service.MyClass;" +
                 "public class JavaPackageProcessorTest {\n" +

@@ -34,6 +34,7 @@ import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
+import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
 public abstract class AppHandler extends ContentHandler {
@@ -49,6 +50,7 @@ public abstract class AppHandler extends ContentHandler {
                 .source("src/test/java/example/ApplicationTest.java")
                 .source("src/test/java/example/ApplicationModuleProviderTest.java")
                 .processor(new JavaPackageProcessor())
+                .processor(new MustacheTemplateProcessor())
         );
 
         // folders
@@ -92,13 +94,16 @@ public abstract class AppHandler extends ContentHandler {
                 ? "Application"
                 : components.getJavaPackage() + ".Application";
 
+        String bqVersion = configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION);
+
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
                 .with("project.mainClass", mainClass)
                 .with("output.path", outputRoot)
-                .with("bq.version", configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION))
+                .with("bq.version", bqVersion)
+                .with("bq.di", bqVersion.startsWith("2."))
                 .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION));
 
     }

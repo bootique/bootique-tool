@@ -1,4 +1,4 @@
-package example;
+package {{java.package}};
 
 import io.bootique.test.junit.BQTestFactory;
 import org.junit.Rule;
@@ -13,7 +13,7 @@ public class ApplicationTest {
 
     @Test
     public void testApplication() {
-        assertTrue(testFactory.app().run().isSuccess());
+        assertTrue(testFactory.app().autoLoadModules().run().isSuccess());
     }
 
 } 

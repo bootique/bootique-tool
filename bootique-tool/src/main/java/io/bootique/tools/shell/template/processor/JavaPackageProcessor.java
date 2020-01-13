@@ -39,13 +39,8 @@ public class JavaPackageProcessor implements TemplateProcessor {
 
     String processContent(Template template, Properties properties) {
         String content = template.getContent();
-        content = replacePackageDeclaration(content, properties);
         content = replaceImportDeclaration(content, properties);
         return content;
-    }
-
-    String replacePackageDeclaration(String content, Properties properties) {
-        return content.replaceAll("\\bpackage " + TEMPLATE_PACKAGE, "package " + properties.get("java.package"));
     }
 
     String replaceImportDeclaration(String content, Properties properties) {

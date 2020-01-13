@@ -1,12 +1,18 @@
-package example;
+package {{java.package}};
 
+{{#bq.di}}
+import io.bootique.BQModuleProvider;
+import io.bootique.di.BQModule;
+{{/bq.di}}
+{{^bq.di}}
 import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
+{{/bq.di}}
 
 public class MyModuleProvider implements BQModuleProvider {
 
     @Override
-    public Module module() {
+    public {{#bq.di}}BQ{{/bq.di}}Module module() {
         return new MyModule();
     }
 

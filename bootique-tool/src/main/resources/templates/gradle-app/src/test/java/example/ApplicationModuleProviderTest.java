@@ -1,4 +1,4 @@
-package example;
+package {{java.package}};
 
 import io.bootique.test.junit.BQModuleProviderChecker;
 import org.junit.Test;

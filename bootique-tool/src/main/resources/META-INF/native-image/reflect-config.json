@@ -204,6 +204,10 @@
   "allDeclaredFields":true
 },
 {
+  "name":"io.bootique.tools.shell.content.ModuleHandler",
+  "allDeclaredFields":true
+},
+{
   "name":"io.bootique.tools.shell.content.GradleAppHandler",
   "allDeclaredFields":true,
   "allDeclaredConstructors":true

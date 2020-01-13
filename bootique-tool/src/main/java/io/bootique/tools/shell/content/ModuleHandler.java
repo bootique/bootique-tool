@@ -22,7 +22,10 @@ package io.bootique.tools.shell.content;
 import java.nio.file.Files;
 import java.nio.file.Path;
 
+import javax.inject.Inject;
+
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -33,10 +36,14 @@ import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.BqModuleNameProcessor;
 import io.bootique.tools.shell.template.processor.BqModulePathProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
+import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 import io.bootique.tools.shell.util.Utils;
 
 public abstract class ModuleHandler extends ContentHandler {
+
+    @Inject
+    private ConfigService configService;
 
     public ModuleHandler() {
         // java sources
@@ -47,6 +54,7 @@ public abstract class ModuleHandler extends ContentHandler {
                 .processor(new JavaPackageProcessor())
                 .processor(new BqModulePathProcessor())
                 .processor(new BqModuleNameProcessor())
+                .processor(new MustacheTemplateProcessor())
         );
 
         // folders
@@ -68,11 +76,13 @@ public abstract class ModuleHandler extends ContentHandler {
     protected abstract String getBuildSystemName();
 
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+        String bqVersion = configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION);
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
                 .with("module.name", Utils.moduleNameFromArtifactName(components.getName()))
+                .with("bq.di", bqVersion.startsWith("2."))
                 .with("output.path", outputRoot);
     }
 

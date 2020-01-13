@@ -1,4 +1,4 @@
-package example;
+package {{java.package}};
 
 import io.bootique.test.junit.BQTestFactory;
 import org.junit.Rule;
