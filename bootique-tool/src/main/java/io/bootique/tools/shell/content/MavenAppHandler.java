@@ -21,6 +21,8 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 
+import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
@@ -41,6 +43,13 @@ public class MavenAppHandler extends AppHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("pom.xml")
                 .processor(new MustacheTemplateProcessor())
+        );
+        // assembly.xml
+        addPipeline(TemplatePipeline.builder()
+                .source("src/main/resources/assembly.xml")
+                .filter((name, properties) ->
+                        Packaging.byName(properties.get(ConfigService.PACKAGING, DEFAULT_PACKAGING))
+                                .equals(Packaging.ASSEMBLY))
         );
     }
 

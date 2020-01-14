@@ -158,7 +158,8 @@ public class BQShellModule implements BQModule {
                         node(ConfigService.JAVA_VERSION),
                         node(ConfigService.BQ_VERSION),
                         node(ConfigService.TOOLCHAIN),
-                        node(ConfigService.GROUP_ID)),
+                        node(ConfigService.GROUP_ID),
+                        node(ConfigService.PACKAGING)),
                 node("cd", node(pathCompleter)),
                 node("pwd"),
                 node("ls")

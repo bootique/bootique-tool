@@ -28,10 +28,15 @@
         <main.class>{{project.mainClass}}</main.class>
 
         <compiler.plugin.version>3.8.1</compiler.plugin.version>
-        <jar.plugin.version>3.1.2</jar.plugin.version>
-        <shade.plugin.version>3.2.1</shade.plugin.version>
+        <jar.plugin.version>3.2.0</jar.plugin.version>
         <surefire.plugin.version>2.22.2</surefire.plugin.version>
         <failsafe.plugin.version>2.22.2</failsafe.plugin.version>
+        {{#packaging.shade}}
+        <shade.plugin.version>3.2.1</shade.plugin.version>
+        {{/packaging.shade}}
+        {{#packaging.assembly}}
+        <assembly.plugin.version>3.2.0</assembly.plugin.version>
+        {{/packaging.assembly}}
     </properties>
     {{^parent}}
 
@@ -96,6 +101,7 @@
                     </execution>
                 </executions>
             </plugin>
+            {{#packaging.shade}}
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
@@ -143,6 +149,60 @@
                     </archive>
                 </configuration>
             </plugin>
+            {{/packaging.shade}}
+            {{#packaging.assembly}}
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>${jar.plugin.version}</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>${main.class}</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                            <useUniqueVersions>false</useUniqueVersions>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+            <plugin>
+                <artifactId>maven-dependency-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>prepare-package</phase>
+                        <goals>
+                            <goal>copy-dependencies</goal>
+                        </goals>
+                    </execution>
+                </executions>
+                <configuration>
+                    <outputDirectory>${project.build.directory}/lib</outputDirectory>
+                </configuration>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>${assembly.plugin.version}</version>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptors>
+                        <descriptor>src/main/resources/assembly.xml</descriptor>
+                    </descriptors>
+                    <tarLongFileMode>posix</tarLongFileMode>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            {{/packaging.assembly}}
         </plugins>
     </build>
 </project>

@@ -25,6 +25,7 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
+import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.TemplatePipeline;
 
@@ -32,6 +33,7 @@ public abstract class ContentHandler {
 
     protected static final String DEFAULT_JAVA_VERSION = "11";
     protected static final String DEFAULT_BQ_VERSION = "1.1";
+    protected static final String DEFAULT_PACKAGING = Packaging.ASSEMBLY.name();
 
     @Inject
     protected Shell shell;

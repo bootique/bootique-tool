@@ -25,6 +25,7 @@ public interface ConfigService {
     String JAVA_VERSION = "java-version";
     String BQ_VERSION = "bq-version";
     String GROUP_ID = "group-id";
+    String PACKAGING = "packaging";
 
     void set(String param, String value);
 

@@ -36,6 +36,7 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Formatter;
+import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.Toolchain;
 
@@ -54,6 +55,7 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         params.put(ConfigService.JAVA_VERSION, "Java version to use.");
         params.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
         params.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
+        params.put(ConfigService.PACKAGING,    "App packaging method. Can be either Shade or Assembly.");
         SUPPORTED_PARAMS = Collections.unmodifiableMap(params);
     }
 
@@ -127,6 +129,16 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                                                 .map(s -> s.name().toLowerCase())
                                                 .collect(Collectors.joining(", ")));
 
+            }
+        }
+
+        if(ConfigService.PACKAGING.equals(param)) {
+            Packaging packaging = Packaging.byName(value);
+            if(packaging == null) {
+                return CommandOutcome.failed(-1, "Unsupported packaging @|bold " + value
+                        + "|@. Supported: " + Arrays.stream(Packaging.values())
+                        .map(s -> s.name().toLowerCase())
+                        .collect(Collectors.joining(", ")));
             }
         }
 

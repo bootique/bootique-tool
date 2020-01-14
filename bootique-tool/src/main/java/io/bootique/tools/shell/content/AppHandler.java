@@ -26,6 +26,7 @@ import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -95,6 +96,7 @@ public abstract class AppHandler extends ContentHandler {
                 : components.getJavaPackage() + ".Application";
 
         String bqVersion = configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION);
+        Packaging packaging = Packaging.byName(configService.get(ConfigService.PACKAGING, DEFAULT_PACKAGING));
 
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
@@ -104,7 +106,9 @@ public abstract class AppHandler extends ContentHandler {
                 .with("output.path", outputRoot)
                 .with("bq.version", bqVersion)
                 .with("bq.di", bqVersion.startsWith("2."))
-                .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION));
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION, DEFAULT_JAVA_VERSION))
+                .with("packaging.shade", packaging == Packaging.SHADE)
+                .with("packaging.assembly", packaging == Packaging.ASSEMBLY);
 
     }
 
