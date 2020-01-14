@@ -49,6 +49,7 @@
     {"pattern":"templates/maven-app/pom.xml"},
     {"pattern":"templates/maven-app/src/main/java/example/Application.java"},
     {"pattern":"templates/maven-app/src/main/java/example/ApplicationModuleProvider.java"},
+    {"pattern":"templates/maven-app/src/main/resources/assembly.xml"},
     {"pattern":"templates/maven-app/src/main/resources/META-INF/services/io.bootique.BQModuleProvider"},
     {"pattern":"templates/maven-app/src/test/java/example/ApplicationTest.java"},
     {"pattern":"templates/maven-app/src/test/java/example/ApplicationModuleProviderTest.java"},
