@@ -47,8 +47,8 @@ public class MavenMultimoduleHandler extends ContentHandler {
                 .with("project.name", name.getName())
                 .with("input.path", "templates/maven-multimodule/")
                 .with("output.path", outputRoot)
-                .with("bq.version", configService.get(ConfigService.BQ_VERSION, "1.0"))
-                .with("java.version", configService.get(ConfigService.JAVA_VERSION, "11"))
+                .with("bq.version", configService.get(ConfigService.BQ_VERSION))
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION))
                 .build();
 
         pipelines.forEach(p -> p.process(properties));

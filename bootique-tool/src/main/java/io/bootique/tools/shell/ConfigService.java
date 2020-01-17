@@ -19,18 +19,25 @@
 
 package io.bootique.tools.shell;
 
+import java.util.function.Function;
+
 public interface ConfigService {
 
-    String TOOLCHAIN = "toolchain";
-    String JAVA_VERSION = "java-version";
-    String BQ_VERSION = "bq-version";
-    String GROUP_ID = "group-id";
-    String PACKAGING = "packaging";
+    ConfigParameter<Toolchain> TOOLCHAIN
+            = new ConfigParameter<>("toolchain", Toolchain.MAVEN, Toolchain::name, Toolchain::byName);
+    ConfigParameter<String> JAVA_VERSION
+            = new ConfigParameter<>("java-version", "11", Function.identity(), Function.identity());
+    ConfigParameter<String> BQ_VERSION
+            = new ConfigParameter<>("bq-version", "1.1", Function.identity(), Function.identity());
+    ConfigParameter<String> GROUP_ID
+            = new ConfigParameter<>("group-id", null, Function.identity(), Function.identity());
+    ConfigParameter<Packaging> PACKAGING
+            = new ConfigParameter<>("packaging", Packaging.ASSEMBLY, Packaging::name, Packaging::byName);
 
-    void set(String param, String value);
+    ConfigParameter<?> paramByName(String name);
 
-    String get(String param);
+    <T> void set(ConfigParameter<T> param, T value);
 
-    String get(String param, String defaultValue);
+    <T> T get(ConfigParameter<T> param);
 
 }

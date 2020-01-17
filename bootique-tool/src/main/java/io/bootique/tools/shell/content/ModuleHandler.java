@@ -76,7 +76,7 @@ public abstract class ModuleHandler extends ContentHandler {
     protected abstract String getBuildSystemName();
 
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
-        String bqVersion = configService.get(ConfigService.BQ_VERSION, DEFAULT_BQ_VERSION);
+        String bqVersion = configService.get(ConfigService.BQ_VERSION);
         return Properties.builder()
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())

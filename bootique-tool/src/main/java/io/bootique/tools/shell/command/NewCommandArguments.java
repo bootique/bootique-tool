@@ -52,7 +52,7 @@ class NewCommandArguments {
     }
 
     static NewCommandArguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
-        Toolchain defaultToolchain = Toolchain.byName(configService.get(ConfigService.TOOLCHAIN));
+        Toolchain defaultToolchain = configService.get(ConfigService.TOOLCHAIN);
         Toolchain toolchain = null;
         ArtifactType type = null;
         String name = null;

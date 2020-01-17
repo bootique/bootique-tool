@@ -40,10 +40,14 @@ public class StartShellCommand extends CommandWithMetadata {
             "@|green |  _ \\ / _ \\ / _ \\| __| |/ _` | | | |/ _ \\|@ | |/ _ \\\n" +
             "@|green | |_) | (_) | (_) | |_| | (_| | |_| |  __/|@_| | (_) |\n" +
             "@|green |____/ \\___/ \\___/ \\__|_|\\__, |\\__,_|\\___|@(_)_|\\___/\n" +
-            "@|green                             |_||@          shell @|cyan v" + bundle.getString("bq.build.version") + "|@\n";
+            "@|green                             |_||@          shell @|bold v" + bundle.getString("bq.build.version") + "|@\n\n" +
+            "Type @|bold help|@ to see all available commands. Use @|bold config|@ command to change defaults.";
 
     @Inject
     private Shell shell;
+
+    @Inject
+    private ConfigCommand configCommand;
 
     public StartShellCommand() {
         super(CommandMetadata
@@ -58,6 +62,7 @@ public class StartShellCommand extends CommandWithMetadata {
     public CommandOutcome run(Cli cli) {
         try {
             shell.println(BANNER_STRING);
+            configCommand.run(cli);
             commandLoop();
         } finally {
             try {

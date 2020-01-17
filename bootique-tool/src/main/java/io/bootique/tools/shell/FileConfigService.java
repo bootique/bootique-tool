@@ -37,7 +37,7 @@ public class FileConfigService implements ConfigService {
 
     private final Path configFile;
 
-    private final Map<String, String> storage;
+    private final Map<String, Object> storage;
 
     @Inject
     public FileConfigService(@ConfigDir Path configDirectory) {
@@ -61,13 +61,31 @@ public class FileConfigService implements ConfigService {
         storage.put(values[0], values[1]);
     }
 
-    private String createLine(Map.Entry<String, String> entry) {
+    private String createLine(Map.Entry<String, ?> entry) {
         return entry.getKey() + '=' + entry.getValue();
     }
 
     @Override
-    public void set(String param, String value) {
-        storage.put(param, value);
+    public ConfigParameter<?> paramByName(String name) {
+        switch (name.toLowerCase()) {
+            case "toolchain":
+                return TOOLCHAIN;
+            case "java-version":
+                return JAVA_VERSION;
+            case "bq-version":
+                return BQ_VERSION;
+            case "group-id":
+                return GROUP_ID;
+            case "packaging":
+                return PACKAGING;
+        }
+        return null;
+    }
+
+    @Override
+    public <T> void set(ConfigParameter<T> param, T value) {
+        String strValue = param.valueToString(value);
+        storage.put(param.getName(), strValue);
         List<String> lines = storage.entrySet().stream()
                 .map(this::createLine)
                 .collect(Collectors.toList());
@@ -80,13 +98,10 @@ public class FileConfigService implements ConfigService {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public String get(String param) {
-        return storage.get(param);
+    public <T> T get(ConfigParameter<T> param) {
+        return (T)storage.getOrDefault(param.getName(), param.getDefaultValue());
     }
 
-    @Override
-    public String get(String param, String defaultValue) {
-        return storage.getOrDefault(param, defaultValue);
-    }
 }

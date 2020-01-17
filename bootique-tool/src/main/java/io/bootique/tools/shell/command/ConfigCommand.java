@@ -20,10 +20,10 @@
 package io.bootique.tools.shell.command;
 
 import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 import javax.inject.Inject;
@@ -34,6 +34,7 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
+import io.bootique.tools.shell.ConfigParameter;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Formatter;
 import io.bootique.tools.shell.Packaging;
@@ -48,21 +49,20 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
     @Inject
     private Shell shell;
 
-    private static final Map<String, String> SUPPORTED_PARAMS;
+    private static final Map<ConfigParameter<?>, String> SUPPORTED_PARAMS;
     static {
-        Map<String, String> params = new HashMap<>();
-        params.put(ConfigService.TOOLCHAIN,    "Default toolchain to use. Can be either Maven or Gradle.");
-        params.put(ConfigService.JAVA_VERSION, "Java version to use.");
-        params.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
-        params.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
-        params.put(ConfigService.PACKAGING,    "App packaging method. Can be either Shade or Assembly.");
-        SUPPORTED_PARAMS = Collections.unmodifiableMap(params);
+        SUPPORTED_PARAMS = new TreeMap<>(Comparator.comparing(ConfigParameter::getName));
+        SUPPORTED_PARAMS.put(ConfigService.TOOLCHAIN,    "Default toolchain to use. Can be either Maven or Gradle.");
+        SUPPORTED_PARAMS.put(ConfigService.JAVA_VERSION, "Java version to use.");
+        SUPPORTED_PARAMS.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
+        SUPPORTED_PARAMS.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
+        SUPPORTED_PARAMS.put(ConfigService.PACKAGING,    "App packaging method. Can be either Shade or Assembly.");
     }
 
     public ConfigCommand() {
         super(CommandMetadata.builder("config")
                 .description("Read or set global config. Available parameters: "
-                        + String.join(", ", SUPPORTED_PARAMS.keySet()))
+                        + SUPPORTED_PARAMS.keySet().stream().map(ConfigParameter::getName).collect(Collectors.joining(", ")))
                 .addOption(OptionMetadata.builder("param")
                         .description("parameter name, optional")
                         .valueOptional()
@@ -74,6 +74,7 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                 .build());
     }
 
+    @SuppressWarnings({"unchecked", "rawtypes"})
     @Override
     public CommandOutcome run(Cli cli) {
 
@@ -88,18 +89,21 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         }
 
         ConfigService configService = this.configServiceProvider.get();
+        ConfigParameter<?> parameter = param == null
+                ? null
+                : configService.paramByName(param);
 
-        if(param != null) {
+        if(parameter != null) {
             if(value != null) {
                 // set
-                CommandOutcome outcome = validate(param, value);
+                CommandOutcome outcome = validate(parameter, value);
                 if(!outcome.isSuccess()) {
                     return outcome;
                 }
-                configService.set(param, value);
+                configService.set((ConfigParameter)parameter, parameter.valueFromString(value));
             } else {
                 // get
-                value = configService.get(param);
+                value = configService.get(parameter).toString();
                 if(value == null) {
                     shell.println("No value is set for @|bold " + param + "|@");
                 } else {
@@ -108,17 +112,20 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
             }
         } else {
             // get all
-            shell.println("@|underline Available configuration options:|@");
+            shell.println("Available configuration options:");
             SUPPORTED_PARAMS.forEach(this::formatConfigParameter);
         }
 
         return CommandOutcome.succeeded();
     }
 
-    private CommandOutcome validate(String param, String value) {
+    private CommandOutcome validate(ConfigParameter<?> param, String value) {
         if(!SUPPORTED_PARAMS.containsKey(param)) {
+            String possibleParameters = SUPPORTED_PARAMS.keySet().stream()
+                    .map(ConfigParameter::getName)
+                    .collect(Collectors.joining(", "));
             return CommandOutcome.failed(-1, "Unsupported option @|bold " + param
-                    + "|@. Available parameters: " + String.join(", ", SUPPORTED_PARAMS.keySet()));
+                    + "|@. Available parameters: " + possibleParameters);
         }
 
         if(ConfigService.TOOLCHAIN.equals(param)) {
@@ -145,12 +152,17 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         return CommandOutcome.succeeded();
     }
 
-    private void formatConfigParameter(String param, String description) {
+    private void formatConfigParameter(ConfigParameter<?> param, String description) {
         ConfigService configService = this.configServiceProvider.get();
-        String value = configService.get(param);
+        Object value = configService.get(param);
+        if(value == null) {
+            value = "none";
+        }
 
-        shell.println("  @|cyan " + Formatter.alignByColumns(param) + "|@"
+        shell.println(
+                "  @|green " + Formatter.alignByColumns(param.getName()) + "|@"
                 + description
-                + (value == null ? "" : " Current value: @|bold " + value + " |@"));
+                + " Current value: @|bold " + value + " |@"
+        );
     }
 }

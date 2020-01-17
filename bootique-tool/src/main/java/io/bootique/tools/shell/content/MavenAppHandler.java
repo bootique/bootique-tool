@@ -48,8 +48,7 @@ public class MavenAppHandler extends AppHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/resources/assembly.xml")
                 .filter((name, properties) ->
-                        Packaging.byName(properties.get(ConfigService.PACKAGING, DEFAULT_PACKAGING))
-                                .equals(Packaging.ASSEMBLY))
+                        properties.get(ConfigService.PACKAGING.getName()).equals(Packaging.ASSEMBLY))
         );
     }
 
