@@ -83,6 +83,6 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
     @Override
     public Completers.TreeCompleter.Node getCompleter() {
-        return node("new", node("app"), node("module"), node("multimodule"));
+        return node("new", node("app"), node("lib"), node("parent"));
     }
 }

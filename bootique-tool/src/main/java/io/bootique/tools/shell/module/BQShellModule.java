@@ -100,10 +100,10 @@ public class BQShellModule implements BQModule {
         extend(binder)
                 .addHandler("maven-app", MavenAppHandler.class)
                 .addHandler("gradle-app", GradleAppHandler.class)
-                .addHandler("maven-module", MavenModuleHandler.class)
-                .addHandler("gradle-module", GradleModuleHandler.class)
-                .addHandler("maven-multimodule", MavenMultimoduleHandler.class)
-                .addHandler("gradle-multimodule", GradleMultimoduleHandler.class);
+                .addHandler("maven-lib", MavenModuleHandler.class)
+                .addHandler("gradle-lib", GradleModuleHandler.class)
+                .addHandler("maven-parent", MavenMultimoduleHandler.class)
+                .addHandler("gradle-parent", GradleMultimoduleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();

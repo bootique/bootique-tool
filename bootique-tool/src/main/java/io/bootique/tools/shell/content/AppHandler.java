@@ -107,6 +107,7 @@ public abstract class AppHandler extends ContentHandler {
                 .with("bq.version", bqVersion)
                 .with("bq.di", bqVersion.startsWith("2."))
                 .with("java.version", configService.get(ConfigService.JAVA_VERSION))
+                .with(ConfigService.PACKAGING.getName(), packaging)
                 .with("packaging.shade", packaging == Packaging.SHADE)
                 .with("packaging.assembly", packaging == Packaging.ASSEMBLY);
 

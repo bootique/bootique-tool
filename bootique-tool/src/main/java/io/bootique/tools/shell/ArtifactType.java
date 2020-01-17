@@ -20,9 +20,9 @@
 package io.bootique.tools.shell;
 
 public enum ArtifactType {
-    MULTIMODULE,
+    PARENT,
     APP,
-    MODULE;
+    LIB;
 
     public static ArtifactType byName(String name) {
         if(name == null || name.isEmpty()) {

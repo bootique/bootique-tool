@@ -37,7 +37,7 @@ public class FileConfigService implements ConfigService {
 
     private final Path configFile;
 
-    private final Map<String, Object> storage;
+    private final Map<ConfigParameter<?>, Object> storage;
 
     @Inject
     public FileConfigService(@ConfigDir Path configDirectory) {
@@ -58,11 +58,14 @@ public class FileConfigService implements ConfigService {
 
     private void parseLine(String line) {
         String[] values = line.split("=");
-        storage.put(values[0], values[1]);
+        ConfigParameter<?> parameter = paramByName(values[0]);
+        storage.put(parameter, parameter.valueFromString(values[1]));
     }
 
-    private String createLine(Map.Entry<String, ?> entry) {
-        return entry.getKey() + '=' + entry.getValue();
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private String createLine(Map.Entry<ConfigParameter<?>, ?> entry) {
+        ConfigParameter parameter = entry.getKey();
+        return parameter.getName() + '=' + parameter.valueToString(entry.getValue());
     }
 
     @Override
@@ -84,8 +87,7 @@ public class FileConfigService implements ConfigService {
 
     @Override
     public <T> void set(ConfigParameter<T> param, T value) {
-        String strValue = param.valueToString(value);
-        storage.put(param.getName(), strValue);
+        storage.put(param, value);
         List<String> lines = storage.entrySet().stream()
                 .map(this::createLine)
                 .collect(Collectors.toList());
@@ -101,7 +103,7 @@ public class FileConfigService implements ConfigService {
     @SuppressWarnings("unchecked")
     @Override
     public <T> T get(ConfigParameter<T> param) {
-        return (T)storage.getOrDefault(param.getName(), param.getDefaultValue());
+        return (T)storage.getOrDefault(param, param.getDefaultValue());
     }
 
 }

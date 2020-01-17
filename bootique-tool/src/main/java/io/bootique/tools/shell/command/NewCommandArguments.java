@@ -52,29 +52,22 @@ class NewCommandArguments {
     }
 
     static NewCommandArguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
-        Toolchain defaultToolchain = configService.get(ConfigService.TOOLCHAIN);
-        Toolchain toolchain = null;
         ArtifactType type = null;
         String name = null;
 
         if (arguments != null) {
             // we have something ...
             switch (arguments.size()) {
-                case 3:
-                    name = arguments.get(2);
                 case 2:
-                    type = ArtifactType.byName(arguments.get(1));
+                    name = arguments.get(1);
+                case 1:
+                    type = ArtifactType.byName(arguments.get(0));
                     if (type == null) {
                         if (name == null) {
-                            name = arguments.get(1);
+                            name = arguments.get(0);
                         } else {
                             return null;
                         }
-                    }
-                case 1:
-                    toolchain = Toolchain.byName(arguments.get(0));
-                    if (toolchain == null) {
-                        type = ArtifactType.byName(arguments.get(0));
                     }
                     break;
                 case 0:
@@ -84,17 +77,11 @@ class NewCommandArguments {
             }
         }
 
-        if (toolchain == null) {
-            toolchain = defaultToolchain;
-        }
-        while (toolchain == null) {
-            toolchain = Toolchain.byName(shell.readln("Toolchain ([M]aven or [G]radle): "));
-        }
         while (type == null) {
-            type = ArtifactType.byName(shell.readln("Artifact type ([a]pp, [m]odule or multimodule): "));
+            type = ArtifactType.byName(shell.readln("Artifact type ([a]pp, [l]ib or [p]arent): "));
         }
         while (name == null) {
-            name = shell.readln("Artifact name (group:name:version): ");
+            name = shell.readln("Artifact name ([group:]name[:version]): ");
         }
 
         NameComponents nameComponents = new NameParser().parse(name);
@@ -104,6 +91,6 @@ class NewCommandArguments {
                 nameComponents = new NameComponents(defaultGroup, nameComponents.getName(), nameComponents.getVersion());
             }
         }
-        return new NewCommandArguments(toolchain, type, nameComponents);
+        return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents);
     }
 }
