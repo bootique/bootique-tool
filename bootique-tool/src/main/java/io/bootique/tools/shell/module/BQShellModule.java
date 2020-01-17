@@ -24,6 +24,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.Set;
 
@@ -72,7 +73,6 @@ import org.jline.terminal.TerminalBuilder;
 
 import static org.jline.builtins.Completers.TreeCompleter;
 import static org.jline.builtins.Completers.TreeCompleter.Node;
-import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class BQShellModule implements BQModule {
 
@@ -138,32 +138,12 @@ public class BQShellModule implements BQModule {
 
     @Provides
     @Singleton
-    Completer createCompleter(Map<String, ShellCommand> shellCommands, PathCompleter pathCompleter) {
-        Object[] cmdNodes = shellCommands.values().stream()
-                .map(cmd -> cmd.getMetadata().getName())
-                .distinct()
-                .toArray(String[]::new);
-        Node appType = node("app", "module", "multimodule");
-
-        return new TreeCompleter(
-                node("help", node(cmdNodes)),
-                node("new",
-                        node("maven", appType),
-                        node("gradle", appType),
-                        node("app"),
-                        node("module"),
-                        node("multimodule")),
-                node("exit"),
-                node("config",
-                        node(ConfigService.JAVA_VERSION.getName()),
-                        node(ConfigService.BQ_VERSION.getName()),
-                        node(ConfigService.TOOLCHAIN.getName()),
-                        node(ConfigService.GROUP_ID.getName()),
-                        node(ConfigService.PACKAGING.getName())),
-                node("cd", node(pathCompleter)),
-                node("pwd"),
-                node("ls")
-        );
+    Completer createCompleter(Map<String, ShellCommand> shellCommands) {
+        Node[] cmdNodes = shellCommands.values().stream()
+                .map(ShellCommand::getCompleter)
+                .filter(Objects::nonNull)
+                .toArray(Node[]::new);
+        return new TreeCompleter(cmdNodes);
     }
 
     @Provides

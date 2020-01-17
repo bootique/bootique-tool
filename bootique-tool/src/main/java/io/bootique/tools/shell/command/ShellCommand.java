@@ -23,6 +23,7 @@ import java.util.Collection;
 import java.util.Collections;
 
 import io.bootique.command.Command;
+import org.jline.builtins.Completers;
 
 /**
  * A marker interface that denotes commands available in the interactive shell.
@@ -33,5 +34,9 @@ public interface ShellCommand extends Command {
 
     default Collection<String> aliases() {
         return Collections.emptySet();
+    }
+
+    default Completers.TreeCompleter.Node getCompleter() {
+        return null;
     }
 }

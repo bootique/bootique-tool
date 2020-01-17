@@ -40,6 +40,9 @@ import io.bootique.tools.shell.Formatter;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.Toolchain;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -163,6 +166,19 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                 "  @|green " + Formatter.alignByColumns(param.getName()) + "|@"
                 + description
                 + " Current value: @|bold " + value + " |@"
+        );
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("config",
+                node(ConfigService.BQ_VERSION.getName()),
+                node(ConfigService.GROUP_ID.getName()),
+                node(ConfigService.JAVA_VERSION.getName()),
+                node(ConfigService.PACKAGING.getName(),
+                        node(Packaging.ASSEMBLY.name().toLowerCase()), node(Packaging.SHADE.name().toLowerCase())),
+                node(ConfigService.TOOLCHAIN.getName(),
+                        node(Toolchain.MAVEN.name().toLowerCase()), node(Toolchain.GRADLE.name().toLowerCase()))
         );
     }
 }

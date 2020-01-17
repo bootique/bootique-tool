@@ -12,6 +12,9 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.ShellCommand;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class LsCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -61,5 +64,10 @@ public class LsCommand extends CommandWithMetadata implements ShellCommand {
         }
 
         shell.println("@|green,bold   " + icon + "|@ @|" + attribute + " " + path.getFileName().toString()  + "|@");
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("ls");
     }
 }

@@ -35,6 +35,9 @@ import io.bootique.meta.application.OptionMetadata;
 import io.bootique.meta.application.OptionValueCardinality;
 import io.bootique.tools.shell.Formatter;
 import io.bootique.tools.shell.Shell;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class HelpCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -118,5 +121,14 @@ public class HelpCommand extends CommandWithMetadata implements ShellCommand {
     @Override
     public Collection<String> aliases() {
         return Collections.singleton("?");
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        Object[] cmdNodes = shellCommands.get().values().stream()
+                .map(cmd -> cmd.getMetadata().getName())
+                .distinct()
+                .toArray(String[]::new);
+        return node("help", node(cmdNodes));
     }
 }

@@ -26,6 +26,9 @@ import io.bootique.cli.Cli;
 import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class ExitCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -43,5 +46,10 @@ public class ExitCommand extends CommandWithMetadata implements ShellCommand {
     @Override
     public Collection<String> aliases() {
         return Collections.singleton("quit");
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("exit");
     }
 }

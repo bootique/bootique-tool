@@ -31,6 +31,9 @@ import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.content.ContentHandler;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -78,4 +81,8 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         return handler.handle(arguments.getNameComponents());
     }
 
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("new", node("app"), node("module"), node("multimodule"));
+    }
 }

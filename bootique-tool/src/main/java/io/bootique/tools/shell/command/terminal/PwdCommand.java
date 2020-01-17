@@ -8,6 +8,9 @@ import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.ShellCommand;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class PwdCommand extends CommandWithMetadata implements ShellCommand {
 
@@ -22,5 +25,10 @@ public class PwdCommand extends CommandWithMetadata implements ShellCommand {
     public CommandOutcome run(Cli cli) {
         shell.println("@|green   <|@ " + shell.workingDir().toString());
         return CommandOutcome.succeeded();
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("pwd");
     }
 }

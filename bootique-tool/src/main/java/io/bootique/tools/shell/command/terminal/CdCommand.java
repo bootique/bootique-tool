@@ -15,11 +15,18 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.ShellCommand;
+import io.bootique.tools.shell.module.PathCompleter;
+import org.jline.builtins.Completers;
+
+import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class CdCommand extends CommandWithMetadata implements ShellCommand {
 
     @Inject
     private Shell shell;
+
+    @Inject
+    private PathCompleter pathCompleter;
 
     public CdCommand() {
         super(CommandMetadata.builder("cd")
@@ -58,5 +65,10 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
         shell.println("@|green   <|@ Changing working dir to @|bold " + path.toString() + "|@");
 
         return CommandOutcome.succeeded();
+    }
+
+    @Override
+    public Completers.TreeCompleter.Node getCompleter() {
+        return node("cd", node(pathCompleter));
     }
 }
