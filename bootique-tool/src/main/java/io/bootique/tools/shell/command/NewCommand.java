@@ -50,11 +50,8 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         super(CommandMetadata
                 .builder("new")
                 .description("Create new Bootique artifact")
-                .addOption(OptionMetadata.builder("tool")
-                        .description("Toolset to use, supported tools: @|bold maven, gradle|@")
-                        .valueOptional())
                 .addOption(OptionMetadata.builder("type")
-                        .description("type of artifact to create, possible values: @|bold app, module|@")
+                        .description("type of artifact to create, possible values: @|bold app, lib, parent|@")
                         .valueRequired())
                 .addOption(OptionMetadata.builder("name")
                         .description("name of artifact to create, format: [@|bold java-package|@:]@|bold project-name|@[:@|bold version|@]")
@@ -67,7 +64,7 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
     public CommandOutcome run(Cli cli) {
         NewCommandArguments arguments = NewCommandArguments.fromCliArguments(shell, config, cli.standaloneArguments());
         if(arguments == null) {
-            return CommandOutcome.failed(-1, "Usage: new [tool] type name");
+            return CommandOutcome.failed(-1, "Usage: new type name");
         }
 
         String templateType = arguments.getToolchain().name().toLowerCase()
