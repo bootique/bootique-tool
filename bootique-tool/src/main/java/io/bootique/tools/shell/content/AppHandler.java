@@ -86,11 +86,11 @@ public abstract class AppHandler extends ContentHandler {
 
     protected abstract String getBuildSystemName();
 
-    protected abstract TemplateProcessor getTemplateProcessorForParent();
-
     protected abstract String getBuildFileName();
 
-    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot, Path parentFile) {
+    protected abstract TemplateProcessor getTemplateProcessorForParent();
+
+    protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String mainClass = components.getJavaPackage().isEmpty()
                 ? "Application"
                 : components.getJavaPackage() + ".Application";
@@ -110,7 +110,6 @@ public abstract class AppHandler extends ContentHandler {
                 .with(ConfigService.PACKAGING.getName(), packaging)
                 .with("packaging.shade", packaging == Packaging.SHADE)
                 .with("packaging.assembly", packaging == Packaging.ASSEMBLY);
-
     }
 
     @Override
@@ -129,7 +128,7 @@ public abstract class AppHandler extends ContentHandler {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
-        Properties properties = getPropertiesBuilder(components, outputRoot, parentFileExists ? parentFile : null)
+        Properties properties = buildProperties(components, outputRoot, parentFileExists ? parentFile : null)
                 .with("parent", parentFileExists)
                 .with("parent.path", parentFile.toString())
                 .build();

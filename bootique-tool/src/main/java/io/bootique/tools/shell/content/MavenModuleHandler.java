@@ -25,7 +25,7 @@ import java.nio.file.Path;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.MavenModuleProcessor;
+import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.ParentPomProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
@@ -45,7 +45,7 @@ public class MavenModuleHandler extends ModuleHandler {
         // pom.xml
         addPipeline(TemplatePipeline.builder()
                 .source("pom.xml")
-                .processor(new MavenModuleProcessor())
+                .processor(new MustacheTemplateProcessor())
         );
     }
 
@@ -61,13 +61,17 @@ public class MavenModuleHandler extends ModuleHandler {
 
     @Override
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
-        NameComponents parentNameComponents = parentPomParser.parse(parentFile);
+        Properties.Builder builder = super.buildProperties(components, outputRoot, parentFile)
+                .with("input.path", "templates/maven-module/");
 
-        return super.buildProperties(components, outputRoot, parentFile)
-                .with("input.path", "templates/maven-module/")
-                .with("parent.group", parentNameComponents.getJavaPackage())
-                .with("parent.name", parentNameComponents.getName())
-                .with("parent.version", parentNameComponents.getVersion());
+        if(parentFile != null) {
+            NameComponents parentNameComponents = parentPomParser.parse(parentFile);
+            builder.with("parent.group", parentNameComponents.getJavaPackage())
+                    .with("parent.name", parentNameComponents.getName())
+                    .with("parent.version", parentNameComponents.getVersion());
+        }
+
+        return builder;
     }
 
     @Override

@@ -69,11 +69,29 @@ public abstract class ModuleHandler extends ContentHandler {
                 .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
                 .processor(new BQModuleProviderProcessor())
         );
+
+        // .gitignore
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> !properties.get("parent", false))
+                .source("gitignore")
+                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
+        );
+
+        // parent build file
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> properties.get("parent", false))
+                .source(p -> p.get("parent.path", ""))
+                // lazy processor as shell is not set by the creation time
+                .processor((t, p) -> getTemplateProcessorForParent().process(t, p))
+                .loader(new BinaryFileLoader())
+                .saver(new SafeBinaryContentSaver()));
     }
+
+    protected abstract String getBuildSystemName();
 
     protected abstract String getBuildFileName();
 
-    protected abstract String getBuildSystemName();
+    protected abstract TemplateProcessor getTemplateProcessorForParent();
 
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String bqVersion = configService.get(ConfigService.BQ_VERSION);
@@ -83,43 +101,33 @@ public abstract class ModuleHandler extends ContentHandler {
                 .with("project.name", components.getName())
                 .with("module.name", Utils.moduleNameFromArtifactName(components.getName()))
                 .with("bq.di", bqVersion.startsWith("2."))
-                .with("output.path", outputRoot);
+                .with("output.path", outputRoot)
+                .with("bq.version", bqVersion)
+                .with("bq.di", bqVersion.startsWith("2."))
+                .with("java.version", configService.get(ConfigService.JAVA_VERSION));
     }
-
-    protected abstract TemplateProcessor getTemplateProcessorForParent();
 
     @Override
     public CommandOutcome handle(NameComponents components) {
-        Path parentFile = shell.workingDir().resolve(getBuildFileName());
+        log("Generating new " + getBuildSystemName() + " module @|bold " + components.getName() + "|@ ...");
 
-        if(!Files.exists(parentFile)) {
-            return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                    " file not found. Can add a new module only to the existing project.");
-        }
-        if(!Files.isWritable(parentFile)) {
+        Path parentFile = shell.workingDir().resolve(getBuildFileName());
+        boolean parentFileExists = Files.exists(parentFile);
+        if(parentFileExists && !Files.isWritable(parentFile)) {
             return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
                     " file is not writable.");
         }
-
-        log("Generating new " + getBuildSystemName() + " module @|bold " + components.getName() + "|@ ...");
 
         Path outputRoot = shell.workingDir().resolve(components.getName());
         if(Files.exists(outputRoot)) {
             return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
         }
 
-        Properties properties = buildProperties(components, outputRoot, parentFile).build();
-        pipelines.forEach(p -> p.process(properties));
-
-        // an additional pipeline for parent build file.
-        // can't keep it static as a location of parent build file is unknown before execution
-        TemplatePipeline parentPipeline = TemplatePipeline.builder()
-                .source(parentFile.toString())
-                .processor(getTemplateProcessorForParent())
-                .loader(new BinaryFileLoader())
-                .saver(new SafeBinaryContentSaver())
+        Properties properties = buildProperties(components, outputRoot, parentFileExists ? parentFile : null)
+                .with("parent", parentFileExists)
+                .with("parent.path", parentFile.toString())
                 .build();
-        parentPipeline.process(properties);
+        pipelines.forEach(p -> p.process(properties));
 
         log("done.");
         return CommandOutcome.succeeded();

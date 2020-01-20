@@ -2,14 +2,49 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
+    {{#parent}}
     <parent>
-        <groupId>example</groupId>
-        <artifactId>example</artifactId>
-        <version>1.0</version>
+        <groupId>{{parent.group}}</groupId>
+        <artifactId>{{parent.name}}</artifactId>
+        <version>{{parent.version}}</version>
     </parent>
+    {{/parent}}
+    <artifactId>{{project.name}}</artifactId>
+    {{^parent}}
+    <groupId>{{java.package}}</groupId>
+    <version>{{project.version}}</version>
+    {{/parent}}
 
-    <artifactId>example.module</artifactId>
-    <version>${parent.version}</version>
+    {{^parent}}
+    <properties>
+        <maven.compiler.source>{{java.version}}</maven.compiler.source>
+        <maven.compiler.target>{{java.version}}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <bootique.version>{{bq.version}}</bootique.version>
+        <junit.version>4.12</junit.version>
+    </properties>
+    {{/parent}}
+    {{^parent}}
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.bootique.bom</groupId>
+                <artifactId>bootique-bom</artifactId>
+                <version>${bootique.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    {{/parent}}
 
     <dependencies>
         <dependency>

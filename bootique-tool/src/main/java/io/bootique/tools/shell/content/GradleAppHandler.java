@@ -90,8 +90,8 @@ public class GradleAppHandler extends AppHandler {
     }
 
     @Override
-    protected Properties.Builder getPropertiesBuilder(NameComponents components, Path outputRoot, Path parentFile) {
-        return super.getPropertiesBuilder(components, outputRoot, parentFile)
+    protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+        return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/gradle-app/");
     }
 }

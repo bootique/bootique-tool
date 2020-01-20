@@ -86,10 +86,11 @@ class NewCommandArguments {
 
         NameComponents nameComponents = new NameParser().parse(name);
         if ("".equals(nameComponents.getJavaPackage())) {
-            String defaultGroup = configService.get(ConfigService.GROUP_ID);
-            if (defaultGroup != null) {
-                nameComponents = new NameComponents(defaultGroup, nameComponents.getName(), nameComponents.getVersion());
+            String javaPackage = configService.get(ConfigService.GROUP_ID);
+            if (javaPackage == null) {
+                javaPackage = shell.readln("Package name: ");
             }
+            nameComponents = nameComponents.withJavaPackage(javaPackage);
         }
         return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents);
     }
