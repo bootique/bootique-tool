@@ -22,5 +22,22 @@
 # Bootique CLI tool
 
 **bq** is an interactive tool to create and manage Bootique projects.
+
+## Documentation
+
+* https://bootique.io/docs/latest/bootique-tool-docs/
+
+## How to Build
+
+Follow documentation link above for instructions on how to get a platform-specific `bq` binary. To build `bq` from source, do the following:
+
+* Install GraalVM from [here](https://github.com/graalvm/graalvm-ce-builds/releases)
+* Checkout and build the repo:
+```
+git clone git@github.com:bootique/bootique-tool.git
+cd bootique-tool
+export JAVA_HOME=<GraalVM Home>
+mvn package -Pnative-image
+```
   
 
