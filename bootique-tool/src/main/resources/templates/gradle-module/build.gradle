@@ -1,4 +1,27 @@
+{{^parent}}
+plugins {
+    id 'java'
+}
+
+group '{{java.package}}'
+version '{{project.version}}'
+
+repositories {
+    mavenCentral()
+    jcenter()
+}
+
+sourceCompatibility = '{{java.version}}'
+targetCompatibility = '{{java.version}}'
+{{/parent}}
+
 dependencies {
+    {{^parent}}
+    implementation platform('io.bootique.bom:bootique-bom:{{bq.version}}')
+    {{/parent}}
     implementation 'io.bootique:bootique'
     testImplementation 'io.bootique:bootique-test'
+{{^parent}}
+    testImplementation 'junit:junit:4.12'
+{{/parent}}
 }

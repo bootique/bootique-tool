@@ -20,12 +20,18 @@
 package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
+import java.nio.file.attribute.PosixFilePermission;
+import java.util.EnumSet;
 
 import javax.inject.Inject;
 
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.template.BinaryContentSaver;
+import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
+import io.bootique.tools.shell.template.processor.GradleProcessor;
+import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
@@ -39,7 +45,38 @@ public class GradleModuleHandler extends ModuleHandler {
 
     public GradleModuleHandler() {
         super();
-        addPipeline(TemplatePipeline.builder().source("build.gradle"));
+        // gradle wrapper
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> !properties.get("parent", false))
+                .source("gradle/wrapper/gradle-wrapper.jar")
+                .source("gradle/wrapper/gradle-wrapper.properties")
+                .loader(new BinaryResourceLoader())
+                .saver(new BinaryContentSaver())
+        );
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> !properties.get("parent", false))
+                .source("gradlew")
+                .source("gradlew.bat")
+                .loader(new BinaryResourceLoader())
+                .saver(new BinaryContentSaver(EnumSet.of(
+                        PosixFilePermission.OWNER_EXECUTE,
+                        PosixFilePermission.OWNER_READ,
+                        PosixFilePermission.GROUP_EXECUTE,
+                        PosixFilePermission.GROUP_READ,
+                        PosixFilePermission.OTHERS_EXECUTE,
+                        PosixFilePermission.OTHERS_READ
+                )))
+        );
+
+        addPipeline(TemplatePipeline.builder()
+                .source("build.gradle")
+                .processor(new MustacheTemplateProcessor())
+        );
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> !properties.get("parent", false))
+                .source("settings.gradle")
+                .processor(new GradleProcessor())
+        );
     }
 
     @Override
