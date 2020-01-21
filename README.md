@@ -29,9 +29,16 @@ https://bootique.io/docs/latest/bootique-tool-docs/
 
 ## How to Build
 
-Follow documentation link above for instructions on how to get a platform-specific `bq` binary. To build `bq` from source, do the following:
+Follow documentation link above for instructions on how to get a platform-specific `bq` binary. To build `bq` from
+source, do the following:
 
-* [Download](https://github.com/graalvm/graalvm-ce-builds/releases) and install GraalVM
+* [Download](https://github.com/graalvm/graalvm-ce-builds/releases) and unpack GraalVM 8. (As of this writing builds
+don't yet work with GraalVM 11)
+* If you are on MacOS, make sure GraalVM is allowed to run:
+```
+ xattr -d com.apple.quarantine /path/to/graalvm-ce-java8-X.X.X/
+```
+
 * Checkout and build the repo:
 ```
 git clone git@github.com:bootique/bootique-tool.git
@@ -39,5 +46,6 @@ cd bootique-tool
 export JAVA_HOME=<GraalVM Home>
 mvn package -Pnative-image
 ```
+The binary is created at `bootique-tool/target/bq`
   
 
