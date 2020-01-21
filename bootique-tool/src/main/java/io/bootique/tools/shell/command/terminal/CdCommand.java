@@ -45,6 +45,19 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
         }
 
         String newPath = args.get(0);
+        Path path = resolvePath(newPath);
+
+        if(!Files.exists(path)) {
+            return CommandOutcome.failed(-1, "No such directory");
+        }
+
+        shell.changeWorkingDir(path);
+        shell.println("@|green   <|@ Changing working dir to @|bold " + path.toString() + "|@");
+
+        return CommandOutcome.succeeded();
+    }
+
+    private Path resolvePath(String newPath) {
         Path path;
         if(newPath.startsWith("/")) {
             path = Paths.get(newPath).toAbsolutePath().normalize();
@@ -56,15 +69,7 @@ public class CdCommand extends CommandWithMetadata implements ShellCommand {
         } else {
             path = shell.workingDir().resolve(Paths.get(newPath)).toAbsolutePath().normalize();
         }
-
-        if(!Files.exists(path)) {
-            return CommandOutcome.failed(-1, "No such directory");
-        }
-
-        shell.changeWorkingDir(path);
-        shell.println("@|green   <|@ Changing working dir to @|bold " + path.toString() + "|@");
-
-        return CommandOutcome.succeeded();
+        return path;
     }
 
     @Override
