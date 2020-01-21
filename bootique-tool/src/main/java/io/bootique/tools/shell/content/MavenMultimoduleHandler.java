@@ -2,7 +2,6 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
@@ -11,9 +10,6 @@ import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
-/**
- * @since 4.2
- */
 public class MavenMultimoduleHandler extends ContentHandler {
 
     private final ConfigService configService;

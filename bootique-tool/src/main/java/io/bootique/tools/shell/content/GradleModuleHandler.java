@@ -23,25 +23,14 @@ import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 
-import javax.inject.Inject;
-
-import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
-import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public class GradleModuleHandler extends ModuleHandler {
-
-    private static final String BUILD_FILE = "settings.gradle";
-    private static final String BUILD_SYSTEM = "Gradle";
-
-    @Inject
-    private Shell shell;
+public class GradleModuleHandler extends ModuleHandler implements GradleHandler {
 
     public GradleModuleHandler() {
         super();
@@ -80,23 +69,9 @@ public class GradleModuleHandler extends ModuleHandler {
     }
 
     @Override
-    protected String getBuildFileName() {
-        return BUILD_FILE;
-    }
-
-    @Override
-    protected String getBuildSystemName() {
-        return BUILD_SYSTEM;
-    }
-
-    @Override
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/gradle-module/");
     }
 
-    @Override
-    protected TemplateProcessor getTemplateProcessorForParent() {
-        return new SettingsGradleProcessor(shell);
-    }
 }

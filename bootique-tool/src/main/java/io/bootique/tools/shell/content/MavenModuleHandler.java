@@ -19,23 +19,13 @@
 
 package io.bootique.tools.shell.content;
 
-import javax.inject.Inject;
 import java.nio.file.Path;
 
-import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
-import io.bootique.tools.shell.template.processor.ParentPomProcessor;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public class MavenModuleHandler extends ModuleHandler {
-
-    private static final String BUILD_FILE = "pom.xml";
-    private static final String BUILD_SYSTEM = "Maven";
-
-    @Inject
-    private Shell shell;
+public class MavenModuleHandler extends ModuleHandler implements MavenHandler {
 
     private final PomParser parentPomParser;
 
@@ -47,16 +37,6 @@ public class MavenModuleHandler extends ModuleHandler {
                 .source("pom.xml")
                 .processor(new MustacheTemplateProcessor())
         );
-    }
-
-    @Override
-    protected String getBuildFileName() {
-        return BUILD_FILE;
-    }
-
-    @Override
-    protected String getBuildSystemName() {
-        return BUILD_SYSTEM;
     }
 
     @Override
@@ -72,11 +52,6 @@ public class MavenModuleHandler extends ModuleHandler {
         }
 
         return builder;
-    }
-
-    @Override
-    protected TemplateProcessor getTemplateProcessorForParent() {
-        return new ParentPomProcessor(shell);
     }
 
 }

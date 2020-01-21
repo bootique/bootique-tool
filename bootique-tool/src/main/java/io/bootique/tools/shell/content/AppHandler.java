@@ -19,12 +19,10 @@
 
 package io.bootique.tools.shell.content;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 
 import javax.inject.Inject;
 
-import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.BinaryFileLoader;
@@ -36,9 +34,8 @@ import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public abstract class AppHandler extends ContentHandler {
+public abstract class AppHandler extends BaseContentHandler implements BuildSystemHandler {
 
     @Inject
     private ConfigService configService;
@@ -79,62 +76,21 @@ public abstract class AppHandler extends ContentHandler {
                 .filter((s, properties) -> properties.get("parent", false))
                 .source(p -> p.get("parent.path", ""))
                 // lazy processor as shell is not set by the creation time
-                .processor((t, p) -> getTemplateProcessorForParent().process(t, p))
+                .processor((t, p) -> getTemplateProcessorForParent(shell).process(t, p))
                 .loader(new BinaryFileLoader())
                 .saver(new SafeBinaryContentSaver()));
     }
 
-    protected abstract String getBuildSystemName();
-
-    protected abstract String getBuildFileName();
-
-    protected abstract TemplateProcessor getTemplateProcessorForParent();
-
+    @Override
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String mainClass = components.getJavaPackage().isEmpty()
                 ? "Application"
                 : components.getJavaPackage() + ".Application";
-
-        String bqVersion = configService.get(ConfigService.BQ_VERSION);
         Packaging packaging = configService.get(ConfigService.PACKAGING);
-
-        return Properties.builder()
-                .with("java.package", components.getJavaPackage())
-                .with("project.version", components.getVersion())
-                .with("project.name", components.getName())
+        return super.buildProperties(components, outputRoot, parentFile)
                 .with("project.mainClass", mainClass)
-                .with("output.path", outputRoot)
-                .with("bq.version", bqVersion)
-                .with("bq.di", bqVersion.startsWith("2."))
-                .with("java.version", configService.get(ConfigService.JAVA_VERSION))
                 .with(ConfigService.PACKAGING.getName(), packaging)
                 .with("packaging.shade", packaging == Packaging.SHADE)
                 .with("packaging.assembly", packaging == Packaging.ASSEMBLY);
-    }
-
-    @Override
-    public CommandOutcome handle(NameComponents components) {
-        log("Generating new " + getBuildSystemName() + " project @|bold " + components.getName() + "|@ ...");
-
-        Path parentFile = shell.workingDir().resolve(getBuildFileName());
-        boolean parentFileExists = Files.exists(parentFile);
-        if(parentFileExists && !Files.isWritable(parentFile)) {
-            return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                    " file is not writable.");
-        }
-
-        Path outputRoot = shell.workingDir().resolve(components.getName());
-        if(Files.exists(outputRoot)) {
-            return CommandOutcome.failed(-1, "Directory '" + components.getName() + "' already exists");
-        }
-
-        Properties properties = buildProperties(components, outputRoot, parentFileExists ? parentFile : null)
-                .with("parent", parentFileExists)
-                .with("parent.path", parentFile.toString())
-                .build();
-        pipelines.forEach(p -> p.process(properties));
-
-        log("done.");
-        return CommandOutcome.succeeded();
     }
 }

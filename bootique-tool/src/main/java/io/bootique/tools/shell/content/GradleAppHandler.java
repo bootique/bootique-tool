@@ -29,13 +29,8 @@ import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
-import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public class GradleAppHandler extends AppHandler {
-
-    private static final String BUILD_SYSTEM = "Gradle";
-    private static final String BUILD_FILE = "settings.gradle";
+public class GradleAppHandler extends AppHandler implements GradleHandler {
 
     public GradleAppHandler() {
         super();
@@ -72,21 +67,6 @@ public class GradleAppHandler extends AppHandler {
                 .source("settings.gradle")
                 .processor(new GradleProcessor())
         );
-    }
-
-    @Override
-    protected String getBuildSystemName() {
-        return BUILD_SYSTEM;
-    }
-
-    @Override
-    protected String getBuildFileName() {
-        return BUILD_FILE;
-    }
-
-    @Override
-    protected TemplateProcessor getTemplateProcessorForParent() {
-        return new SettingsGradleProcessor(shell);
     }
 
     @Override
