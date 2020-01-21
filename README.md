@@ -19,9 +19,9 @@
 
 [![Build Status](https://travis-ci.org/bootique/bootique-tool.svg)](https://travis-ci.org/bootique/bootique-tool)
 
-# Bootique CLI tool
+# `bq` - Bootique CLI tool
 
-**bq** is an interactive tool to create and manage Bootique projects.
+`bq` is an interactive tool to create and manage Bootique projects.
 
 ## Documentation
 
@@ -31,7 +31,7 @@
 
 Follow documentation link above for instructions on how to get a platform-specific `bq` binary. To build `bq` from source, do the following:
 
-* Install GraalVM from [here](https://github.com/graalvm/graalvm-ce-builds/releases)
+* [Download](https://github.com/graalvm/graalvm-ce-builds/releases) and install GraalVM
 * Checkout and build the repo:
 ```
 git clone git@github.com:bootique/bootique-tool.git
