@@ -5,7 +5,7 @@ import io.bootique.tools.shell.Toolchain;
 import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public interface GradleHandler extends BuildSystemHandler {
+interface GradleHandler extends BuildSystemHandler {
 
     @Override
     default String getBuildFileName() {

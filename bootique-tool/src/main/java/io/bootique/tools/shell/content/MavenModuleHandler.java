@@ -27,11 +27,7 @@ import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
 public class MavenModuleHandler extends ModuleHandler implements MavenHandler {
 
-    private final PomParser parentPomParser;
-
     public MavenModuleHandler() {
-        super();
-        this.parentPomParser = new PomParser();
         // pom.xml
         addPipeline(TemplatePipeline.builder()
                 .source("pom.xml")
@@ -45,7 +41,7 @@ public class MavenModuleHandler extends ModuleHandler implements MavenHandler {
                 .with("input.path", "templates/maven-module/");
 
         if(parentFile != null) {
-            NameComponents parentNameComponents = parentPomParser.parse(parentFile);
+            NameComponents parentNameComponents = new PomParser().parse(parentFile);
             builder.with("parent.group", parentNameComponents.getJavaPackage())
                     .with("parent.name", parentNameComponents.getName())
                     .with("parent.version", parentNameComponents.getVersion());

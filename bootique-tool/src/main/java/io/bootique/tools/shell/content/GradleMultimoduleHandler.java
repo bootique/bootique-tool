@@ -19,32 +19,19 @@
 
 package io.bootique.tools.shell.content;
 
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 
-import javax.inject.Inject;
-
-import io.bootique.command.CommandOutcome;
-import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
-import io.bootique.tools.shell.template.processor.SettingsGradleProcessor;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public class GradleMultimoduleHandler extends ContentHandler {
+public class GradleMultimoduleHandler extends BaseContentHandler implements GradleHandler {
 
-    private final ConfigService configService;
-
-    @Inject
-    public GradleMultimoduleHandler(ConfigService configService) {
-        this.configService = configService;
-
+    public GradleMultimoduleHandler() {
         // gradle wrapper
         addPipeline(TemplatePipeline.builder()
                 .source("gradle/wrapper/gradle-wrapper.jar")
@@ -66,12 +53,6 @@ public class GradleMultimoduleHandler extends ContentHandler {
                 )))
         );
 
-        // .gitignore
-        addPipeline(TemplatePipeline.builder()
-                .source("gitignore")
-                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
-        );
-
         // gradle scripts
         addPipeline(TemplatePipeline.builder()
                 .source("build.gradle")
@@ -81,28 +62,8 @@ public class GradleMultimoduleHandler extends ContentHandler {
     }
 
     @Override
-    public CommandOutcome handle(NameComponents name) {
-        log("Generating new Gradle project @|bold " + name.getName() + "|@ ...");
-
-        Path outputRoot = shell.workingDir().resolve(name.getName());
-        if(Files.exists(outputRoot)) {
-            return CommandOutcome.failed(-1, "Directory '" + name.getName() + "' already exists");
-        }
-
-        Properties properties = Properties.builder()
-                .with("java.package", name.getJavaPackage())
-                .with("project.version", name.getVersion())
-                .with("project.name", name.getName())
-                .with("input.path", "templates/gradle-multimodule/")
-                .with("output.path", outputRoot)
-                .with("bq.version", configService.get(ConfigService.BQ_VERSION))
-                .with("java.version", configService.get(ConfigService.JAVA_VERSION))
-                .build();
-
-        pipelines.forEach(p -> p.process(properties));
-
-        log("done.");
-
-        return CommandOutcome.succeeded();
+    Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
+        return super.buildProperties(components, outputRoot, parentFile)
+                .with("input.path", "templates/gradle-multimodule/");
     }
 }

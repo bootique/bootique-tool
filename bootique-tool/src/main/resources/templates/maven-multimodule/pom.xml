@@ -1,12 +1,22 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>{{java.package}}</groupId>
+    {{#parent}}
+    <parent>
+        <groupId>{{parent.group}}</groupId>
+        <artifactId>{{parent.name}}</artifactId>
+        <version>{{parent.version}}</version>
+    </parent>
+    {{/parent}}
     <artifactId>{{project.name}}</artifactId>
+    {{^parent}}
+    <groupId>{{java.package}}</groupId>
     <version>{{project.version}}</version>
+    {{/parent}}
 
     <packaging>pom</packaging>
 
+    {{^parent}}
     <properties>
         <maven.compiler.source>{{java.version}}</maven.compiler.source>
         <maven.compiler.target>{{java.version}}</maven.compiler.target>
@@ -15,8 +25,10 @@
         <junit.version>4.12</junit.version>
     </properties>
 
+    {{/parent}}
     <modules>
     </modules>
+    {{^parent}}
 
     <dependencyManagement>
         <dependencies>
@@ -34,4 +46,5 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+    {{/parent}}
 </project>

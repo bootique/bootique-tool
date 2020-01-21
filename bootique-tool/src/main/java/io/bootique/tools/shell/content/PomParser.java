@@ -33,7 +33,7 @@ class PomParser {
         }
     }
 
-    private XMLReader createSaxXmlReader() throws ParserConfigurationException, SAXException {
+    XMLReader createSaxXmlReader() throws ParserConfigurationException, SAXException {
         SAXParserFactory spf = SAXParserFactory.newInstance();
         // additional security
         spf.setFeature("http://apache.org/xml/features/disallow-doctype-decl", true);
@@ -43,7 +43,7 @@ class PomParser {
         return saxParser.getXMLReader();
     }
 
-    private static class PomHandler extends DefaultHandler {
+    static class PomHandler extends DefaultHandler {
         private NameComponents components = new NameComponents("", "", "");
         private final Deque<String> elements = new LinkedList<>();
 
@@ -64,10 +64,18 @@ class PomParser {
         @Override
         public void characters (char[] chars, int start, int length) {
             switch (currentPath()) {
+                case "project.parent.groupId":
+                    if(!components.getJavaPackage().equals("")) {
+                        break;
+                    } // else fallthrough
                 case "project.groupId":
                     String javaPackage = new String(chars, start, length);
                     components = components.withJavaPackage(javaPackage);
                     break;
+                case "project.parent.version":
+                    if(!components.getVersion().equals("")) {
+                        break;
+                    } // else fallthrough
                 case "project.version":
                     String version = new String(chars, start, length);
                     components = components.withVersion(version);

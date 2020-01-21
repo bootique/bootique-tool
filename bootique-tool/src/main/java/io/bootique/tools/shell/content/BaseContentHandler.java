@@ -7,11 +7,31 @@ import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.Properties;
+import io.bootique.tools.shell.template.SafeBinaryContentSaver;
+import io.bootique.tools.shell.template.TemplatePipeline;
 
 abstract class BaseContentHandler extends ContentHandler implements BuildSystemHandler {
+
     @Inject
     protected ConfigService configService;
+
+    BaseContentHandler() {
+        addPipeline(TemplatePipeline.builder()
+                .source("gitignore")
+                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
+        );
+
+        // parent build file
+        addPipeline(TemplatePipeline.builder()
+                .filter((s, properties) -> properties.get("parent", false))
+                .source(p -> p.get("parent.path", ""))
+                // lazy processor as shell is not set by the creation time
+                .processor((t, p) -> getTemplateProcessorForParent(shell).process(t, p))
+                .loader(new BinaryFileLoader())
+                .saver(new SafeBinaryContentSaver()));
+    }
 
     Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String bqVersion = configService.get(ConfigService.BQ_VERSION);

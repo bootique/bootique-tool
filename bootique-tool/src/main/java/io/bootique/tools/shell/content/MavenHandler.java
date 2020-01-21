@@ -5,7 +5,7 @@ import io.bootique.tools.shell.Toolchain;
 import io.bootique.tools.shell.template.processor.ParentPomProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
 
-public interface MavenHandler extends BuildSystemHandler {
+interface MavenHandler extends BuildSystemHandler {
 
     @Override
     default String getBuildFileName() {

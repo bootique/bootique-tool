@@ -21,10 +21,8 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 
-import io.bootique.tools.shell.template.BinaryFileLoader;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
-import io.bootique.tools.shell.template.SafeBinaryContentSaver;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
@@ -34,7 +32,7 @@ import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.util.Utils;
 
-public abstract class ModuleHandler extends BaseContentHandler implements BuildSystemHandler {
+abstract class ModuleHandler extends BaseContentHandler implements BuildSystemHandler {
 
     public ModuleHandler() {
         // java sources
@@ -60,22 +58,6 @@ public abstract class ModuleHandler extends BaseContentHandler implements BuildS
                 .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
                 .processor(new BQModuleProviderProcessor())
         );
-
-        // .gitignore
-        addPipeline(TemplatePipeline.builder()
-                .filter((s, properties) -> !properties.get("parent", false))
-                .source("gitignore")
-                .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
-        );
-
-        // parent build file
-        addPipeline(TemplatePipeline.builder()
-                .filter((s, properties) -> properties.get("parent", false))
-                .source(p -> p.get("parent.path", ""))
-                // lazy processor as shell is not set by the creation time
-                .processor((t, p) -> getTemplateProcessorForParent(shell).process(t, p))
-                .loader(new BinaryFileLoader())
-                .saver(new SafeBinaryContentSaver()));
     }
 
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
