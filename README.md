@@ -19,13 +19,13 @@
 
 [![Build Status](https://travis-ci.org/bootique/bootique-tool.svg)](https://travis-ci.org/bootique/bootique-tool)
 
-# `bq` - Bootique CLI tool
+# `bq` : Bootique CLI tool
 
 `bq` is an interactive tool to create and manage Bootique projects.
 
 ## Documentation
 
-* https://bootique.io/docs/latest/bootique-tool-docs/
+https://bootique.io/docs/latest/bootique-tool-docs/
 
 ## How to Build
 
