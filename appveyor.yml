@@ -15,6 +15,7 @@
 init:
   - cinst graalvm-java8
   - set PATH=C:\Program Files\GraalVM\graalvm-ce-java8-19.3.0\bin;%PATH%
+  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-19.3.0\
 
 image: Visual Studio 2015
 
