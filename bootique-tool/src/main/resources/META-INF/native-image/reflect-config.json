@@ -247,7 +247,11 @@
   "allDeclaredMethods":true
 },
 {
-  "name":"io.bootique.tools.shell.module.PathCompleter",
+  "name":"io.bootique.tools.shell.command.terminal.PathCompleter",
+  "allDeclaredConstructors":true
+},
+{
+  "name":"io.bootique.tools.shell.command.terminal.PathResolver",
   "allDeclaredConstructors":true
 },
 {
