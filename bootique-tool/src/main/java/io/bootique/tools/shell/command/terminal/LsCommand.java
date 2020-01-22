@@ -3,7 +3,6 @@ package io.bootique.tools.shell.command.terminal;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.Paths;
 import java.util.List;
 import javax.inject.Inject;
 
@@ -14,7 +13,6 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.command.ShellCommand;
-import io.bootique.tools.shell.module.PathCompleter;
 import org.jline.builtins.Completers;
 
 import static org.jline.builtins.Completers.TreeCompleter.node;
@@ -26,6 +24,9 @@ public class LsCommand extends CommandWithMetadata implements ShellCommand {
 
     @Inject
     private PathCompleter pathCompleter;
+
+    @Inject
+    private PathResolver pathResolver;
 
     public LsCommand() {
         super(CommandMetadata.builder("ls")
@@ -42,7 +43,7 @@ public class LsCommand extends CommandWithMetadata implements ShellCommand {
         Path workingDir = shell.workingDir();
         if(!args.isEmpty()) {
             String newPath = args.get(0);
-            Path path = resolvePath(newPath);
+            Path path = pathResolver.resolvePath(newPath);
             if(Files.exists(path)) {
                 workingDir = path;
             }
@@ -50,36 +51,12 @@ public class LsCommand extends CommandWithMetadata implements ShellCommand {
 
         try {
             Files.list(workingDir)
-                    .sorted(this::comparePaths)
+                    .sorted(new PathComparator())
                     .forEachOrdered(this::renderPath);
         } catch (IOException e) {
             return CommandOutcome.failed(-1, e);
         }
         return CommandOutcome.succeeded();
-    }
-
-    private Path resolvePath(String newPath) {
-        Path path;
-        if(newPath.startsWith("/")) {
-            path = Paths.get(newPath).toAbsolutePath().normalize();
-        } else if(newPath.startsWith("~")) {
-            // TODO: test this in native build
-            String homePath = System.getProperty("user.home");
-            String fullPath = homePath + newPath.substring(1);
-            path = shell.workingDir().resolve(Paths.get(fullPath)).toAbsolutePath().normalize();
-        } else {
-            path = shell.workingDir().resolve(Paths.get(newPath)).toAbsolutePath().normalize();
-        }
-        return path;
-    }
-
-    private int comparePaths(Path p1, Path p2) {
-        int dir1 = Files.isDirectory(p1) ? 1 : 0;
-        int dir2 = Files.isDirectory(p2) ? 1 : 0;
-        if(dir1 == dir2) {
-            return p1.getFileName().compareTo(p2.getFileName());
-        }
-        return dir2 - dir1;
     }
 
     private void renderPath(Path path) {

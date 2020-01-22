@@ -54,6 +54,8 @@ import io.bootique.tools.shell.command.ExitCommand;
 import io.bootique.tools.shell.command.HelpCommand;
 import io.bootique.tools.shell.command.NewCommand;
 import io.bootique.tools.shell.command.terminal.LsCommand;
+import io.bootique.tools.shell.command.terminal.PathCompleter;
+import io.bootique.tools.shell.command.terminal.PathResolver;
 import io.bootique.tools.shell.command.terminal.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
@@ -109,6 +111,7 @@ public class BQShellModule implements BQModule {
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();
         binder.bind(ConfigService.class).to(FileConfigService.class).inSingletonScope();
         binder.bind(PathCompleter.class).inSingletonScope();
+        binder.bind(PathResolver.class).inSingletonScope();
     }
 
     /**

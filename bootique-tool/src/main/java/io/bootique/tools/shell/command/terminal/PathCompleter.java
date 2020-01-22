@@ -1,4 +1,4 @@
-package io.bootique.tools.shell.module;
+package io.bootique.tools.shell.command.terminal;
 
 import java.nio.file.Path;
 import javax.inject.Inject;
