@@ -46,16 +46,8 @@ public class MavenAppHandler extends AppHandler implements MavenHandler {
 
     @Override
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
-        Properties.Builder builder = super.buildProperties(components, outputRoot, parentFile)
+        return super.buildProperties(components, outputRoot, parentFile)
                 .with("module.name", "Application")
                 .with("input.path", "templates/maven-app/");
-        if(parentFile != null) {
-            NameComponents parentNameComponents = new PomParser().parse(parentFile);
-            builder.with("parent.group", parentNameComponents.getJavaPackage())
-                    .with("parent.name", parentNameComponents.getName())
-                    .with("parent.version", parentNameComponents.getVersion());
-        }
-
-        return builder;
     }
 }

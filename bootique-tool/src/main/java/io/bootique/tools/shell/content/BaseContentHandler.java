@@ -35,7 +35,7 @@ abstract class BaseContentHandler extends ContentHandler implements BuildSystemH
 
     Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String bqVersion = configService.get(ConfigService.BQ_VERSION);
-        return Properties.builder()
+        Properties.Builder parent = Properties.builder()
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
@@ -45,6 +45,7 @@ abstract class BaseContentHandler extends ContentHandler implements BuildSystemH
                 .with("parent", parentFile != null)
                 .with("parent.path", parentFile != null ? parentFile.toString() : null)
                 .with("output.path", outputRoot);
+        return additionalProperties(parent, components, outputRoot, parentFile);
     }
 
     @Override
