@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set GRAALVM_VERSION=19.3.1
+GRAALVM_VERSION=19.3.1
 curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
 tar zxf graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
 sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /Library/Java/JavaVirtualMachines
