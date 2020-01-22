@@ -20,7 +20,7 @@ image: Visual Studio 2015
 
 build_script:
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - mvn clean package -Pnative-image,assembly
+  - mvn package -Pnative-image,assembly -DskipTests
 
 before_deploy:
   - ps: |
@@ -42,7 +42,7 @@ deploy:
   - provider: BinTray
     username: ntimofeev
     api_key:
-      secure: NEED to ENCRYPT BY APPVEYOR
+      secure: 3vbPJtvcEij01jDU7EopnQT1JGnC1lLRyX3H9yXBxSVeJkHCbVNTIpk4DYvrAPa/
     subject: bootique
     repo: bq
     package: bq
