@@ -20,7 +20,7 @@ image: Visual Studio 2015
 
 build_script:
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - mvn package -DskipTests
+  - mvn package -Pnative-image,assembly -DskipTests
 
 before_deploy:
   - ps: |
@@ -54,7 +54,6 @@ deploy:
       APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
 
 cache:
-  - C:\maven\ -> pom.xml
   - C:\Users\appveyor\.m2\ -> pom.xml
   - C:\Program Files\GraalVM -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
