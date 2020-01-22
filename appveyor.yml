@@ -13,8 +13,8 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 init:
-  - cinst graalvm
-  - set PATH=C:\Program Files\GraalVM\graalvm-ce-19.1.0\bin;%PATH%
+  - cinst graalvm-java8
+  - set PATH=C:\Program Files\GraalVM\graalvm-ce-java8-19.3.0\bin;%PATH%
 
 image: Visual Studio 2015
 
@@ -52,6 +52,12 @@ deploy:
     explode: true
     on:
       APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
+
+cache:
+  - C:\maven\ -> pom.xml
+  - C:\Users\appveyor\.m2\ -> pom.xml
+  - C:\Program Files\GraalVM -> appveyor.yml
+  - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
 after_deploy:
   - ps: |

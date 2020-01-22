@@ -13,11 +13,13 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-curl -OL https://github.com/oracle/graal/releases/download/vm-19.1.1/graalvm-ce-darwin-amd64-19.1.1.tar.gz
-tar zxf graalvm-ce-darwin-amd64-19.1.1.tar.gz
-sudo mv graalvm-ce-19.1.1 /Library/Java/JavaVirtualMachines
+
+set GRAALVM_VERSION=19.3.1
+curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
+tar zxf graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
+sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /Library/Java/JavaVirtualMachines
 /usr/libexec/java_home -v 1.8
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-19.1.1/Contents/Home
+export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java8-${GRAALVM_VERSION}/Contents/Home
 export PATH=${JAVA_HOME}/bin:$PATH
 ${JAVA_HOME}/bin/gu install native-image
 

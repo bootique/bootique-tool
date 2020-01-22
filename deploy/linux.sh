@@ -13,10 +13,12 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-curl -OL https://github.com/oracle/graal/releases/download/vm-19.1.1/graalvm-ce-linux-amd64-19.1.1.tar.gz
-tar zxf graalvm-ce-linux-amd64-19.1.1.tar.gz
-sudo mv graalvm-ce-19.1.1 /usr/lib/jvm/
-export JAVA_HOME=/usr/lib/jvm/graalvm-ce-19.1.1
+
+set GRAALVM_VERSION=19.3.1
+curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-linux-amd64-${GRAALVM_VERSION}.tar.gz
+tar zxf graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
+sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /usr/lib/jvm/
+export JAVA_HOME=/usr/lib/jvm/graalvm-ce-java8-${GRAALVM_VERSION}
 export PATH=${JAVA_HOME}/bin:$PATH
 ${JAVA_HOME}/bin/gu install native-image
 java -version
