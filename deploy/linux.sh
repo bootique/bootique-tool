@@ -58,7 +58,8 @@ DEB_PACK=$(find . -type f -name 'bq-*.deb')
 echo ${DEB_PACK}
 cp ${DEB_PACK} ../bootique-tool/target/
 
-cd ../bootique-tool/target
+cd ../bootique-tool/target || exit 1
+pwd
 
 # convert to rpm
 sudo apt-get update
