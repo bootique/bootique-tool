@@ -50,6 +50,7 @@ before_deploy:
 
 
 deploy:
+  # MacOS version deploy
   - provider: bintray
     file: deploy/deploy-mac-config.json
     user: ntimofeev
@@ -62,6 +63,8 @@ deploy:
       branch: master
       condition: $TRAVIS_OS_NAME == "osx"
       tags: true
+
+  # DEB version deploy
   - provider: bintray
     file: deploy/deploy-deb-config.json
     user: ntimofeev
@@ -74,6 +77,8 @@ deploy:
       branch: master
       condition: $TRAVIS_OS_NAME == "linux"
       tags: true
+
+  # RPM version deploy
   - provider: bintray
     file: deploy/deploy-rpm-config.json
     user: ntimofeev

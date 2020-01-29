@@ -23,4 +23,4 @@ export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java8-${GRAALVM_VE
 export PATH=${JAVA_HOME}/bin:$PATH
 ${JAVA_HOME}/bin/gu install native-image
 
-mvn package -Pnative-image,assembly
+mvn package -Pnative-image,assembly || exit 1

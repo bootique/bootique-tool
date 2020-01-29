@@ -14,12 +14,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-cd ../target || exit
+cd bootique-tool/target || exit 1
 
 NAME=$(basename $(find . -type f -name 'bq-*.jar'))
 VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)
 
-cd ../deploy || exit
+cd ../../deploy || exit 1
 
 sed -i '.bak' "s/template_version/$VERSION/g" deploy-mac-config.json
 sed -i '.bak' "s/template_tag/$VERSION/g" deploy-mac-config.json
+
+cd ..

@@ -27,7 +27,7 @@
         "deb_component": "main",
         "deb_architecture": "amd64"}
     },
-    {"includePattern": "bootique-tool/target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
+    {"includePattern": "bootique-tool\/target\/(bq-.*\\.jar)", "uploadPattern": "/$1"}
   ],
   "publish": true
 }
