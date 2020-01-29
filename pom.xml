@@ -28,7 +28,7 @@
 
     <groupId>io.bootique.tools</groupId>
     <artifactId>bootique-tool-parent</artifactId>
-    <version>0.92-SNAPSHOT</version>
+    <version>0.92</version>
 
     <packaging>pom</packaging>
 
@@ -46,7 +46,7 @@
         <connection>scm:git:https://github.com/bootique/bootique-tool.git</connection>
         <developerConnection>scm:git:https://github.com/bootique/bootique-tool.git</developerConnection>
         <url>https://github.com/bootique/bootique-tool</url>
-        <tag>HEAD</tag>
+        <tag>0.92</tag>
     </scm>
 
     <modules>
