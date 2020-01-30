@@ -26,15 +26,12 @@ build_script:
 before_deploy:
   - ps: |
       # Create Chocolately Package
+      Push-AppveyorArtifact ".\bootique-tool\target\bq.exe"
+      Push-AppveyorArtifact ".\bootique-tool\target\bq-0.93.zip"
 
-      # Because the bits need to be signed by MSFT, we are no longer using
-      # the compiled version, but instead we'll use the one from the WDK.
-      # The only problem is that the WDK versions aren't signed by MSFT either.
+      Copy-Item -Path .\bootique-tool\target\bq.exe -Destination .\release-win.portable\bq.exe
 
-      Copy-Item -Path .\bootique-tool\target\bq.exe `
-        -Destination .\release-test.portable\bq.exe
-
-      Set-Location -Path .\release-test.portable\
+      Set-Location -Path .\release-win.portable\
       (Get-Content '.\bq.portable.nuspec' -Raw).Replace("<version>1.0</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME)</version>") | Out-File '.\bq.portable.nuspec'
       Choco Pack
       Push-AppveyorArtifact ".\bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg"
@@ -51,8 +48,8 @@ deploy:
     publish: true
     override: true
     explode: true
-    on:
-      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
+#    on:
+#      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
 
 cache:
   - C:\Users\appveyor\.m2\ -> pom.xml

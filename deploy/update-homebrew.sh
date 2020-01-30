@@ -15,17 +15,17 @@
 # limitations under the License.
 NAME=$(basename $(find . -type f -name 'bq-*.zip'))
 echo ${NAME}
-mkdir temp-homebrew
 
-CHECKSUM=$(echo "$(shasum -a 256 target/${NAME})" | awk '{print $1;}')
-echo ${CHECKSUM}
+CHECKSUM=$(echo "$(shasum -a 256 bootique-tool/target/${NAME})" | awk '{print $1;}')
+echo "New checksum: ${CHECKSUM}"
 
-cd temp-homebrew || exit
+mkdir temp-homebrew && cd temp-homebrew || exit
 git clone https://github.com/bootique-tools/homebrew-repo
 cd homebrew-repo || exit
 git remote add origin-deploy https://${GITHUB_TOKEN}@github.com/bootique-tools/homebrew-repo.git
 cd Formula || exit
 
+echo "====== Existing homebrew recipe: ======"
 cat bq.rb
 
 PREV_NAME=$(grep -o 'file_path=.*$' bq.rb | cut -c11-)
@@ -34,13 +34,13 @@ PREV_NAME=${PREV_NAME%?}
 PREV_CHECKSUM_FROM_FILE=$(grep -o 'sha256.*$' bq.rb | cut -c9-)
 PREV_CHECKSUM=${PREV_CHECKSUM_FROM_FILE%?}
 
-echo ${PREV_NAME}
-echo ${PREV_CHECKSUM}
+echo "Prev name: ${PREV_NAME}"
+echo "Prev checksum: ${PREV_CHECKSUM}"
 
 sed -i '.bak' "s/$PREV_NAME/$NAME/g" bq.rb
-
 sed -i '.bak' "s/$PREV_CHECKSUM/$CHECKSUM/g" bq.rb
 
+echo "====== Updated homebrew recipe: ======"
 cat bq.rb
 
 git add .
