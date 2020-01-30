@@ -51,7 +51,7 @@ mkdir -p packageroot/usr/bin
 cp ${PACK_NAME} packageroot/usr/bin/
 dpkg-deb -b packageroot ${PACK_NAME}-${VERSION}.deb || exit 1
 
-sudo dpkg -i ./${PACK_NAME}-${VERSION}.deb
+sudo dpkg -i --force-overwrite ./${PACK_NAME}-${VERSION}.deb
 sudo apt-get install -f
 
 DEB_PACK=$(find . -type f -name 'bq-*.deb')
@@ -64,7 +64,7 @@ pwd
 # convert to rpm
 sudo apt-get update
 sudo apt-get install rpm ruby ruby-dev rubygems build-essential
-gem install --no-ri --no-rdoc fpm || exit 1
+gem install --no-document fpm || exit 1
 
 fpm -t rpm -s deb ${PACK_NAME}-${VERSION}.deb || exit 1
 
