@@ -48,8 +48,8 @@ deploy:
     publish: true
     override: true
     explode: true
-#    on:
-#      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
+    on:
+      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
 
 cache:
   - C:\Users\appveyor\.m2\ -> pom.xml
