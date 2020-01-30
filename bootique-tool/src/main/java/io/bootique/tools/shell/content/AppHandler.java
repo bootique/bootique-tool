@@ -21,8 +21,6 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 
-import javax.inject.Inject;
-
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
@@ -34,9 +32,6 @@ import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
 abstract class AppHandler extends BaseContentHandler implements BuildSystemHandler {
-
-    @Inject
-    private ConfigService configService;
 
     public AppHandler() {
         // java sources

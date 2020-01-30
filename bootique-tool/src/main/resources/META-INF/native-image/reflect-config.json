@@ -200,6 +200,10 @@
   "allDeclaredFields":true
 },
 {
+  "name":"io.bootique.tools.shell.content.BaseContentHandler",
+  "allDeclaredFields":true
+},
+{
   "name":"io.bootique.tools.shell.content.AppHandler",
   "allDeclaredFields":true
 },
