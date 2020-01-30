@@ -25,14 +25,14 @@ build_script:
 
 before_deploy:
   - ps: |
-      # Create Chocolately Package
+      # Create Chocolatey Package
       Push-AppveyorArtifact ".\bootique-tool\target\bq.exe"
-      Push-AppveyorArtifact ".\bootique-tool\target\bq-0.93.zip"
 
+      New-Item -Path . -Name "release-win.portable" -ItemType "directory"
       Copy-Item -Path .\bootique-tool\target\bq.exe -Destination .\release-win.portable\bq.exe
+      (Get-Content '.\deploy\bq.portable.nuspec' -Raw).Replace("<version>1.0</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME)</version>") | Out-File '.\release-win.portable\bq.portable.nuspec'
 
       Set-Location -Path .\release-win.portable\
-      (Get-Content '.\bq.portable.nuspec' -Raw).Replace("<version>1.0</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME)</version>") | Out-File '.\bq.portable.nuspec'
       Choco Pack
       Push-AppveyorArtifact ".\bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg"
 
@@ -48,8 +48,8 @@ deploy:
     publish: true
     override: true
     explode: true
-#    on:
-#      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
+    on:
+      APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
 
 cache:
   - C:\Users\appveyor\.m2\ -> pom.xml
