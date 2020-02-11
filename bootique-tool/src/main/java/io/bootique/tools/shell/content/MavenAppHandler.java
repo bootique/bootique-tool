@@ -38,7 +38,7 @@ public class MavenAppHandler extends AppHandler implements MavenHandler {
         );
         // assembly.xml
         addPipeline(TemplatePipeline.builder()
-                .source("src/main/resources/assembly.xml")
+                .source("assembly.xml")
                 .filter((name, properties) ->
                         properties.get(ConfigService.PACKAGING.getName()).equals(Packaging.ASSEMBLY))
         );
