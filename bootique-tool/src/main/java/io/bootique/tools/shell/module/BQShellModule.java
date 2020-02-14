@@ -120,11 +120,11 @@ public class BQShellModule implements BQModule {
     @Provides
     @Singleton
     CommandManager provideCommandManager(Set<Command> commands,
-                                         Injector injector,
+                                         HelpCommand helpCommand,
                                          @DefaultCommand Command defaultCommand) {
         return new CommandManagerBuilder<>(commands)
                 .defaultCommand(Optional.of(defaultCommand))
-                .helpCommand(injector.getInstance(HelpCommand.class))
+                .helpCommand(helpCommand)
                 .build();
     }
 
