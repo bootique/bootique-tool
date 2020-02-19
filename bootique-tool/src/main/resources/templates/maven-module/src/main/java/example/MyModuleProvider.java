@@ -9,11 +9,11 @@ import com.google.inject.Module;
 import io.bootique.BQModuleProvider;
 {{/bq.di}}
 
-public class MyModuleProvider implements BQModuleProvider {
+public class {{module.name}}Provider implements BQModuleProvider {
 
     @Override
     public {{#bq.di}}BQ{{/bq.di}}Module module() {
-        return new MyModule();
+        return new {{module.name}}();
     }
 
 }

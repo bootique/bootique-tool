@@ -25,8 +25,6 @@ import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.BQModuleProviderProcessor;
-import io.bootique.tools.shell.template.processor.BqModuleNameProcessor;
 import io.bootique.tools.shell.template.processor.BqModulePathProcessor;
 import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
@@ -37,13 +35,12 @@ abstract class ModuleHandler extends BaseContentHandler implements BuildSystemHa
     public ModuleHandler() {
         // java sources
         addPipeline(TemplatePipeline.builder()
-                .source("src/main/java/example/MyModule.java")
-                .source("src/main/java/example/MyModuleProvider.java")
-                .source("src/test/java/example/MyModuleProviderTest.java")
-                .processor(new JavaPackageProcessor())
-                .processor(new BqModulePathProcessor())
-                .processor(new BqModuleNameProcessor())
-                .processor(new MustacheTemplateProcessor())
+                        .source("src/main/java/example/MyModule.java")
+                        .source("src/main/java/example/MyModuleProvider.java")
+                        .source("src/test/java/example/MyModuleProviderTest.java")
+                        .processor(new JavaPackageProcessor())
+                        .processor(new BqModulePathProcessor())
+                        .processor(new MustacheTemplateProcessor())
         );
 
         // folders
@@ -55,8 +52,8 @@ abstract class ModuleHandler extends BaseContentHandler implements BuildSystemHa
         );
 
         addPipeline(TemplatePipeline.builder()
-                .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
-                .processor(new BQModuleProviderProcessor())
+                        .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
+                        .processor(new MustacheTemplateProcessor())
         );
     }
 
