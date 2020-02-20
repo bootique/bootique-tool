@@ -52,26 +52,6 @@ public class JavaPackageProcessorTest {
     }
 
     @Test
-    public void processContent() {
-        String content = "package example.service;\n" +
-                "import example.service.io.MyClass;" +
-                "import example.service.MyClass;" +
-                "public class JavaPackageProcessorTest {\n" +
-                "    private JavaPackageProcessor processor;" +
-                "}";
-
-        String expected = "package example.service;\n" +
-                "import io.bootique.test.service.io.MyClass;" +
-                "import io.bootique.test.service.MyClass;" +
-                "public class JavaPackageProcessorTest {\n" +
-                "    private JavaPackageProcessor processor;" +
-                "}";
-
-        String processed = processor.processContent(new Template(Paths.get(""), content), properties);
-        assertEquals(expected, processed);
-    }
-
-    @Test
     public void outputPathSimple() {
         Path path = Paths.get("tpl", "example", "MyClass.java");
         Path out = processor.outputPath(new Template(path, ""), properties);

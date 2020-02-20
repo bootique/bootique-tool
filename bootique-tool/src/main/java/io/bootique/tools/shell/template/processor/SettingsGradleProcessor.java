@@ -39,7 +39,7 @@ public class SettingsGradleProcessor extends ParentFileProcessor {
     }
 
     @Override
-    protected byte[] processParentFile(byte[] content, Charset charset, Properties properties) throws Exception {
+    protected byte[] processParentFile(byte[] content, Charset charset, Properties properties) {
         String moduleDefinition = "\ninclude '" + properties.get("project.name") + "'";
         ByteBuffer byteBuffer = charset.encode(moduleDefinition);
         byte[] moduleDefinitionBinary = new byte[byteBuffer.limit()];

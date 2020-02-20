@@ -9,7 +9,7 @@ import com.google.inject.Binder;
 import com.google.inject.Module;
 {{/bq.di}}
 
-public class MyModule implements {{#bq.di}}BQ{{/bq.di}}Module {
+public class {{module.name}} implements {{#bq.di}}BQ{{/bq.di}}Module {
 
     @Override
     public void configure(Binder binder) {

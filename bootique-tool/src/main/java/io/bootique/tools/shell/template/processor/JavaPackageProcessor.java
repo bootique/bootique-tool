@@ -33,18 +33,7 @@ public class JavaPackageProcessor implements TemplateProcessor {
     @Override
     public Template process(Template template, Properties properties) {
         return template
-                .withPath(outputPath(template, properties))
-                .withContent(processContent(template, properties));
-    }
-
-    String processContent(Template template, Properties properties) {
-        String content = template.getContent();
-        content = replaceImportDeclaration(content, properties);
-        return content;
-    }
-
-    String replaceImportDeclaration(String content, Properties properties) {
-        return content.replaceAll("\\bimport " + TEMPLATE_PACKAGE, "import " + properties.get("java.package"));
+                .withPath(outputPath(template, properties));
     }
 
     Path outputPath(Template template, Properties properties) {
