@@ -25,7 +25,6 @@ import java.util.List;
 import javax.inject.Inject;
 
 import io.bootique.command.CommandOutcome;
-import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.TemplatePipeline;
 
