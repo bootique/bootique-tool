@@ -32,7 +32,6 @@ import javax.inject.Inject;
 
 public class FileConfigService implements ConfigService {
 
-    @Inject
     private Shell shell;
 
     private final Path configFile;
@@ -40,18 +39,16 @@ public class FileConfigService implements ConfigService {
     private final Map<ConfigParameter<?>, Object> storage;
 
     @Inject
-    public FileConfigService(@ConfigDir Path configDirectory) {
-        configFile = configDirectory.resolve("bq.config");
-        storage = new HashMap<>();
-        if(Files.exists(configFile)) {
-            if(Files.isReadable(configFile)) {
-                try {
-                    Files.readAllLines(configFile)
-                            .forEach(this::parseLine);
-                } catch (IOException ex) {
-                    shell.println("Unable to read config file");
-                    shell.println(ex);
-                }
+    public FileConfigService(Shell shell, @ConfigDir Path configDirectory) {
+        this.shell = shell;
+        this.configFile = configDirectory.resolve("bq.config");
+        this.storage = new HashMap<>();
+        if(Files.exists(configFile) && Files.isReadable(configFile)) {
+            try {
+                Files.readAllLines(configFile).forEach(this::parseLine);
+            } catch (IOException ex) {
+                shell.println("Unable to read config file");
+                shell.println(ex);
             }
         }
     }
