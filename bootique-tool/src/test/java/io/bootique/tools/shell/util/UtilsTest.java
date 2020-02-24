@@ -29,7 +29,6 @@ public class UtilsTest {
     public void moduleNameFromArtifactName() {
         String moduleName = Utils.moduleNameFromArtifactName("bootique-tool-test-artifact");
         assertEquals("BootiqueToolTestArtifact", moduleName);
-        System.out.println(Utils.moduleNameFromArtifactName("bootique-tool-test-artifact"));
     }
 
     @Test(expected = StringIndexOutOfBoundsException.class)
