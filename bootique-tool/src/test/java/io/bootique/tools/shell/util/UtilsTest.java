@@ -17,25 +17,30 @@
  *   under the License.
  */
 
-package io.bootique.tools.shell.template.processor;
+package io.bootique.tools.shell.util;
 
-import java.nio.file.Paths;
-
-import io.bootique.tools.shell.template.Properties;
-import io.bootique.tools.shell.template.Template;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
 
-public class MustacheTemplateProcessorTest {
+public class UtilsTest {
 
     @Test
-    public void process() {
-        MustacheTemplateProcessor processor = new MustacheTemplateProcessor();
-        Template template = new Template(Paths.get("test"), "Hello {{name}}!");
-        Properties properties = Properties.builder().with("name", "world").build();
-
-        Template processed = processor.process(template, properties);
-        assertEquals("Hello world!", processed.getContent());
+    public void moduleNameFromArtifactName() {
+        String moduleName = Utils.moduleNameFromArtifactName("bootique-tool-test-artifact");
+        assertEquals("BootiqueToolTestArtifact", moduleName);
+        System.out.println(Utils.moduleNameFromArtifactName("bootique-tool-test-artifact"));
     }
+
+    @Test(expected = StringIndexOutOfBoundsException.class)
+    public void moduleNameFromNullLengthArtifactName() {
+        Utils.moduleNameFromArtifactName("");
+    }
+
+    @Test
+    public void moduleNameFromArtifactNameInSingleWord() {
+        String moduleName = Utils.moduleNameFromArtifactName("test");
+        assertEquals("Test", moduleName);
+    }
+
 }
