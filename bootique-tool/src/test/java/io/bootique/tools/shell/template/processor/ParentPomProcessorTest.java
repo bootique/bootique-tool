@@ -112,8 +112,6 @@ public class ParentPomProcessorTest {
         byte[] fileContent = POM_XML.getBytes(StandardCharsets.UTF_8);
         Charset charset = processor.detectCharset(fileContent);
 
-        System.out.println(charset);
-
         assertEquals(Charset.defaultCharset(), charset);
     }
 
