@@ -67,6 +67,11 @@ public class GradleAppHandler extends AppHandler implements GradleHandler {
                 .source("settings.gradle")
                 .processor(new GradleProcessor())
         );
+
+        // Dockerfile
+        addPipeline(TemplatePipeline.builder()
+                .source("Dockerfile")
+                .processor(new MustacheTemplateProcessor()));
     }
 
     @Override
