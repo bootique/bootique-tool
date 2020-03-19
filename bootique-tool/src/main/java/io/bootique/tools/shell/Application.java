@@ -28,9 +28,13 @@ import io.bootique.Bootique;
 public class Application {
 
     public static void main(String[] args) {
-        // TODO: can we detect this in native mode?
+        // see https://github.com/fusesource/jansi/issues/162
         if(System.getProperty("sun.arch.data.model") == null) {
-            System.setProperty("sun.arch.data.model", "64");
+            String arch = System.getProperty("os.arch");
+            String vm = System.getProperty("java.vm.name");
+            if (arch.endsWith("64") && "Substrate VM".equals(vm)) {
+                System.setProperty("sun.arch.data.model", "64");
+            }
         }
 
         // turn JLine logging off
