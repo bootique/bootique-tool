@@ -42,6 +42,10 @@ public class MavenAppHandler extends AppHandler implements MavenHandler {
                 .filter((name, properties) ->
                         properties.get(ConfigService.PACKAGING.getName()).equals(Packaging.ASSEMBLY))
         );
+        // Dockerfile
+        addPipeline(TemplatePipeline.builder()
+                .source("Dockerfile")
+                .processor(new MustacheTemplateProcessor()));
     }
 
     @Override
