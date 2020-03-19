@@ -14,12 +14,12 @@
 # limitations under the License.
 init:
   - cinst graalvm-java8
-  - set PATH=C:\Program Files\GraalVM\graalvm-ce-java8-19.3.0\bin;%PATH%
-  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-19.3.0\
+  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.0.0\
 
 image: Visual Studio 2015
 
 build_script:
+  - mvn -version
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
   - mvn package -Pnative-image,assembly -DskipTests
 
