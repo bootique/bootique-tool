@@ -48,4 +48,18 @@ mvn package -Pnative-image
 ```
 The binary is created at `bootique-tool/target/bq`
   
+## TODO: Windows binary distribution
+
+To publish on [chocolatey community portal](https://chocolatey.org/community) we need the following:
+
+- [ ] check win binary actually works
+- [ ] add app icon, see https://github.com/chocolatey/choco/wiki/CreatePackages#package-icon-guidelines
+- [ ] check nuspec file, see https://github.com/chocolatey/package-validator/wiki
+- [ ] add to the final bundle:
+    - [ ] license text 
+    - [ ] verification instructions 
+    - [ ] app icon 
+- [ ] check https://github.com/chocolatey/package-verifier/wiki 
+
+
 
