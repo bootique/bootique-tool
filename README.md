@@ -60,6 +60,7 @@ To publish on [chocolatey community portal](https://chocolatey.org/community) we
     - [ ] verification instructions 
     - [ ] app icon 
 - [ ] check https://github.com/chocolatey/package-verifier/wiki 
+- [ ] enable deployment in AppVeyor
 
 
 
