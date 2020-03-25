@@ -28,6 +28,7 @@ bq is a command line interactive tool that allows creating and managing Bootique
 === MacOS
 
 `bq` available via Homebrew package manager. All you need in order to install `bq` on MacOS is to run:
+
 [source,bash]
 ----
 brew install bootique-tools/repo/bq
@@ -39,12 +40,14 @@ brew install bootique-tools/repo/bq
 To install `bq` on CentOS you need to
 
 * add bintray repo to your yum sources:
++
 [source,shell]
 ----
 wget https://bintray.com/bootique/bq-rpm/rpm -O bintray-bootique-bq-rpm.repo
 sudo mv bintray-bootique-bq-rpm.repo /etc/yum.repos.d/
 ----
 * run:
++
 [source,bash]
 ----
 yum install bq
@@ -54,11 +57,13 @@ yum install bq
 Installation process is similar to CentOS.
 
 * Add bintray repo to apt sources:
++
 [source,bash]
 ----
 echo "deb [trusted=yes] https://dl.bintray.com/bootique/bq-deb vivid main" | sudo tee -a /etc/apt/sources.list
 ----
 * Install:
++
 [source,bash]
 ----
 apt-get update
