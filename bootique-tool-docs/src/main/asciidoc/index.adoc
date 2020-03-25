@@ -21,14 +21,14 @@
 
 == What is bq?
 
-bq is an interactive tool to create and manage Bootique projects.
+bq is a command line interactive tool that allows creating and managing Bootique projects.
 
 == Installation
 
-=== Mac
+=== MacOS
 
-All you need to install bq on Mac is to run:
-[source,shell script]
+`bq` available via Homebrew package manager. All you need in order to install `bq` on MacOS is to run:
+[source,bash]
 ----
 brew install bootique-tools/repo/bq
 ----
@@ -36,27 +36,30 @@ brew install bootique-tools/repo/bq
 === Linux
 
 ==== CentOS
-To install bq on CentOS you need to add bintray repo to your yum sources:
-[source,shell script]
+To install `bq` on CentOS you need to
+
+* add bintray repo to your yum sources:
+[source,shell]
 ----
 wget https://bintray.com/bootique/bq-rpm/rpm -O bintray-bootique-bq-rpm.repo
 sudo mv bintray-bootique-bq-rpm.repo /etc/yum.repos.d/
 ----
-And then run:
-[source,shell script]
+* run:
+[source,bash]
 ----
 yum install bq
 ----
 
 ==== Ubuntu
-Installation algorithm is similar to installation on CentOS.
-Add bintray repo to apt sources:
-[source,shell script]
+Installation process is similar to CentOS.
+
+* Add bintray repo to apt sources:
+[source,bash]
 ----
 echo "deb [trusted=yes] https://dl.bintray.com/bootique/bq-deb vivid main" | sudo tee -a /etc/apt/sources.list
 ----
-And then install:
-[source,shell script]
+* Install:
+[source,bash]
 ----
 apt-get update
 apt-get install bq
@@ -64,106 +67,61 @@ apt-get install bq
 
 === Windows
 
-Chocolatey is require to be installed on your PC.
-Then run:
-[source,shell script]
+Windows binary will be distributed with Chocolatey package manager, but this is not implemented yet.
+For now, you could download `nupkg` directly from https://bintray.com/bootique/bq/bq/view/files[Bintray].
+Use following command to install this package directly:
+
+[source,bash]
 ----
-choco install bq
+choco install bq.portable.{VERSION}.nupkg
 ----
 
-== How to use
+== Usage
 
-Bq tool generates Bootique project or module.
+Running BQ in an interactive mode:
 
-Run bq:
-[source,shell script]
+[source,bash]
 ----
-bq
-----
-
-After it user is getting to bq command line.
-
-Command to show help:
-
-[source,shell script]
-----
-help
+$ bq
 ----
 
-Command to exit:
-[source,shell script]
-----
-exit
-----
+If everything setup correctly you should see welcome banner with some general information about the tool.
+To see all available commands you could use `help` command.
 
-User can create configuration. This configuration will be saved and can be reused in next sessions.
-
-Command to show configs:
-[source,shell script]
-----
-config
-----
-
-Set group-id:
-[source,shell script]
-----
-config group-id io.bootique.test
-----
-
-Set Bootique version to use:
-[source,shell script]
-----
-config bq-version 1.0
-----
-
-Set default toolchain to use. Can be either Maven or Gradle:
-[source,shell script]
-----
-config toolchain maven
-----
+To exit from the `bq` shell run `exit`.
 
 === Maven
-To create new Maven project:
-[source,shell script]
+
+Maven toolchain is set by default.
+
+1. new multimodule project:
++
+[source,bash]
 ----
-new maven app io.bootique.test:bq-test:1.0
-----
-or in a short way:
-[source,shell script]
-----
-new m a io.bootique.test:bq-test:1.0
+new parent io.bootique.test:test:1.0
 ----
 
-To create Maven module:
-[source,shell script]
+2. new runnable app:
++
+[source,bash]
 ----
-new maven module io.bootique.test:bq-test:1.0
+new app io.bootique.test:test-app:1.0
 ----
-or in a short way:
-[source,shell script]
+
+3. new module:
++
+[source,bash]
 ----
-new m m io.bootique.test:bq-test:1.0
+new module io.bootique.test:test-module:1.0
 ----
 
 === Gradle
-To create new Gradle project:
-[source,shell script]
+
+To use Gradle as your build tool you need to set it in `bq` config:
+
+[source,bash]
 ----
-new gradle app io.bootique.test:bq-test:1.0
-----
-or in a short way:
-[source,shell script]
-----
-new g a io.bootique.test:bq-test:1.0
+config toolchain gradle
 ----
 
-To create Gradle module:
-[source,shell script]
-----
-new gradle module io.bootique.test:bq-test:1.0
-----
-or in a short way:
-[source,shell script]
-----
-new g m io.bootique.test:bq-test:1.0
-----
+Available commands are same as in <<Maven>> case.
