@@ -21,12 +21,13 @@ package io.bootique.tools.shell;
 
 import java.util.function.Function;
 
-public interface ConfigService {
+public interface
+ConfigService {
 
     ConfigParameter<Toolchain> TOOLCHAIN
             = new ConfigParameter<>("toolchain", Toolchain.MAVEN, Toolchain::name, Toolchain::byName);
     ConfigParameter<String> JAVA_VERSION
-            = new ConfigParameter<>("java-version", "11", Function.identity(), Function.identity());
+                = new ConfigParameter<>("java-version", JavaVersion.getJavaVersion(), Function.identity(), Function.identity());
     ConfigParameter<String> BQ_VERSION
             = new ConfigParameter<>("bq-version", "1.1", Function.identity(), Function.identity());
     ConfigParameter<String> GROUP_ID
