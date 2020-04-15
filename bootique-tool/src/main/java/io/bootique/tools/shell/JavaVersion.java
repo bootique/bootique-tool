@@ -6,57 +6,67 @@ import java.io.InputStreamReader;
 
 public class JavaVersion {
 
+    private static final String DEFAULT_VERSION = "11";
+
     public static String getJavaVersion() {
+        String version = getJavacVersion();
+        if("".equals(version)) {
+            return DEFAULT_VERSION;
+        }
 
-        String version;
-        String versionError = null;
-        String versionInput = null;
-        String stringInput, stringError, command;
+        int javaMajorVersion = getJavaMajorVersion(version);
+        return String.valueOf(javaMajorVersion);
+    }
 
-        String java_home = System.getenv("JAVA_HOME");
+    static String getJavacVersion() {
+        // output is in form "javac version"
+        String version = readJavacOutput();
+        if(version == null || "".equals(version) || !version.startsWith("javac")) {
+            return "";
+        }
+        String[] versionParts = version.split(" ");
+        if(versionParts.length < 2) {
+            return "";
+        }
+        return versionParts[1];
+    }
 
+    private static String readJavacOutput() {
+        String version = null;
+        String input;
         try {
-            if (java_home != null && !java_home.equals("")) {
-                command = java_home + "/bin/javac -version";
-            } else {
-                command = "javac -version";
-            }
-
-            Process process = Runtime.getRuntime().exec(command);
-
+            Process process = Runtime.getRuntime().exec(getJavacBinary());
             try (BufferedReader bufferedReaderInput = new BufferedReader(new InputStreamReader(process.getInputStream()))) {
-                while ((stringInput = bufferedReaderInput.readLine()) != null) {
-                    versionInput = stringInput;
+                while ((input = bufferedReaderInput.readLine()) != null) {
+                    version = input;
                 }
             }
-
-            try (BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
-                while ((stringError = bufferedReaderError.readLine()) != null) {
-                    versionError = stringError;
+            if(version == null || "".equals(version)) {
+                try (BufferedReader bufferedReaderError = new BufferedReader(new InputStreamReader(process.getErrorStream()))) {
+                    while ((input = bufferedReaderError.readLine()) != null) {
+                        version = input;
+                    }
                 }
             }
-
-        } catch (IOException e) {
-            e.printStackTrace();
+        } catch (IOException ignore) {
         }
-
-        if (versionInput != null && !versionInput.equals("")) {
-            version = versionInput;
-        } else if (versionError != null && !versionError.equals("") && versionError.startsWith("javac")) {
-            version = versionError;
-        } else {
-            version = "11";
-        }
-
-        String[] strings = version.split(" ");
-
-        version = getJavaMajorVersion(strings[1]);
-
         return version;
     }
 
-    private static String getJavaMajorVersion(String versionString) {
-        int index = 0, prevIndex = 0, version = 0;
+    static String getJavacBinary() {
+        String java_home = System.getenv("JAVA_HOME");
+        if (java_home != null && !java_home.equals("")) {
+            return java_home + "/bin/javac -version";
+        }
+
+        return "javac -version";
+    }
+
+    static int getJavaMajorVersion(String versionString) {
+        int index;
+        int prevIndex = 0;
+        int version = 0;
+
         if((index = versionString.indexOf("-")) >= 0) {
             versionString = versionString.substring(0, index);
         }
@@ -73,9 +83,6 @@ public class JavaVersion {
             prevIndex = index + 1;
         }
 
-        if (version < 8) {
-            version = 8;
-        }
-        return String.valueOf(version);
+        return Math.max(version, 8);
     }
 }
