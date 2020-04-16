@@ -97,3 +97,7 @@ after_deploy:
     chmod +x ./deploy/update-homebrew.sh;
     ./deploy/update-homebrew.sh;
     fi
+
+cache:
+  directories:
+    - $HOME/.m2
