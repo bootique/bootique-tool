@@ -19,18 +19,13 @@ init:
 image: Visual Studio 2015
 
 build_script:
-  - mvn -version
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - mvn package -Pnative-image,assembly -DskipTests
+  - mvn package -Pnative-image,assembly-win -DskipTests
 
 before_deploy:
   - ps: |
       # Create Chocolatey Package
-      New-Item -Path . -Name "release-win.portable" -ItemType "directory"
-      Copy-Item -Path .\bootique-tool\target\bq.exe -Destination .\release-win.portable\bq.exe
-      (Get-Content '.\deploy\bq.portable.nuspec' -Raw).Replace("<version>1.0</version>", "<version>$($env:APPVEYOR_REPO_TAG_NAME)</version>") | Out-File '.\release-win.portable\bq.portable.nuspec'
-
-      Set-Location -Path .\release-win.portable\
+      Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
       Choco Pack
       Push-AppveyorArtifact ".\bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg"
 

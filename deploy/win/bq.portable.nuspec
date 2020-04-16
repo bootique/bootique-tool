@@ -3,11 +3,11 @@
   <metadata>
     <id>bq.portable</id>
     <title>bq tool (portable)</title>
-    <version>1.0</version>
+    <version>${project.version}</version>
     <authors>Bootique.io</authors>
-    <summary>bq: Bootique CLI tool</summary>
+    <summary>BQ: Bootique CLI tool</summary>
     <description>
-    bq is an interactive tool to create and manage Bootique projects. See https://bootique.io for more information.
+    BQ is an interactive tool to create and manage Bootique projects. See https://bootique.io for more information.
     </description>
     <projectUrl>https://bootique.io</projectUrl>
     <packageSourceUrl>https://github.com/bootique/bootique-tool</packageSourceUrl>
