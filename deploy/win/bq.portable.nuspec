@@ -2,18 +2,33 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2015/06/nuspec.xsd">
   <metadata>
     <id>bq.portable</id>
-    <title>bq tool (portable)</title>
+    <title>BQ tool (portable)</title>
     <version>${project.version}</version>
     <authors>Bootique.io</authors>
+    <iconUrl>https://cdn.jsdelivr.net/gh/bootique/bootique-io@e5086825f8267f63cf9b879a1a7c921b8cf5ce9d/themes/bootique-theme/static/images/icon-black-128x128.png</iconUrl>
     <summary>BQ: Bootique CLI tool</summary>
     <description>
-    BQ is an interactive tool to create and manage Bootique projects. See https://bootique.io for more information.
+    BQ is an interactive tool to create and manage Bootique projects.
+
+    ## About Bootique Java Framework
+    Bootique is a minimally opinionated java launcher and integration technology.
+    It is intended for building container-less runnable Java applications.
+    With Bootique you can create REST services, webapps, jobs, DB migration tasks, etc. and run them as if they were simple commands.
+    No JavaEE container required!
+    Among other things Bootique is an ideal platform for Java microservices,
+    as it allows you to create a fully-functional app with minimal setup.
+
+    See https://bootique.io for more information about Bootique.
     </description>
+    <docsUrl>https://bootique.io/docs/latest/bootique-tool-docs/</docsUrl>
+    <mailingListUrl>https://groups.google.com/forum/#!forum/bootique-user</mailingListUrl>
+    <bugTrackerUrl>https://github.com/bootique/bootique-tool/issues</bugTrackerUrl>
     <projectUrl>https://bootique.io</projectUrl>
     <packageSourceUrl>https://github.com/bootique/bootique-tool</packageSourceUrl>
     <projectSourceUrl>https://github.com/bootique/bootique-tool</projectSourceUrl>
-    <tags>CLI,bootique</tags>
-    <licenseUrl>https://github.com/bootique/bootique-tool/blob/master/LICENSE</licenseUrl>
+    <licenseUrl>https://raw.githubusercontent.com/bootique/bootique-tool/master/LICENSE</licenseUrl>
+    <copyright>2019-${current.year} the original author or authors</copyright>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <tags>bootique cli java framework development</tags>
   </metadata>
 </package>

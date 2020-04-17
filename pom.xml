@@ -44,6 +44,7 @@
         <mockito.version>3.3.0</mockito.version>
     </properties>
 
+    <inceptionYear>2019</inceptionYear>
     <scm>
         <connection>scm:git:https://github.com/bootique/bootique-tool.git</connection>
         <developerConnection>scm:git:https://github.com/bootique/bootique-tool.git</developerConnection>
@@ -99,4 +100,27 @@
             </dependency>
         </dependencies>
     </dependencyManagement>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.12</version>
+                <executions>
+                    <execution>
+                        <id>timestamp-property</id>
+                        <goals>
+                            <goal>timestamp-property</goal>
+                        </goals>
+                        <phase>validate</phase>
+                        <configuration>
+                            <name>current.year</name>
+                            <pattern>yyyy</pattern>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
 </project>
