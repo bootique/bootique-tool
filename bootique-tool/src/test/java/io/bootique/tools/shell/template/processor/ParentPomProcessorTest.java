@@ -211,6 +211,6 @@ public class ParentPomProcessorTest {
 
         assertNotNull(process.getPath());
         assertNotNull(process.getContent());
-        assertEquals("test/path/TestPom.xml", process.getPath().toString());
+        assertEquals(Paths.get("test/path/TestPom.xml"), process.getPath());
     }
 }

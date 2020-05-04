@@ -50,7 +50,7 @@ public class BqModulePathProcessorTest {
 
         Template result = processor.process(template, properties);
 
-        assertEquals("/ParentTest/Test/ChildTest/AnotherTest/TestClass.java", result.getPath().toString());
+        assertEquals(Paths.get("/ParentTest/Test/ChildTest/AnotherTest/TestClass.java"), result.getPath());
         assertEquals(template.getContent(), result.getContent());
         assertFalse(result.getPath().toString().contains("MyModule"));
     }
@@ -77,7 +77,7 @@ public class BqModulePathProcessorTest {
 
         Template result = processor.process(template, properties);
 
-        assertEquals("/", result.getPath().toString());
+        assertEquals(Paths.get("/"), result.getPath());
         assertEquals(template.getContent(), result.getContent());
         assertFalse(result.getPath().toString().contains("Test"));
     }

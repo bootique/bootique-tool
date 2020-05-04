@@ -129,7 +129,7 @@ public class SettingsGradleProcessorTest {
 
         assertNotNull(process.getPath());
         assertNotNull(process.getContent());
-        assertEquals("test/path/settings.gradle", process.getPath().toString());
+        assertEquals(Paths.get("test/path/settings.gradle"), process.getPath());
     }
 
 

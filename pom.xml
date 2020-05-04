@@ -57,6 +57,19 @@
         <module>bootique-tool-docs</module>
     </modules>
 
+    <repositories>
+        <repository>
+            <id>bootique-snapshots</id>
+            <url>https://oss.jfrog.org/artifactory/libs-snapshot</url>
+            <releases>
+                <enabled>false</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+    </repositories>
+
     <dependencyManagement>
         <dependencies>
             <dependency>
