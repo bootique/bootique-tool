@@ -27,7 +27,6 @@ import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.GradleProcessor;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
 public class GradleModuleHandler extends ModuleHandler implements GradleHandler {
@@ -64,7 +63,7 @@ public class GradleModuleHandler extends ModuleHandler implements GradleHandler 
         addPipeline(TemplatePipeline.builder()
                 .filter((s, properties) -> !properties.get("parent", false))
                 .source("settings.gradle")
-                .processor(new GradleProcessor())
+                .processor(new MustacheTemplateProcessor())
         );
     }
 
