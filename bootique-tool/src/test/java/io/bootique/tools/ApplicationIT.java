@@ -49,7 +49,7 @@ public class ApplicationIT {
         CommandOutcome commandOutcome = factory
                 .autoLoadModules()
                 .app("--help")
-                .module(new BQModuleProvider() {
+                .moduleProvider(new BQModuleProvider() {
                     @Override
                     public BQModule module() {
                         return b -> b.bind(Terminal.class).toInstance(terminal);
@@ -77,7 +77,7 @@ public class ApplicationIT {
         CommandOutcome commandOutcome = factory
                 .autoLoadModules()
                 .app("--new", "parent", "test:test-parent")
-                .module(new BQModuleProvider() {
+                .moduleProvider(new BQModuleProvider() {
                     @Override
                     public BQModule module() {
                         return b -> b.bind(Terminal.class).toInstance(terminal);
@@ -101,7 +101,7 @@ public class ApplicationIT {
         CommandOutcome commandOutcome = factory
                 .autoLoadModules()
                 .app("--pwd")
-                .module(new BQModuleProvider() {
+                .moduleProvider(new BQModuleProvider() {
                     @Override
                     public BQModule module() {
                         return b -> b.bind(Terminal.class).toInstance(terminal);
