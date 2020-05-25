@@ -72,14 +72,21 @@ apt-get install bq
 
 === Windows
 
-Windows binary will be distributed with Chocolatey package manager, but this is not implemented yet.
-For now, you could download `nupkg` directly from https://bintray.com/bootique/bq/bq/view/files[Bintray].
-Use following command to install this package directly:
+Windows binary is distributed with https://chocolatey.org[Chocolatey] package manager.
+Use following command to install `bq.portable` package:
 
 [source,bash]
 ----
-choco install bq.portable.{VERSION}.nupkg
+choco install bq.portable
 ----
+
+And here is how to upgrade `bq` to the latest version:
+
+[source,bash]
+----
+choco upgrade bq.portable
+----
+
 
 == Usage
 
