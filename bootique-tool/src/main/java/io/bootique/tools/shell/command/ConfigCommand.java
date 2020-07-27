@@ -34,12 +34,7 @@ import io.bootique.command.CommandOutcome;
 import io.bootique.command.CommandWithMetadata;
 import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
-import io.bootique.tools.shell.ConfigParameter;
-import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.Formatter;
-import io.bootique.tools.shell.Packaging;
-import io.bootique.tools.shell.Shell;
-import io.bootique.tools.shell.Toolchain;
+import io.bootique.tools.shell.*;
 import org.jline.builtins.Completers;
 
 import static org.jline.builtins.Completers.TreeCompleter.node;
@@ -60,6 +55,7 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         SUPPORTED_PARAMS.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
         SUPPORTED_PARAMS.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
         SUPPORTED_PARAMS.put(ConfigService.PACKAGING,    "App packaging method. Can be either Shade or Assembly.");
+        SUPPORTED_PARAMS.put(ConfigService.CONTAINER,    "Container for app. Can be either Docker or Jib.");
     }
 
     public ConfigCommand() {
@@ -152,6 +148,16 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
             }
         }
 
+        if(ConfigService.CONTAINER.equals(param)) {
+            Container container = Container.byName(value);
+            if(container == null) {
+                return CommandOutcome.failed(-1, "Unsupported packaging @|bold " + value
+                        + "|@. Supported: " + Arrays.stream(Container.values())
+                        .map(s -> s.name().toLowerCase())
+                        .collect(Collectors.joining(", ")));
+            }
+        }
+
         return CommandOutcome.succeeded();
     }
 
@@ -178,7 +184,9 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                 node(ConfigService.PACKAGING.getName(),
                         node(Packaging.ASSEMBLY.name().toLowerCase()), node(Packaging.SHADE.name().toLowerCase())),
                 node(ConfigService.TOOLCHAIN.getName(),
-                        node(Toolchain.MAVEN.name().toLowerCase()), node(Toolchain.GRADLE.name().toLowerCase()))
+                        node(Toolchain.MAVEN.name().toLowerCase()), node(Toolchain.GRADLE.name().toLowerCase())),
+                node(ConfigService.CONTAINER.getName(),
+                        node(Container.DOCKER.name().toLowerCase()), node(Container.JIB.name().toLowerCase()))
         );
     }
 }

@@ -1,6 +1,7 @@
 package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.Container;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import org.junit.Before;
@@ -41,6 +42,7 @@ public class MavenAppHandlerIT {
             "        <surefire.plugin.version>2.22.2</surefire.plugin.version>\n" +
             "        <failsafe.plugin.version>2.22.2</failsafe.plugin.version>\n" +
             "        <assembly.plugin.version>3.2.0</assembly.plugin.version>\n" +
+            "        <dependency.plugin.version>3.1.1</dependency.plugin.version>\n" +
             "    </properties>";
 
     private static final String APPLICATION_JAVA =
@@ -75,6 +77,7 @@ public class MavenAppHandlerIT {
         when(configService.get(ConfigService.BQ_VERSION)).thenReturn("1.1");
         when(configService.get(ConfigService.JAVA_VERSION)).thenReturn("1.8");
         when(configService.get(ConfigService.PACKAGING)).thenReturn(Packaging.ASSEMBLY);
+        when(configService.get(ConfigService.CONTAINER)).thenReturn(Container.DOCKER);
 
         handler = new MavenAppHandler();
         handler.shell = shell;
@@ -138,6 +141,7 @@ public class MavenAppHandlerIT {
         assertTrue(Files.isRegularFile(projectPath.resolve("pom.xml")));
         assertTrue(Files.isRegularFile(projectPath.resolve("assembly.xml")));
         assertTrue(Files.isRegularFile(projectPath.resolve(".gitignore")));
+        assertTrue(Files.isRegularFile(projectPath.resolve("Dockerfile")));
         assertTrue(Files.isRegularFile(applicationDotJavaPath));
         assertTrue(Files.isRegularFile(applicationModuleProviderDotJavaPath));
         assertTrue(Files.isRegularFile(applicationModuleProviderTestDotJava));

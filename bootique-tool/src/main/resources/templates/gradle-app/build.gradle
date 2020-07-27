@@ -3,6 +3,9 @@ plugins {
     id 'java'
     {{/parent}}
     id 'application'
+    {{#container.jib}}
+    id 'com.google.cloud.tools.jib' version '2.4.0'
+    {{/container.jib}}
 }
 
 {{^parent}}
@@ -31,3 +34,15 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     {{/parent}}
 }
+
+{{#container.jib}}
+jib {
+    to {
+        image = name
+        tags = [version]
+    }
+    container {
+        creationTime = 'USE_CURRENT_TIMESTAMP'
+    }
+}
+{{/container.jib}}

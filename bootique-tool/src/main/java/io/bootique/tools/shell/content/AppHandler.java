@@ -22,6 +22,7 @@ package io.bootique.tools.shell.content;
 import java.nio.file.Path;
 
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.Container;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -63,10 +64,14 @@ abstract class AppHandler extends BaseContentHandler implements BuildSystemHandl
                 ? "Application"
                 : components.getJavaPackage() + ".Application";
         Packaging packaging = configService.get(ConfigService.PACKAGING);
+        Container container = configService.get(ConfigService.CONTAINER);
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("project.mainClass", mainClass)
                 .with(ConfigService.PACKAGING.getName(), packaging)
                 .with("packaging.shade", packaging == Packaging.SHADE)
-                .with("packaging.assembly", packaging == Packaging.ASSEMBLY);
+                .with("packaging.assembly", packaging == Packaging.ASSEMBLY)
+                .with(ConfigService.CONTAINER.getName(), container)
+                .with("container.docker", container == Container.DOCKER)
+                .with("container.jib", container == Container.JIB);
     }
 }

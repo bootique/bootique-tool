@@ -38,7 +38,6 @@ import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.di.BQModule;
 import io.bootique.di.Binder;
-import io.bootique.di.Injector;
 import io.bootique.di.Provides;
 import io.bootique.tools.shell.ConfigDir;
 import io.bootique.tools.shell.ConfigService;

@@ -20,7 +20,7 @@ import static org.mockito.Mockito.when;
 public class GradleModuleHandlerIT {
 
     private static final String SETTINGS_GRADLE =
-            "rootProject.name = 'test-parent'";
+            "rootProject.name = 'test-parent'\n";
 
     private static final String BUILD_GRADLE =
             "group 'io.bootique.test'\n" +

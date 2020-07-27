@@ -34,6 +34,8 @@ ConfigService {
             = new ConfigParameter<>("group-id", null, Function.identity(), Function.identity());
     ConfigParameter<Packaging> PACKAGING
             = new ConfigParameter<>("packaging", Packaging.ASSEMBLY, Packaging::name, Packaging::byName);
+    ConfigParameter<Container> CONTAINER
+            = new ConfigParameter<>("container", Container.JIB, Container::name, Container::byName);
 
     ConfigParameter<?> paramByName(String name);
 

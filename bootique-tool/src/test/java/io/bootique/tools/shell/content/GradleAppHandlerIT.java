@@ -1,6 +1,7 @@
 package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.Container;
 import io.bootique.tools.shell.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -20,7 +21,7 @@ import static org.mockito.Mockito.when;
 public class GradleAppHandlerIT {
 
     private static final String SETTINGS_GRADLE =
-            "rootProject.name = 'test-parent'";
+            "rootProject.name = 'test-parent'\n";
 
     private static final String BUILD_GRADLE =
             "group 'io.bootique.test'\n" +
@@ -55,6 +56,7 @@ public class GradleAppHandlerIT {
         ConfigService configService = mock(ConfigService.class);
         when(configService.get(ConfigService.BQ_VERSION)).thenReturn("1.1");
         when(configService.get(ConfigService.JAVA_VERSION)).thenReturn("1.8");
+        when(configService.get(ConfigService.CONTAINER)).thenReturn(Container.NULL);
 
         handler = new GradleAppHandler();
         handler.shell = shell;
