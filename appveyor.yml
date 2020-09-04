@@ -14,7 +14,7 @@
 # limitations under the License.
 init:
   - cinst graalvm-java8
-  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.0.0\
+#  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.1.0\
 
 image: Visual Studio 2015
 
@@ -51,6 +51,6 @@ cache:
 
 after_deploy:
   - ps: |
-    #      Set-Location -Path .\release-test.portable\
+      Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
 #      choco apikey -k [API_KEY_HERE] -source https://push.chocolatey.org/
-#      choco push package-name.1.1.0.nupkg -s https://push.chocolatey.org/
+#      choco push bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg -s https://push.chocolatey.org/

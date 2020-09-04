@@ -14,7 +14,7 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-GRAALVM_VERSION=20.0.0
+GRAALVM_VERSION=20.2.0
 curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-linux-amd64-${GRAALVM_VERSION}.tar.gz
 tar zxf graalvm-ce-java8-linux-amd64-${GRAALVM_VERSION}.tar.gz || exit 1
 sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /usr/lib/jvm/
