@@ -23,7 +23,7 @@ build_script:
   - appveyor AddMessage "environment setup"
   - mvn package -DskipTests
   - appveyor AddMessage "done packaging jar"
-  - mvn package -DskipTests -Pnative-image,assembly-win
+  - mvn package -DskipTests -Pnative-image
   - appveyor AddMessage "done packaging native image"
 
 before_deploy:
@@ -49,7 +49,7 @@ deploy:
       APPVEYOR_REPO_TAG: true # keep casing this way for Linux builds where variables are case-sensitive
 
 cache:
-  - C:\Users\appveyor\.m2\ -> pom.xml
+  - C:\Users\appveyor\.m2\
   - C:\Program Files\GraalVM -> appveyor.yml
   - C:\ProgramData\chocolatey\lib -> appveyor.yml
 
