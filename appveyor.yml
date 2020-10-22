@@ -23,7 +23,7 @@ build_script:
   - appveyor AddMessage "environment setup"
   - mvn package -DskipTests
   - appveyor AddMessage "done packaging jar"
-  - mvn package -DskipTests -Pnative-image
+  - mvn package -DskipTests -Pnative-image -X
   - appveyor AddMessage "done packaging native image"
 
 before_deploy:
