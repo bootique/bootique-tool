@@ -20,7 +20,11 @@ image: Visual Studio 2015
 
 build_script:
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - mvn package -Pnative-image,assembly-win -DskipTests
+  - Add-AppveyorMessage "environment setup"
+  - mvn package -DskipTests
+  - Add-AppveyorMessage "done packaging jar"
+  - mvn package -DskipTests -Pnative-image,assembly-win
+  - Add-AppveyorMessage "done packaging native image"
 
 before_deploy:
   - ps: |
