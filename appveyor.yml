@@ -25,6 +25,7 @@ build_script:
   - mvn package -DskipTests
   - appveyor AddMessage "done packaging jar"
   - cd .\bootique-tool\target\
+  - dir
   - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar
   - appveyor AddMessage "done packaging native image"
 
