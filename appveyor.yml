@@ -29,6 +29,7 @@ build_script:
   - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
   - appveyor AddMessage "done packaging native image"
   - dir
+  - cd ..\..
   - mvn package -Passembly-win -DskipTests
 
 before_deploy:
