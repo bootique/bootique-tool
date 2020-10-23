@@ -14,12 +14,12 @@
 # limitations under the License.
 init:
   - cinst graalvm-java8
+  - C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu install native-image
 #  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\
 
 image: Visual Studio 2015
 
 build_script:
-  - gu install native-image
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
   - appveyor AddMessage "environment setup"
   - mvn package -DskipTests
