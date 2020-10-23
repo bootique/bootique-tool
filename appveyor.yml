@@ -13,22 +13,16 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 init:
-  - cinst graalvm-java8
+  - cinst graalvm-java8 --version=20.2.0
   - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu" install native-image
-#  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\
 
 image: Visual Studio 2015
 
 build_script:
   - call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-  - appveyor AddMessage "environment setup"
   - mvn package -DskipTests
-  - appveyor AddMessage "done packaging jar"
   - cd .\bootique-tool\target\
-  - dir
   - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
-  - appveyor AddMessage "done packaging native image"
-  - dir
   - cd ..\..
   - mvn package -Passembly-win -DskipTests
 
