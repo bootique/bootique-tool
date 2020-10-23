@@ -14,7 +14,7 @@
 # limitations under the License.
 init:
   - cinst graalvm-java8
-  - gu install native-image
+#  - gu install native-image
 #  - set JAVA_HOME=C:\Program Files\GraalVM\graalvm-ce-java8-20.1.0\
 
 image: Visual Studio 2015
