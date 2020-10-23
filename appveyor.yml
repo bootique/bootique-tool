@@ -26,7 +26,7 @@ build_script:
   - appveyor AddMessage "done packaging jar"
   - cd .\bootique-tool\target\
   - dir
-  - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar
+  - call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command
   - appveyor AddMessage "done packaging native image"
 
 before_deploy:
