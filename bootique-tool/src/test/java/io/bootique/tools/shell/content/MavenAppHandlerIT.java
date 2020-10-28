@@ -1,7 +1,7 @@
 package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.Container;
+import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
 import org.junit.Before;
@@ -77,7 +77,7 @@ public class MavenAppHandlerIT {
         when(configService.get(ConfigService.BQ_VERSION)).thenReturn("1.1");
         when(configService.get(ConfigService.JAVA_VERSION)).thenReturn("1.8");
         when(configService.get(ConfigService.PACKAGING)).thenReturn(Packaging.ASSEMBLY);
-        when(configService.get(ConfigService.CONTAINER)).thenReturn(Container.DOCKER);
+        when(configService.get(ConfigService.DOCKER)).thenReturn(DockerType.DOCKERFILE);
 
         handler = new MavenAppHandler();
         handler.shell = shell;

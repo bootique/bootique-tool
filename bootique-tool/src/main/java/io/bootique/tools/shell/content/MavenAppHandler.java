@@ -22,7 +22,7 @@ package io.bootique.tools.shell.content;
 import java.nio.file.Path;
 
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.Container;
+import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
@@ -47,7 +47,7 @@ public class MavenAppHandler extends AppHandler implements MavenHandler {
         addPipeline(TemplatePipeline.builder()
                 .source("Dockerfile")
                 .filter((name, properties) ->
-                        properties.get(ConfigService.CONTAINER.getName()).equals(Container.DOCKER))
+                        properties.get(ConfigService.DOCKER.getName()).equals(DockerType.DOCKERFILE))
                 .processor(new MustacheTemplateProcessor())
         );
     }

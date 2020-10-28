@@ -24,7 +24,7 @@ import java.nio.file.attribute.PosixFilePermission;
 import java.util.EnumSet;
 
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.Container;
+import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.template.BinaryContentSaver;
 import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
@@ -72,7 +72,7 @@ public class GradleAppHandler extends AppHandler implements GradleHandler {
         // Container
         addPipeline(TemplatePipeline.builder()
                 .filter((name, properties) ->
-                        properties.get(ConfigService.CONTAINER.getName()).equals(Container.DOCKER))
+                        properties.get(ConfigService.DOCKER.getName()).equals(DockerType.DOCKERFILE))
                 .source("Dockerfile")
                 .processor(new MustacheTemplateProcessor())
         );

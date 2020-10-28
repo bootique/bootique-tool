@@ -44,9 +44,9 @@
         <assembly.plugin.version>3.2.0</assembly.plugin.version>
         <dependency.plugin.version>3.1.1</dependency.plugin.version>
         {{/packaging.assembly}}
-        {{#container.jib}}
-        <jib.plugin.version>2.4.0</jib.plugin.version>
-        {{/container.jib}}
+        {{#docker.jib}}
+        <jib.plugin.version>2.6.0</jib.plugin.version>
+        {{/docker.jib}}
     </properties>
     {{^parent}}
 
@@ -217,7 +217,7 @@
                 </executions>
             </plugin>
             {{/packaging.assembly}}
-            {{#container.jib}}
+            {{#docker.jib}}
             <plugin>
                 <groupId>com.google.cloud.tools</groupId>
                 <artifactId>jib-maven-plugin</artifactId>
@@ -234,7 +234,7 @@
                     </container>
                 </configuration>
             </plugin>
-            {{/container.jib}}
+            {{/docker.jib}}
         </plugins>
     </build>
 </project>

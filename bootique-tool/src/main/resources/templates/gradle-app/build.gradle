@@ -3,9 +3,9 @@ plugins {
     id 'java'
     {{/parent}}
     id 'application'
-    {{#container.jib}}
+    {{#docker.jib}}
     id 'com.google.cloud.tools.jib' version '2.4.0'
-    {{/container.jib}}
+    {{/docker.jib}}
 }
 
 {{^parent}}
@@ -35,7 +35,7 @@ dependencies {
     {{/parent}}
 }
 
-{{#container.jib}}
+{{#docker.jib}}
 jib {
     to {
         image = name
@@ -45,4 +45,4 @@ jib {
         creationTime = 'USE_CURRENT_TIMESTAMP'
     }
 }
-{{/container.jib}}
+{{/docker.jib}}

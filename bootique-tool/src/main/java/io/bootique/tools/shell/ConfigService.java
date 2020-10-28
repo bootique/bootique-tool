@@ -21,8 +21,7 @@ package io.bootique.tools.shell;
 
 import java.util.function.Function;
 
-public interface
-ConfigService {
+public interface ConfigService {
 
     ConfigParameter<Toolchain> TOOLCHAIN
             = new ConfigParameter<>("toolchain", Toolchain.MAVEN, Toolchain::name, Toolchain::byName);
@@ -34,8 +33,8 @@ ConfigService {
             = new ConfigParameter<>("group-id", null, Function.identity(), Function.identity());
     ConfigParameter<Packaging> PACKAGING
             = new ConfigParameter<>("packaging", Packaging.ASSEMBLY, Packaging::name, Packaging::byName);
-    ConfigParameter<Container> CONTAINER
-            = new ConfigParameter<>("container", Container.JIB, Container::name, Container::byName);
+    ConfigParameter<DockerType> DOCKER
+            = new ConfigParameter<>("docker", DockerType.JIB, DockerType::name, DockerType::byName);
 
     ConfigParameter<?> paramByName(String name);
 

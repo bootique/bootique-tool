@@ -78,8 +78,8 @@ public class FileConfigService implements ConfigService {
                 return GROUP_ID;
             case "packaging":
                 return PACKAGING;
-            case "container":
-                return CONTAINER;
+            case "docker":
+                return DOCKER;
         }
         return null;
     }

@@ -1,7 +1,7 @@
 package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.Container;
+import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.Shell;
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,7 +56,7 @@ public class GradleAppHandlerIT {
         ConfigService configService = mock(ConfigService.class);
         when(configService.get(ConfigService.BQ_VERSION)).thenReturn("1.1");
         when(configService.get(ConfigService.JAVA_VERSION)).thenReturn("1.8");
-        when(configService.get(ConfigService.CONTAINER)).thenReturn(Container.NULL);
+        when(configService.get(ConfigService.DOCKER)).thenReturn(DockerType.NONE);
 
         handler = new GradleAppHandler();
         handler.shell = shell;

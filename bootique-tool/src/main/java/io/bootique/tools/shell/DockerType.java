@@ -1,16 +1,16 @@
 package io.bootique.tools.shell;
 
-public enum Container {
-    NULL,
-    DOCKER,
+public enum DockerType {
+    NONE,
+    DOCKERFILE,
     JIB;
 
-    public static Container byName(String name) {
+    public static DockerType byName(String name) {
         if(name == null || name.isEmpty()) {
             return null;
         }
         String upperCaseName = name.toUpperCase();
-        for (Container next : values()) {
+        for (DockerType next : values()) {
             if (next.name().equals(upperCaseName)) {
                 return next;
             }

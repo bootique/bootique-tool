@@ -55,7 +55,7 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
         SUPPORTED_PARAMS.put(ConfigService.BQ_VERSION,   "Bootique version to use.");
         SUPPORTED_PARAMS.put(ConfigService.GROUP_ID,     "Default artifact group id to use.");
         SUPPORTED_PARAMS.put(ConfigService.PACKAGING,    "App packaging method. Can be either Shade or Assembly.");
-        SUPPORTED_PARAMS.put(ConfigService.CONTAINER,    "Container for app. Can be either Docker or Jib.");
+        SUPPORTED_PARAMS.put(ConfigService.DOCKER,       "Dockerization for the app. Can be None, Dockerfile or Jib.");
     }
 
     public ConfigCommand() {
@@ -148,11 +148,11 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
             }
         }
 
-        if(ConfigService.CONTAINER.equals(param)) {
-            Container container = Container.byName(value);
-            if(container == null) {
+        if(ConfigService.DOCKER.equals(param)) {
+            DockerType dockerType = DockerType.byName(value);
+            if(dockerType == null) {
                 return CommandOutcome.failed(-1, "Unsupported packaging @|bold " + value
-                        + "|@. Supported: " + Arrays.stream(Container.values())
+                        + "|@. Supported: " + Arrays.stream(DockerType.values())
                         .map(s -> s.name().toLowerCase())
                         .collect(Collectors.joining(", ")));
             }
@@ -185,8 +185,10 @@ public class ConfigCommand extends CommandWithMetadata implements ShellCommand {
                         node(Packaging.ASSEMBLY.name().toLowerCase()), node(Packaging.SHADE.name().toLowerCase())),
                 node(ConfigService.TOOLCHAIN.getName(),
                         node(Toolchain.MAVEN.name().toLowerCase()), node(Toolchain.GRADLE.name().toLowerCase())),
-                node(ConfigService.CONTAINER.getName(),
-                        node(Container.DOCKER.name().toLowerCase()), node(Container.JIB.name().toLowerCase()))
+                node(ConfigService.DOCKER.getName(),
+                        node(DockerType.NONE.name().toLowerCase()),
+                        node(DockerType.DOCKERFILE.name().toLowerCase()),
+                        node(DockerType.JIB.name().toLowerCase()))
         );
     }
 }
