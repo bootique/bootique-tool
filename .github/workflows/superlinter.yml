@@ -1,0 +1,77 @@
+# Licensed to ObjectStyle LLC under one or more
+# contributor license agreements. See the NOTICE file distributed with
+# this work for additional information regarding copyright ownership.
+# The ObjectStyle LLC licenses this file to You under the Apache License, Version 2.0
+# (the "License"); you may not use this file except in compliance with
+# the License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+
+name: bootique-tool
+
+on: [push, pull_request]
+
+jobs:
+  deploy:
+    name: ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-latest]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v1
+
+      - name: Set up java 8
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - uses: actions/cache@v2
+        with:
+          path: $HOME/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
+
+      - name: Download Maven
+        run: |
+          curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip -o maven.zip
+          apt-get update
+          apt-get -y install unzip
+          unzip -d /usr/share maven.zip
+          rm maven.zip
+          ln -s /usr/share/apache-maven-3.6.3/bin/mvn /usr/bin/mvn
+          echo "M2_HOME=/usr/share/apache-maven-3.6.3" | tee -a /etc/environment
+
+      - run: mvn package
+
+      - run: apt update && apt install sudo
+
+      - name: script
+        run: chmod +x ./deploy/linux.sh;
+          ./deploy/linux.sh;
+
+      - name: before_deploy
+        run: chmod +x ./deploy/update-version.sh;
+          ./deploy/update-version.sh;
+
+      - name: Upload deb package to Bintray
+        uses: bpicode/github-action-upload-bintray@master
+#        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          file: ./deploy/deploy-deb-config.json
+          api_user: ntimofeev
+          api_key: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
+
+      - name: after_deploy
+        run: chmod +x ./deploy/update-homebrew.sh;
+            ./deploy/update-homebrew.sh;
+
+
