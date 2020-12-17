@@ -40,7 +40,19 @@ jobs:
           key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
           restore-keys: ${{ runner.os }}-m2
 
+      - name: Download Maven
+        run: |
+          curl -sL https://www-eu.apache.org/dist/maven/maven-3/3.6.3/binaries/apache-maven-3.6.3-bin.zip -o maven.zip
+          apt-get update
+          apt-get -y install unzip
+          unzip -d /usr/share maven.zip
+          rm maven.zip
+          ln -s /usr/share/apache-maven-3.6.3/bin/mvn /usr/bin/mvn
+          echo "M2_HOME=/usr/share/apache-maven-3.6.3" | tee -a /etc/environment
+
       - run: mvn package
+
+      - run: apt update && apt install sudo
 
       - name: script
         run: chmod +x ./deploy/linux.sh;
@@ -62,7 +74,7 @@ jobs:
           repository: bq-tool-my-repo
           package: bq-deb
           version: 0.100-SNAPSHOT
-          upload_path: / # pool/main/m # Typical for debian repository layout
+          upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
           calculate_metadata: true # Schedule metadata calculation after upload
           deb_distribution: wheezy
