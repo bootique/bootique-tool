@@ -55,17 +55,17 @@ jobs:
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           file: bootique-tool/target/bq-0.100.deb
-          api_user: ntimofeev
-          api_key: TcoJwigX78eg0aiedFsK82pSM2hLYLLmAZQ5qL/uM99KB9c5dKbo6XFdU7i8T2fvsk/WAjzU0iQSJFLT91LyUjk88PBBk7AfFplbwwtaRSUEv0I5ZzVf+LOnylwcNjExJ6tocs+tpgO3HzkFa8I5DWRW9xcNaKAxh9l8KboSvPJA2kfGffMndE0U7vi60rzYI8FsV2zi5uNg8dtjaUW4LdtPyrHead3pT4VacMAOj2l9xJQnZ/vW5SABuPzuBwdfYfrcJ7rzWUNwFUgSbBhZD46OHFza5wSS3BLZgi449eDdCkofmNELryMOyLcNpt8ODmUkNFmA9teSo7CAbQzdhrTN+5H5BkLf9e0pN7l0rajcQMQJVQiLFpEFoa78Vg8qm902njeYU6f16TOtguXkvgIULW1pgRVbCpSX2RdtWvLsu3G9QYLVmsgg3OKZkpZwsJwPNExFQ9lDW+MsKWWGV5P1epBgiguNBTBM5J1cWvFSI9d8FTCrsS79fpKjlzTSbdbb5X90r5TLY1zF2eufesB4CJ+fNgfD7YKmod8hF57LvBWZSNpTlPQgN40zF3nwX19YRRoDcfF2WQjrVl3sAdBaSEdMUbLka03COZegTukQIGPNCCUQF6fL5NSzVhNibcmf1o6bdHvTBQ9+PiT6mELTPLGzEimJfTyL0aWDmMQ=
+          api_user: kravchenko
+          api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
 #          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
-          repository_user: KravchenkoAS
-          repository: bootique-tool
+          repository_user: kravchenkoas
+          repository: bq-tool-my-repo
           package: bq-deb
           version: 0.100-SNAPSHOT
           upload_path: / # pool/main/m # Typical for debian repository layout
           publish: 0
           calculate_metadata: true # Schedule metadata calculation after upload
-          deb_distribution: vivid
+          deb_distribution: wheezy
           deb_component: main
           deb_architecture: amd64
 
