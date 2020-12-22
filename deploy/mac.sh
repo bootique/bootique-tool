@@ -15,11 +15,12 @@
 # limitations under the License.
 
 GRAALVM_VERSION=20.2.0
-curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
-tar zxf graalvm-ce-java8-darwin-amd64-${GRAALVM_VERSION}.tar.gz
-sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /Library/Java/JavaVirtualMachines
-/usr/libexec/java_home -v 1.8
-export JAVA_HOME=/Library/Java/JavaVirtualMachines/graalvm-ce-java8-${GRAALVM_VERSION}/Contents/Home
+curl -OL https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-${GRAALVM_VERSION}/graalvm-ce-java8-linux-amd64-${GRAALVM_VERSION}.tar.gz
+tar zxf graalvm-ce-java8-linux-amd64-${GRAALVM_VERSION}.tar.gz || exit 1
+mkdir /usr/lib/jvm/ graalvm-ce-java8-${GRAALVM_VERSION}
+sudo mv graalvm-ce-java8-${GRAALVM_VERSION} /usr/lib/jvm/graalvm-ce-java8-${GRAALVM_VERSION}/
+#/usr/libexec/java_home -v 1.8
+export JAVA_HOME=/usr/lib/jvm/graalvm-ce-java8-${GRAALVM_VERSION}/
 export PATH=${JAVA_HOME}/bin:$PATH
 ${JAVA_HOME}/bin/gu install native-image
 

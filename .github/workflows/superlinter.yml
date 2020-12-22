@@ -66,23 +66,16 @@ jobs:
           deb_architecture: amd64
 
       - name: Upload rpm package to Bintray
-        uses: bpicode/github-action-upload-bintray@master
+        uses: wanduow/action-bintray-upload-rpm-packages@v1
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-0.100.rpm
-          api_user: kravchenko
+          path: bootique-tool/target/bq-0.100.rpm
+          repo: kravchenkoas/bq-tool-my-repo-rpm
+          username: kravchenko
           api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
-#          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
-          repository_user: kravchenkoas
-          repository: bq-tool-my-repo-rpm
-          package: bq-rpm
-          version: 0.100-SNAPSHOT
-#          upload_path: pool/main/m # Typical for debian repository layout
-          publish: 0
-          calculate_metadata: true # Schedule metadata calculation after upload
 
   deploy-macos:
-    runs-on: macos-latest
+    runs-on: ubuntu-latest
 
     steps:
       - name: Checkout repository
@@ -109,31 +102,31 @@ jobs:
         run: chmod +x ./deploy/update-mac-version.sh;
           ./deploy/update-mac-version.sh;
 
-      - name: Create Package
-        uses: benjefferies/create-bintray-package@master
-        with:
-          bintray-user: kravchenko
-          bintray-token: 5d7620d744041590ddfb9c8d87c4dbfa62270262
-          owner: kravchenko
-          repo: bq-tool-my-repo-mac
-          package-name: bq
-          package-url: https://github.com/KravchenkoAS/bootique-tool
-
-#      - name: Upload zip package to Bintray
-#        uses: bpicode/github-action-upload-bintray@master
-##        if: ${{ github.ref == 'refs/heads/master' }}
+#      - name: Create Package
+#        uses: benjefferies/create-bintray-package@master
 #        with:
-#          file: bootique-tool/target/bq-0.100.zip
-#          api_user: kravchenko
-#          api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
-##          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
-#          repository_user: kravchenkoas
-#          repository: bq-tool-my-repo-mac
-#          package: bq
-#          version: 0.100-SNAPSHOT
-#          upload_path: pool/main/m # Typical for debian repository layout
-#          publish: 0
-#          calculate_metadata: true # Schedule metadata calculation after upload
+#          bintray-user: kravchenko
+#          bintray-token: 5d7620d744041590ddfb9c8d87c4dbfa62270262
+#          owner: kravchenko
+#          repo: bq-tool-my-repo-mac
+#          package-name: bq
+#          package-url: https://github.com/KravchenkoAS/bootique-tool
+
+      - name: Upload zip package to Bintray
+        uses: bpicode/github-action-upload-bintray@master
+#        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          file: bootique-tool/target/bq-0.100.zip
+          api_user: kravchenko
+          api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
+#          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
+          repository_user: kravchenkoas
+          repository: bq-tool-my-repo-mac
+          package: bq
+          version: 0.100-SNAPSHOT
+          upload_path: pool/main/m # Typical for debian repository layout
+          publish: 0
+          calculate_metadata: true # Schedule metadata calculation after upload
 
       - name: after_deploy
         run: chmod +x ./deploy/update-homebrew.sh;
