@@ -23,7 +23,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-latest]
+        os: [ubuntu-latest, macos-latest]
 
     steps:
       - name: Checkout repository
@@ -43,15 +43,30 @@ jobs:
       - run: mvn package
 
       - name: script
-        run: chmod +x ./deploy/linux.sh;
+        run: |
+          if [${{ matrix.os }} == "macos-latest"]; then
+          chmod +x ./deploy/mac.sh;
+          ./deploy/mac.sh;
+          fi
+          if [${{ matrix.os }} == "ubuntu-latest"]; then
+          chmod +x ./deploy/linux.sh;
           ./deploy/linux.sh;
+          fi
 
       - name: before_deploy
-        run: chmod +x ./deploy/update-version.sh;
+        run: |
+          if [${{ matrix.os }} == "macos-latest"]; then
+          chmod +x ./deploy/update-mac-version.sh;
+          ./deploy/update-mac-version.sh;
+          fi
+          if [${{ matrix.os }} == "ubuntu-latest"]; then
+          chmod +x ./deploy/update-version.sh;
           ./deploy/update-version.sh;
+          fi
 
       - name: Upload deb package to Bintray
         uses: bpicode/github-action-upload-bintray@master
+        if: ${{ matrix.os == 'ubuntu-latest' }}
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           file: bootique-tool/target/bq-0.100.deb
@@ -59,7 +74,7 @@ jobs:
           api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
 #          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
           repository_user: kravchenkoas
-          repository: bq-tool-my-repo
+          repository: bq-tool-my-repo-deb
           package: bq-deb
           version: 0.100-SNAPSHOT
           upload_path: pool/main/m # Typical for debian repository layout
@@ -68,3 +83,42 @@ jobs:
           deb_distribution: wheezy
           deb_component: main
           deb_architecture: amd64
+
+      - name: Upload rpm package to Bintray
+        uses: bpicode/github-action-upload-bintray@master
+        if: ${{ matrix.os == 'ubuntu-latest' }}
+#        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          file: bootique-tool/target/bq-0.100.rpm
+          api_user: kravchenko
+          api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
+#          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
+          repository_user: kravchenkoas
+          repository: bq-tool-my-repo-rpm
+          package: bq-rpm
+          version: 0.100-SNAPSHOT
+          upload_path: pool/main/m # Typical for debian repository layout
+          publish: 0
+          calculate_metadata: true # Schedule metadata calculation after upload
+
+      - name: Upload zip package to Bintray
+        uses: bpicode/github-action-upload-bintray@master
+        if: ${{ matrix.os == 'macos-latest' }}
+#        if: ${{ github.ref == 'refs/heads/master' }}
+        with:
+          file: bootique-tool/target/bq-0.100.zip
+          api_user: kravchenko
+          api_key: 5d7620d744041590ddfb9c8d87c4dbfa62270262
+#          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
+          repository_user: kravchenkoas
+          repository: bq-tool-my-repo-mac
+          package: bq
+          version: 0.100-SNAPSHOT
+          upload_path: pool/main/m # Typical for debian repository layout
+          publish: 0
+          calculate_metadata: true # Schedule metadata calculation after upload
+
+      - name: after_deploy
+        if: ${{ matrix.os == 'macos-latest' }}
+        run: chmod +x ./deploy/update-homebrew.sh;
+            ./deploy/update-homebrew.sh;
