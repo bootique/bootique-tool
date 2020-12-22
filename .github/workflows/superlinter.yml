@@ -68,9 +68,3 @@ jobs:
           deb_distribution: wheezy
           deb_component: main
           deb_architecture: amd64
-
-      - name: after_deploy
-        run: chmod +x ./deploy/update-homebrew.sh;
-            ./deploy/update-homebrew.sh;
-
-
