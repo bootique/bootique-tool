@@ -69,7 +69,7 @@ jobs:
         uses: wanduow/action-bintray-upload-rpm-packages@v1
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          path: ./target/bq-0.100.rpm
+          path: bootique-tool/target/bq-0.100-SNAPSHOT.rpm
           repo: bq-tool-my-repo-rpm
           username: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
@@ -106,7 +106,7 @@ jobs:
         uses: masofcon/upload-to-bintray-github-action@master
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          source_path: ./target/bq-0.100.zip
+          source_path: bootique-tool/target/bq-0.100-SNAPSHOT.zip
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
 #          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
