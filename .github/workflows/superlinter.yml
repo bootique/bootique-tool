@@ -65,14 +65,26 @@ jobs:
           deb_component: main
           deb_architecture: amd64
 
+#      - name: Upload rpm package to Bintray
+#        uses: wanduow/action-bintray-upload-rpm-packages@v1
+##        if: ${{ github.ref == 'refs/heads/master' }}
+#        with:
+#          path: ./target/bq-0.100.rpm
+#          repo: kravchenkoas/bq-tool-my-repo-rpm
+#          username: kravchenko
+#          api_key: ${{ secrets.BINTRAY_API_KEY }}
+
       - name: Upload rpm package to Bintray
-        uses: wanduow/action-bintray-upload-rpm-packages@v1
-#        if: ${{ github.ref == 'refs/heads/master' }}
+        uses: reznikmm/upload-bintray-action@v2
         with:
-          path: bootique-tool/target/bq-0.100.rpm
-          repo: kravchenkoas/bq-tool-my-repo-rpm
+          subject: kravchenkoas
+          repository: bq-tool-my-repo-rpm
+          package: bq-rpm
+          version: 0.100-SNAPSHOT
+          sourcePath: './target/bq-0.100.rpm'
+          override: 0
           username: kravchenko
-          api_key: ${{ secrets.BINTRAY_API_KEY }}
+          apiKey: ${{ secrets.BINTRAY_API_KEY }}
 
   deploy-macos:
     runs-on: ubuntu-latest
@@ -113,7 +125,7 @@ jobs:
           repository: bq-tool-my-repo-mac
           package: bq
           version: 0.100-SNAPSHOT
-          upload_path: /
+          upload_path: pool/main/m
           publish: 0
 
       - name: after_deploy
