@@ -18,7 +18,7 @@ name: bootique-tool
 on: [push, pull_request]
 
 jobs:
-  deploy-linux-deb:
+  deploy-linux:
     runs-on: ubuntu-latest
 
     steps:
@@ -72,9 +72,9 @@ jobs:
           file: bootique-tool/target/bq-0.100-1.x86_64.rpm
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
-          repository_user: kravchenko
+          repository_user: kravchenkoas
           repository: bq-tool-my-repo-rpm
-          package: bq-deb
+          package: bq-rpm
           version: 0.100-SNAPSHOT
           upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
@@ -108,21 +108,18 @@ jobs:
           ./deploy/update-mac-version.sh;
 
       - name: Upload zip package to Bintray
-        uses: masofcon/upload-to-bintray-github-action@master
+        uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          source_path: bootique-tool/target/bq-0.100-SNAPSHOT.zip
+          file: bootique-tool/target/bq-0.100-SNAPSHOT.zip
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
-#          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-mac
           package: bq
           version: 0.100-SNAPSHOT
           upload_path: pool/main/m
           publish: 0
-          explode: 0
-          override: 0
 
       - name: after_deploy
         run: chmod +x ./deploy/update-homebrew.sh;
