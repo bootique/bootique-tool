@@ -163,7 +163,6 @@ jobs:
 
       - name: before_deploy
         run: |
-#             Create Chocolatey Package
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
@@ -172,7 +171,7 @@ jobs:
 
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
-          #        if: ${{ github.ref == 'refs/heads/master' }}
+ #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           file: ./bq.portable.kr1.nupkg
           api_user: kravchenko
