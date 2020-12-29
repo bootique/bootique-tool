@@ -122,5 +122,71 @@ jobs:
           publish: 0
 
       - name: after_deploy
+        continue-on-error: true
         run: chmod +x ./deploy/update-homebrew.sh;
             ./deploy/update-homebrew.sh;
+
+  deploy-windows:
+    runs-on: windows-latest
+
+      steps:
+        - name: Checkout repository
+          uses: actions/checkout@v1
+
+        - name: Set up java 8
+          uses: actions/setup-java@v1
+          with:
+            java-version: 8
+
+        - name: init
+          run: |
+            cinst graalvm-java8 --version=20.2.0
+            call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu" install native-image
+
+        - name: Add msbuild to PATH
+          uses: microsoft/setup-msbuild@v1.0.2
+
+#        - uses: actions/cache@v2
+#          run: |
+#              C:\Users\appveyor\.m2\
+#              C:\Program Files\GraalVM -> appveyor.yml
+#              C:\ProgramData\chocolatey\lib -> appveyor.yml
+
+        - name: script
+          run: |
+            call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+            mvn package -DskipTests
+            cd .\bootique-tool\target\
+            call "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+            cd ..\..
+            mvn package -Passembly-win -DskipTests
+
+        - name: before_deploy
+          run: |
+#             Create Chocolatey Package
+            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+            Choco Pack
+            Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
+
+        - run: ls
+
+        - name: Upload zip package to Bintray
+          uses: KravchenkoAS/action-upload-rpm-bintray@main
+          #        if: ${{ github.ref == 'refs/heads/master' }}
+          with:
+            file: ./bq.portable.kr1.nupkg
+            api_user: kravchenko
+            api_key: ${{ secrets.BINTRAY_API_KEY }}
+            repository_user: kravchenkoas
+            repository: bq-tool-my-repo-win
+            package: bq
+            version: 0.100-SNAPSHOT
+            upload_path: pool/main/win
+            publish: 0
+
+#        - name: after_deploy
+#          continue-on-error: true
+#          run: |
+#            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+#            choco apikey -k $env:choco_key -source https://push.chocolatey.org/
+#            choco push bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg -s https://push.chocolatey.org/
