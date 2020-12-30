@@ -147,11 +147,11 @@ jobs:
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
 
-#        - uses: actions/cache@v2
-#          run: |
-#              C:\Users\appveyor\.m2\
-#              C:\Program Files\GraalVM -> appveyor.yml
-#              C:\ProgramData\chocolatey\lib -> appveyor.yml
+      - uses: actions/cache@v2
+        with:
+          path: $HOME/.m2
+          key: ${{ runner.os }}-m2-${{ hashFiles('**/pom.xml') }}
+          restore-keys: ${{ runner.os }}-m2
 
       - name: script
         shell: pwsh
