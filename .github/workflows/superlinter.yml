@@ -156,8 +156,6 @@ jobs:
       - name: script
         shell: pwsh
         run: |
-          dir "C:\Program Files\Microsoft SDKs\Windows"
-          . "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
           mvn package -DskipTests
           cd .\bootique-tool\target\
           . "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
@@ -171,7 +169,7 @@ jobs:
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
 
-      - run: ls
+      - run: dir
 
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
