@@ -242,14 +242,6 @@
                             <descriptors>
                                 <descriptor>src/main/resources/assembly/assembly-win.xml</descriptor>
                             </descriptors>
-                            <archive>
-                                <manifest>
-                                    <mainClass>${project.groupId}.shell.Application</mainClass>
-                                </manifest>
-                            </archive>
-                            <descriptorRefs>
-                                <descriptorRef>jar-with-dependencies</descriptorRef>
-                            </descriptorRefs>
                             <appendAssemblyId>false</appendAssemblyId>
                             <finalName>bq-win.portable</finalName>
                         </configuration>

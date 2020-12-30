@@ -133,15 +133,15 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      - name: Set up java 8
+      - name: Set up java 11
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 11
 
       - name: init
         shell: pwsh
         run: |
-          cinst graalvm-java8 --version=20.2.0
+          cinst graalvm-java11 --version=20.2.0
           . "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu" install native-image
 
       - name: Add msbuild to PATH
