@@ -158,7 +158,7 @@ jobs:
       - name: script
         shell: pwsh
         run: |
-          div "C:\Program Files (x86)\Microsoft Visual Studio\"
+          ls "C:\Program Files (x86)\Microsoft Visual Studio\"
           . "C:\Program Files (x86)\Microsoft Visual Studio\2019\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
           javac --version
           mvn package -DskipTests
@@ -174,7 +174,7 @@ jobs:
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
 
-      - run: dir
+      - run: ls
 
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
