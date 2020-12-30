@@ -143,8 +143,8 @@ jobs:
         run: |
           cinst graalvm-java11 --version=20.2.0
           . "C:\Program Files\GraalVM\graalvm-ce-java11-20.2.0\bin\gu" install native-image
-          set GRAALVM_HOME="C:\Program Files\GraalVM\graalvm-ce-java11-20.2.0"
-          set PATH=C:\Program Files\GraalVM\graalvm-ce-java11-20.2.0\bin;%PATH%
+          $env:GRAALVM_HOME="C:\Program Files\GraalVM\graalvm-ce-java11-20.2.0"
+          $env:PATH=C:\Program Files\GraalVM\graalvm-ce-java11-20.2.0\bin;$env:PATH
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
