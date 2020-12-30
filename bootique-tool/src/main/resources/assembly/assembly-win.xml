@@ -47,7 +47,7 @@
             <filtered>true</filtered>
         </file>
         <file>
-            <source>${project.basedir}/target/${project.artifactId}.exe</source>
+            <source>/target/${project.artifactId}.exe</source>
             <outputDirectory>${file.separator}/</outputDirectory>
         </file>
     </files>
