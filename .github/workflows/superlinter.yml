@@ -142,8 +142,7 @@ jobs:
         shell: pwsh
         run: |
           cinst graalvm-java8 --version=20.2.0
-#          choco install -y visualstudio2017community --no-progress --package-parameters "--add Microsoft.VisualStudio.Component.VC.Tools.ARM64 --add Microsoft.VisualStudio.Component.VC.CMake.Project"
-          & "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu" install native-image
+          . "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\gu" install native-image
 
       - name: Add msbuild to PATH
         uses: microsoft/setup-msbuild@v1.0.2
@@ -158,10 +157,10 @@ jobs:
         shell: pwsh
         run: |
           dir "C:\Program Files\Microsoft SDKs\Windows"
-          & "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+          . "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
           mvn package -DskipTests
           cd .\bootique-tool\target\
-          & "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+          . "C:\Program Files\GraalVM\graalvm-ce-java8-20.2.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
           mvn package -Passembly-win -DskipTests
 
