@@ -166,8 +166,8 @@ jobs:
       - name: before_deploy
         shell: pwsh
         run: |
-          ls -Path
-          cd -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          ls .\
+          Set-Location .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
 
