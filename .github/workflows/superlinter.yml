@@ -155,18 +155,18 @@ jobs:
         env:
           JAVA_HOME: ./graalvm-ce-java11-20.1.0
         run: |
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
           mvn package -DskipTests
           cd .\bootique-tool\target\
-          C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
-          dir
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+          -H:ReflectionConfigurationResources=reflection-config.json -H:IncludeResources=logback.xml -H:Name=simple-socket-fn-logger-${{env.VERSION}}-all --allow-incomplete-classpath
           cd ..\..
 
       - name: before_deploy
         shell: pwsh
         run: |
-          mvn package -Passembly-win -DskipTests
           ls .\bootique-tool\target\
+          mvn package -Passembly-win -DskipTests
           Set-Location -Path .\bootique-tool\target\bq-win.portable\
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
