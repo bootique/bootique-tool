@@ -170,7 +170,7 @@ jobs:
           ls .\bootique-tool\target\bq-win.portable\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
-          appveyor PushArtifact ".\bq.portable.0.100-SNAPSHOT.nupkg"
+#          Push-AppveyorArtifact ".\bq.portable.0.100-SNAPSHOT.nupkg"
 
       - run: ls
 
