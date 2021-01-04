@@ -150,22 +150,24 @@ jobs:
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
           choco install visualstudio2017-workload-vctools
+      - name: 'Maven Package'
+        shell: cmd
+        run: mvn package -DskipTests
       - name: 'Build Native Image'
         shell: cmd
         env:
           JAVA_HOME: ./graalvm-ce-java11-20.1.0
         run: |
-          mvn package -DskipTests
           cd .\bootique-tool\target\
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat" && mvn package -Pnative-image
-          C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
 
       - name: before_deploy
         shell: pwsh
         run: |
-          ls .\bootique-tool\target\
           mvn package -Passembly-win -DskipTests
+          ls .\bootique-tool\target\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
