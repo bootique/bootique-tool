@@ -175,7 +175,7 @@ jobs:
       - run: ls
 
       - name: Upload zip package to Bintray
-        uses: KravchenkoAS/action-upload-rpm-bintray@main
+        uses: KravchenkoAS/action-upload-zip-bintray@main
  #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
           file: ./bq.portable.0.100-SNAPSHOT.nupkg
