@@ -158,10 +158,8 @@ jobs:
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java11-20.1.0
         run: |
-          dir
           cd .\bootique-tool\target\
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          echo %JAVA_HOME%
           %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
 
@@ -169,8 +167,8 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
-          ls .\bootique-tool\target\
-          Set-Location -Path .\bootique-tool\target\bq-win.portable\
+          ls .\bootique-tool\target\bq-win.portable\
+          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
 
