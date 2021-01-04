@@ -159,6 +159,7 @@ jobs:
           JAVA_HOME: ./graalvm-ce-java11-20.1.0
         run: |
           cd .\bootique-tool\target\
+          set JAVA_HOME="C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0"
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
           call "C:\Program Files\GraalVM\graalvm-ce-java11-20.1.0\bin\native-image" -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
