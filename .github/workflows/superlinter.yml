@@ -170,7 +170,7 @@ jobs:
           ls .\bootique-tool\target\bq-win.portable\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
-          Push-AppveyorArtifact ".\bq.portable.kr1.nupkg"
+          appveyor PushArtifact ".\bq.portable.0.100-SNAPSHOT.nupkg"
 
       - run: ls
 
@@ -178,7 +178,7 @@ jobs:
         uses: KravchenkoAS/action-upload-rpm-bintray@main
  #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: ./bq.portable.kr1.nupkg
+          file: ./bq.portable.0.100-SNAPSHOT.nupkg
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
