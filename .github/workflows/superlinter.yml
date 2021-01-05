@@ -172,13 +172,11 @@ jobs:
           Choco Pack
 #          Push-AppveyorArtifact ".\bq.portable.0.100-SNAPSHOT.nupkg"
 
-      - run: ls
-
       - name: Upload nupkg package to Bintray
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: cmd
         env:
-          FILE_PATH: ./bq.portable.0.100-SNAPSHOT.nupkg
+          FILE_PATH: .\bootique-tool\target\bq-win.portable\bq-win.portable\bq.portable.0.100-SNAPSHOT.nupkg
           API_USER: kravchenko
           API_KEY: ${{ secrets.BINTRAY_API_KEY }}
           REPOSITORY_USER: kravchenkoas
