@@ -187,7 +187,7 @@ jobs:
         run: |
           echo %APPVEYOR_REPO_TAG_NAME%
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER% }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
 
       - name: after_deploy
         continue-on-error: true
