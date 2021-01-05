@@ -46,18 +46,23 @@ jobs:
         run: chmod +x ./deploy/update-version.sh;
             ./deploy/update-version.sh;
 
+      - name: Set Project Version
+        run: |
+          NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
+          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
+
       - name: Upload deb package to Bintray
         uses: bpicode/github-action-upload-bintray@master
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-0.100.deb
+          file: bootique-tool/target/bq-${{env.VERSION}}.deb
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
 #          gpg_passphrase: ${{ secrets.BINTRAY_GPG_PASSPHRASE }} # Optional, for this to work Bintray requires a GPG public/private keypair configured for the repository owner (individual or organization).
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-deb
           package: bq-deb
-          version: 0.100-SNAPSHOT
+          version: ${{env.VERSION}}
           upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
           calculate_metadata: true # Schedule metadata calculation after upload
@@ -69,13 +74,13 @@ jobs:
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-0.100-1.x86_64.rpm
+          file: bootique-tool/target/bq-${{env.VERSION}}.rpm
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-rpm
           package: bq-rpm
-          version: 0.100-SNAPSHOT
+          version: ${{env.VERSION}}
           upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
 
@@ -99,6 +104,7 @@ jobs:
 
       - run: mvn package
 
+
       - name: script
         run: chmod +x ./deploy/mac.sh;
           ./deploy/mac.sh;
@@ -107,17 +113,22 @@ jobs:
         run: chmod +x ./deploy/update-mac-version.sh;
           ./deploy/update-mac-version.sh;
 
+      - name: Set Project Version
+        run: |
+          NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
+          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
+
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-0.100-SNAPSHOT.zip
+          file: bootique-tool/target/bq-${{env.VERSION}}.zip
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-mac
           package: bq
-          version: 0.100-SNAPSHOT
+          version: ${{env.VERSION}}
           upload_path: pool/main/m
           publish: 0
 
@@ -138,14 +149,10 @@ jobs:
         with:
           java-version: 11
 
-      - name: 'Download GraalVM'
-        run: |
-          Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
       - name: 'Install GraalVM'
         run: |
+          Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
-      - name: 'Install Native Image'
-        run: |
           graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
@@ -170,7 +177,11 @@ jobs:
           ls .\bootique-tool\target\bq-win.portable\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
+          echo $env:APPVEYOR_REPO_TAG_NAME
+          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
+
+      - run: echo ${{env.VERSION}}
 
       - name: Upload nupkg package to Bintray
 #        if: ${{ github.ref == 'refs/heads/master' }}
@@ -185,7 +196,6 @@ jobs:
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
-          echo %APPVEYOR_REPO_TAG_NAME%
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
           curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
 
