@@ -186,7 +186,7 @@ jobs:
           PUBLISH: 0
         run: |
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "$FILE_PATH" --user "$API_USER:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/kravchenkoas/bq-tool-my-repo-mac/bq/0.100-SNAPSHOT/pool/main/win/bq.portable.0.100-SNAPSHOT.nupkg;publish=0
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ FILE_PATH }}" --user "${{ API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/kravchenkoas/bq-tool-my-repo-mac/bq/0.100-SNAPSHOT/pool/main/win/bq.portable.0.100-SNAPSHOT.nupkg;publish=0
 
 
 #      - name: after_deploy
