@@ -170,7 +170,7 @@ jobs:
           ls .\bootique-tool\target\bq-win.portable\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
-#          Push-AppveyorArtifact ".\bq.portable.0.100-SNAPSHOT.nupkg"
+#          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
       - name: Upload nupkg package to Bintray
 #        if: ${{ github.ref == 'refs/heads/master' }}
@@ -185,13 +185,14 @@ jobs:
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
+          echo %APPVEYOR_REPO_TAG_NAME%
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "%FILE_PATH%" --user "%API_USER%:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/kravchenkoas/bq-tool-my-repo-mac/bq/0.100-SNAPSHOT/pool/main/win/bq.portable.0.100-SNAPSHOT.nupkg;publish=0
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER% }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
 
-
-#      - name: after_deploy
-#        continue-on-error: true
-#        run: |
-#            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-#            choco apikey -k $env:choco_key -source https://push.chocolatey.org/
-#            choco push bq.portable.$($ENV:APPVEYOR_REPO_TAG_NAME).nupkg -s https://push.chocolatey.org/
+      - name: after_deploy
+        continue-on-error: true
+        shell: pwsh
+        run: |
+            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+            choco apikey -k $env:choco_key -source https://push.chocolatey.org/
+            choco push bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg -s https://push.chocolatey.org/
