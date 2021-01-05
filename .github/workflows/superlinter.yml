@@ -176,9 +176,8 @@ jobs:
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: cmd
         env:
-          FILE_PATH: .\bootique-tool\target\bq-win.portable\bq-win.portable\bq.portable.0.100-SNAPSHOT.nupkg
+          FILE_PATH: bq.portable.0.100-SNAPSHOT.nupkg
           API_USER: kravchenko
-          API_KEY: ${{ secrets.BINTRAY_API_KEY }}
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
@@ -186,7 +185,8 @@ jobs:
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
-          curl --silent --show-error --fail --location --request PUT --upload-file "$FILE_PATH" --user "$API_USER:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/$REPOSITORY_USER/$REPOSITORY/$PACKAGE/$VERSION/$UPLOAD_PATH/$FILE_PATH;publish=$PUBLISH
+          cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          curl --silent --show-error --fail --location --request PUT --upload-file "bq.portable.0.100-SNAPSHOT.nupkg" --user "kravchenko:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/kravchenkoas/bq-tool-my-repo-mac/bq/0.100-SNAPSHOT/pool/main/win/bq.portable.0.100-SNAPSHOT.nupkg;publish=0
 
 
 #      - name: after_deploy
