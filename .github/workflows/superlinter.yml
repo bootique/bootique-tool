@@ -174,11 +174,10 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
-          dir .\bootique-tool\target\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
-          set $env:NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
+          set $env:NAME=$(basename $(find .\bootique-tool\target -type f -name 'bq-*.jar'))
           echo "VERSION=$(echo "${$env:NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
