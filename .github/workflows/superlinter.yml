@@ -168,7 +168,7 @@ jobs:
           call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
           mvn package -DskipTests
           cd .\bootique-tool\target\
-          %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+          D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
           mvn package -Passembly-win -DskipTests
 
