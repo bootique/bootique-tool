@@ -150,6 +150,7 @@ jobs:
 
       - name: 'Install GraalVM'
         run: |
+          choco install windows-sdk-7.1
           Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java8-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
           graalvm-ce-java8-20.1.0\bin\gu.cmd install native-image
@@ -165,7 +166,7 @@ jobs:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
           cd .\bootique-tool\target\
-          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd"
           %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
 
