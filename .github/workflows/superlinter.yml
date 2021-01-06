@@ -54,7 +54,7 @@ jobs:
       - name: Set Project Version
         run: |
           NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
-          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
+          echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 
       - name: Upload deb package to Bintray
         uses: bpicode/github-action-upload-bintray@master
