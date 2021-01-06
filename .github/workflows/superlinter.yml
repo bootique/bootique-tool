@@ -160,9 +160,11 @@ jobs:
       - name: 'Maven Package'
         shell: cmd
         run: mvn package -DskipTests
-      - uses: ilammy/msvc-dev-cmd@v1
+      - name: 'Add msbuild to PATH'
+        uses: microsoft/setup-msbuild@v1.0.2
         with:
-          sdk: 7.1
+          vs-version: '[7.1]'
+          vswhere-path: 'C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd'
       - name: 'Build Native Image'
         shell: cmd
         env:
