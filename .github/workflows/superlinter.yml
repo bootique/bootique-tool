@@ -161,7 +161,10 @@ jobs:
         shell: cmd
         run: mvn package -DskipTests
       - name: 'Build Native Image'
-        shell: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd /D /E:ON /V:OFF /S /C "CALL "{0}""
+        uses: ilammy/msvc-dev-cmd@v1
+        with:
+          sdk: 7.1
+#        shell: cmd
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
