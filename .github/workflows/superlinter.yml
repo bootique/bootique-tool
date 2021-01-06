@@ -30,11 +30,6 @@ jobs:
         with:
           java-version: 8
 
-      - uses: actions/setup-node@v1.4.4
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org
-
       - uses: actions/cache@v2
         with:
           path: $HOME/.m2
@@ -79,7 +74,7 @@ jobs:
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-${{env.VERSION}}.rpm
+          file: bootique-tool/target/bq-${{env.VERSION}}-1.x86_64.rpm
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
@@ -125,13 +120,13 @@ jobs:
       - name: Set Project Version
         run: |
           NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
-          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
+          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f)"
 
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-${{env.VERSION}}.zip
+          file: bootique-tool/target/bq-${{env.VERSION}}--SNAPSHOT.zip
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
@@ -187,21 +182,23 @@ jobs:
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
-          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f 2)"
+          echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
-      - run: echo ${{env.VERSION}}
+      - run: |
+          echo ${{env.VERSION}}
+          echo ${{env.APPVEYOR_REPO_TAG_NAME}}
 
       - name: Upload nupkg package to Bintray
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: cmd
         env:
-          FILE_PATH: bq.portable.0.100-SNAPSHOT.nupkg
+          FILE_PATH: bq.portable.${{env.VERSION}}-SNAPSHOT.nupkg
           API_USER: kravchenko
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: 0.100-SNAPSHOT
+          VERSION: ${{env.VERSION}}
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
