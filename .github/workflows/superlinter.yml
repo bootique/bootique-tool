@@ -62,7 +62,7 @@ jobs:
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-deb
           package: bq-deb
-          version: ${{env.VERSION}}
+          version: ${{env.VERSION}}-SNAPSHOT
           upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
           calculate_metadata: true # Schedule metadata calculation after upload
@@ -80,7 +80,7 @@ jobs:
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-rpm
           package: bq-rpm
-          version: ${{env.VERSION}}
+          version: ${{env.VERSION}}-SNAPSHOT
           upload_path: pool/main/m # Typical for debian repository layout
           publish: 0
 
@@ -95,11 +95,6 @@ jobs:
         uses: actions/setup-java@v1
         with:
           java-version: 8
-
-      - uses: actions/setup-node@v1.4.4
-        with:
-          node-version: 12
-          registry-url: https://registry.npmjs.org
 
       - uses: actions/cache@v2
         with:
@@ -120,7 +115,7 @@ jobs:
       - name: Set Project Version
         run: |
           NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
-          echo "::set-env name=VERSION::$(echo "${NAME%.*}" | cut -d'-' -f)"
+          echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 
       - name: Upload zip package to Bintray
         uses: KravchenkoAS/action-upload-rpm-bintray@main
@@ -132,7 +127,7 @@ jobs:
           repository_user: kravchenkoas
           repository: bq-tool-my-repo-mac
           package: bq
-          version: ${{env.VERSION}}
+          version: ${{env.VERSION}}-SNAPSHOT
           upload_path: pool/main/m
           publish: 0
 
@@ -198,7 +193,7 @@ jobs:
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: ${{env.VERSION}}
+          VERSION: ${{env.VERSION}}-SNAPSHOT
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
