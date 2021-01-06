@@ -156,7 +156,7 @@ jobs:
           graalvm-ce-java8-20.1.0\bin\gu.cmd install native-image
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2015 Build Tools'
         run: |
-          choco install visualstudio2015-buildtools
+          choco install microsoft-build-tools --version=14.0.25420.1
 #      - name: 'Maven Package'
 #        shell: cmd
 #        run: mvn package -DskipTests
