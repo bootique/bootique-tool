@@ -154,21 +154,19 @@ jobs:
           Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java8-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
           graalvm-ce-java8-20.1.0\bin\gu.cmd install native-image
-#      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
-#        run: |
-#          choco install visualstudio2017-workload-vctools
-      - name: 'Maven Package'
-        shell: cmd
-        run: mvn package -DskipTests
-      - name: 'Add msbuild to PATH'
-        uses: microsoft/setup-msbuild@v1.0.2
-        with:
-          vs-version: '[7.1]'
+      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2015 Build Tools'
+        run: |
+          choco install visualstudio2015community
+#      - name: 'Maven Package'
+#        shell: cmd
+#        run: mvn package -DskipTests
       - name: 'Build Native Image'
         shell: cmd
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
+          call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
+          mvn package -DskipTests
           cd .\bootique-tool\target\
           %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
