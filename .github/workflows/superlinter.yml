@@ -160,10 +160,10 @@ jobs:
       - name: 'Maven Package'
         shell: cmd
         run: mvn package -DskipTests
-      - name: 'Build Native Image'
-        uses: ilammy/msvc-dev-cmd@v1
+      - uses: ilammy/msvc-dev-cmd@v1
         with:
           sdk: 7.1
+      - name: 'Build Native Image'
 #        shell: cmd
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
