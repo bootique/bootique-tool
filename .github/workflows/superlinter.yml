@@ -154,14 +154,14 @@ jobs:
           Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java8-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
           graalvm-ce-java8-20.1.0\bin\gu.cmd install native-image
-      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
-        run: |
-          choco install visualstudio2017-workload-vctools
+#      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
+#        run: |
+#          choco install visualstudio2017-workload-vctools
       - name: 'Maven Package'
         shell: cmd
         run: mvn package -DskipTests
       - name: 'Build Native Image'
-        shell: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd
+        shell: C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd /D /E:ON /V:OFF /S /C "CALL "{0}""
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
