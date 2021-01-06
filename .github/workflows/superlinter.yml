@@ -121,7 +121,7 @@ jobs:
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
-          file: bootique-tool/target/bq-${{env.VERSION}}--SNAPSHOT.zip
+          file: bootique-tool/target/bq-${{env.VERSION}}-SNAPSHOT.zip
           api_user: kravchenko
           api_key: ${{ secrets.BINTRAY_API_KEY }}
           repository_user: kravchenkoas
@@ -143,16 +143,16 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v1
 
-      - name: Set up java 11
+      - name: Set up java 8
         uses: actions/setup-java@v1
         with:
-          java-version: 11
+          java-version: 8
 
       - name: 'Install GraalVM'
         run: |
-          Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
+          Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java8-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
-          graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
+          graalvm-ce-java8-20.1.0\bin\gu.cmd install native-image
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
           choco install visualstudio2017-workload-vctools
@@ -162,7 +162,7 @@ jobs:
       - name: 'Build Native Image'
         shell: cmd
         env:
-          JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java11-20.1.0
+          JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
           cd .\bootique-tool\target\
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
@@ -173,14 +173,16 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
-          ls .\bootique-tool\target\bq-win.portable\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
-          echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
+          set $env:NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
+          echo "VERSION=$(echo "${$env:NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
-      - run: |
+      - name: Print env
+        shell: pwsh
+        run: |
           echo ${{env.VERSION}}
           echo ${{env.APPVEYOR_REPO_TAG_NAME}}
 
