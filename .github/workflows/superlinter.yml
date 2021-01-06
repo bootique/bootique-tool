@@ -164,7 +164,6 @@ jobs:
         uses: microsoft/setup-msbuild@v1.0.2
         with:
           vs-version: '[7.1]'
-          vswhere-path: 'C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd'
       - name: 'Build Native Image'
         shell: cmd
         env:
