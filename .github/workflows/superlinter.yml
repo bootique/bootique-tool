@@ -164,7 +164,7 @@ jobs:
         with:
           sdk: 7.1
       - name: 'Build Native Image'
-#        shell: cmd
+        shell: cmd
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
