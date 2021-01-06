@@ -157,17 +157,16 @@ jobs:
       - name: 'Set up Visual C Build Tools Workload for Visual Studio 2015 Build Tools'
         run: |
           choco install microsoft-build-tools --version=14.0.25420.1
-#      - name: 'Maven Package'
-#        shell: cmd
-#        run: mvn package -DskipTests
+      - name: 'Maven Package'
+        shell: cmd
+        run: mvn package -DskipTests
       - name: 'Build Native Image'
         shell: cmd
         env:
           JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java8-20.1.0
         run: |
-          call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
-          mvn package -DskipTests
           cd .\bootique-tool\target\
+          call "C:\Program Files\Microsoft SDKs\Windows\v7.1\Bin\SetEnv.cmd" /x64
           %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
 
@@ -175,6 +174,7 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
+          dir .\bootique-tool\target\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
