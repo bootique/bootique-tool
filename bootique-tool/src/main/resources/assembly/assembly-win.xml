@@ -25,10 +25,8 @@
     </formats>
     <fileSets>
         <fileSet>
-<!--            <directory>${project.basedir}/..</directory>-->
-            <directory>${project.basedir}/src/main/resources</directory>
-<!--            <outputDirectory>/tools</outputDirectory>-->
-            <outputDirectory>${file.separator}/tools</outputDirectory>
+            <directory>${project.basedir}/..</directory>
+            <outputDirectory>/tools</outputDirectory>
             <includes>
                 <include>LICENSE*</include>
                 <include>NOTICE*</include>
@@ -38,17 +36,16 @@
     <files>
         <file>
             <source>${project.basedir}/../deploy/win/VERIFICATION.txt</source>
-            <outputDirectory>${file.separator}/tools</outputDirectory>
-<!--            <outputDirectory>/tools</outputDirectory>-->
+            <outputDirectory>/tools</outputDirectory>
         </file>
         <file>
             <source>${project.basedir}/../deploy/win/bq.portable.nuspec</source>
-            <outputDirectory>${file.separator}/</outputDirectory>
+            <outputDirectory>/</outputDirectory>
             <filtered>true</filtered>
         </file>
         <file>
             <source>/target/${project.artifactId}.exe</source>
-            <outputDirectory>${file.separator}/</outputDirectory>
+            <outputDirectory>/</outputDirectory>
         </file>
     </files>
 </assembly>

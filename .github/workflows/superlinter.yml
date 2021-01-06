@@ -173,6 +173,7 @@ jobs:
       - name: before_deploy
         shell: pwsh
         run: |
+          mvn package -Passembly-win -DskipTests
           dir .\bootique-tool\target\
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
@@ -207,6 +208,6 @@ jobs:
         continue-on-error: true
         shell: pwsh
         run: |
-            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+            Set-Location -Path .\
             choco apikey -k $env:choco_key -source https://push.chocolatey.org/
             choco push bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg -s https://push.chocolatey.org/
