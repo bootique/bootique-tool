@@ -22,10 +22,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 'Checkout repository'
         uses: actions/checkout@v1
 
-      - name: Set up java 8
+      - name: 'Set up java 8'
         uses: actions/setup-java@v1
         with:
           java-version: 8
@@ -38,20 +38,20 @@ jobs:
 
       - run: mvn package
 
-      - name: script
+      - name: 'Script'
         run: chmod +x ./deploy/linux.sh;
             ./deploy/linux.sh;
 
-      - name: before_deploy
+      - name: 'Before deploy'
         run: chmod +x ./deploy/update-version.sh;
             ./deploy/update-version.sh;
 
-      - name: Set Project Version
+      - name: 'Set Project Version'
         run: |
           NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
           echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 
-      - name: Upload deb package to Bintray
+      - name: 'Upload deb package to Bintray'
         uses: bpicode/github-action-upload-bintray@master
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -70,7 +70,7 @@ jobs:
           deb_component: main
           deb_architecture: amd64
 
-      - name: Upload rpm package to Bintray
+      - name: 'Upload rpm package to Bintray'
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -88,10 +88,10 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout repository
+      - name: 'Checkout repository'
         uses: actions/checkout@v1
 
-      - name: Set up java 8
+      - name: 'Set up java 8'
         uses: actions/setup-java@v1
         with:
           java-version: 8
@@ -104,20 +104,20 @@ jobs:
 
       - run: mvn package
 
-      - name: script
+      - name: 'Script'
         run: chmod +x ./deploy/mac.sh;
           ./deploy/mac.sh;
 
-      - name: before_deploy
+      - name: 'Defore deploy'
         run: chmod +x ./deploy/update-mac-version.sh;
           ./deploy/update-mac-version.sh;
 
-      - name: Set Project Version
+      - name: 'Set Project Version'
         run: |
           NAME=$(basename $(find ./bootique-tool/target -type f -name 'bq-*.jar'))
           echo "VERSION=$(echo "${NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
 
-      - name: Upload zip package to Bintray
+      - name: 'Upload zip package to Bintray'
         uses: KravchenkoAS/action-upload-rpm-bintray@main
 #        if: ${{ github.ref == 'refs/heads/master' }}
         with:
@@ -131,7 +131,7 @@ jobs:
           upload_path: pool/main/m
           publish: 0
 
-      - name: after_deploy
+      - name: 'After deploy'
         continue-on-error: true
         run: chmod +x ./deploy/update-homebrew.sh;
             ./deploy/update-homebrew.sh;
@@ -140,10 +140,10 @@ jobs:
     runs-on: windows-latest
 
     steps:
-      - name: Checkout repository
+      - name: 'Checkout repository'
         uses: actions/checkout@v1
 
-      - name: Set up java 11
+      - name: 'Set up java 11'
         uses: actions/setup-java@v1
         with:
           java-version: 11
@@ -153,7 +153,7 @@ jobs:
           Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
           Expand-Archive -path 'graal.zip' -destinationpath '.'
           graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
-      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2015 Build Tools'
+      - name: 'Set up Visual C Build Tools Workload for Visual Studio 2017 Build Tools'
         run: |
           choco install visualstudio2017-workload-vctools
       - name: 'Maven Package'
@@ -166,18 +166,17 @@ jobs:
         run: |
           cd .\bootique-tool\target\
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          echo%cd%
           %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
           cd ..\..
 
-      - name: before_deploy
+      - name: 'Before deploy'
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
-          $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
+          $NAME=dir ..\.. bq-*.jar | select BaseName
           echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
@@ -187,7 +186,7 @@ jobs:
           echo ${{env.VERSION}}
           echo ${{env.APPVEYOR_REPO_TAG_NAME}}
 
-      - name: Upload nupkg package to Bintray
+      - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: cmd
         env:
@@ -201,9 +200,11 @@ jobs:
           PUBLISH: 0
         run: |
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" ^
+          --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" ^
+          "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
 
-      - name: after_deploy
+      - name: 'After deploy'
         continue-on-error: true
         shell: pwsh
         run: |
