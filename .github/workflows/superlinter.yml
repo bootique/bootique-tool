@@ -178,7 +178,7 @@ jobs:
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
-          echo "VERSION=$(echo "$NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
+          echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
       - name: Print env
