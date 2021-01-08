@@ -184,6 +184,7 @@ jobs:
         shell: pwsh
         run: |
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
+          echo $NAME
           echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
           echo ${{env.VERSION}}
           echo ${{env.APPVEYOR_REPO_TAG_NAME}}
