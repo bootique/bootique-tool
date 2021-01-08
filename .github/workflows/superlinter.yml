@@ -177,8 +177,8 @@ jobs:
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
           echo $env:APPVEYOR_REPO_TAG_NAME
-          set $env:NAME=$(basename $(find .\bootique-tool\target -type f -name 'bq-*.jar'))
-          echo "VERSION=$(echo "${$env:NAME%.*}" | cut -d'-' -f 2)" >> $GITHUB_ENV
+          $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
+          echo "VERSION=$(echo "$NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
       - name: Print env
