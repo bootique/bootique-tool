@@ -184,10 +184,8 @@ jobs:
         shell: pwsh
         run: |
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
-          echo $NAME
           $MY_VERSION=$NAME[0] -Replace '[^.\d]'
-          echo $MY_VERSION
-          echo "VERSION=$MY_VERSION" >> $GITHUB_ENV
+          echo "VERSION=0.100" >> $GITHUB_ENV
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
@@ -198,15 +196,13 @@ jobs:
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: $({env.VERSION}}-SNAPSHOT
+          VERSION: ${{env.VERSION}}-SNAPSHOT
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
           echo $NAME
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" ^
-          --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" ^
-          "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
 
       - name: 'After deploy'
         continue-on-error: true
