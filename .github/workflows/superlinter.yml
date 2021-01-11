@@ -175,34 +175,38 @@ jobs:
           mvn package -Passembly-win -DskipTests
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
-          echo $env:APPVEYOR_REPO_TAG_NAME
-          $NAME=dir ..\.. bq-*.jar | select BaseName
-          echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
+#          echo $env:APPVEYOR_REPO_TAG_NAME
+#          $NAME=dir ..\.. bq-*.jar | select BaseName
+#          echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
 #          Push-AppveyorArtifact ".\bq.portable.$env:APPVEYOR_REPO_TAG_NAME.nupkg"
 
       - name: Print env
-        shell: pwsh
+#        shell: pwsh
         run: |
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
           $MY_VERSION=$NAME[0] -Replace '[^.\d]'
-          echo "VERSION=0.100" >> $GITHUB_ENV
+          echo "environment=0.100" >> $GITHUB_ENV
+
+      - name: Echo env var
+          run: |
+            echo "${Env:environment}"
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: pwsh
         env:
-          FILE_PATH: bq.portable.${{env.VERSION}}-SNAPSHOT.nupkg
+          FILE_PATH: bq.portable.${{ env.environment }}-SNAPSHOT.nupkg
           API_USER: kravchenko
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: ${{env.VERSION}}-SNAPSHOT
+          VERSION: ${{ env.environment }}-SNAPSHOT
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
           echo $NAME
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}
+          curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" "https://api.bintray.com/content/${{ env.REPOSITORY_USER }}/${{ env.REPOSITORY }}/${{ env.PACKAGE }}/${{ env.VERSION }}/${{ env.UPLOAD_PATH }}/${{ env.FILE_PATH }};publish=${{ env.PUBLISH }}"
 
       - name: 'After deploy'
         continue-on-error: true
