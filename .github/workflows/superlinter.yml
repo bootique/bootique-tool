@@ -205,5 +205,5 @@ jobs:
             $VERSION=$NAME[0] -Replace '[^.\d]'
             dir
             Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-            choco apikey -k {{ secrets.MY_CHOCO_APIKEY }} -source https://push.chocolatey.org/
-            choco push bq.portable.$VERSION-SNAPSHOT.nupkg -s https://push.chocolatey.org/
+            choco apikey --key {{ secrets.MY_CHOCO_APIKEY }} --source https://push.chocolatey.org/
+            choco push bq.portable.$VERSION-SNAPSHOT.nupkg --source https://push.chocolatey.org/
