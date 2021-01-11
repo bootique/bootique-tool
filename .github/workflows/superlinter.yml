@@ -185,22 +185,25 @@ jobs:
         run: |
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
           echo $NAME
+          $MY_VERSION=$NAME[0] -Replace '[^.\d]'
+          echo $MY_VERSION
           echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
-          echo $VERSION
+          echo ${{env.VERSION}}
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
-        shell: cmd
+        shell: pwsh
         env:
           FILE_PATH: bq.portable.${{env.VERSION}}-SNAPSHOT.nupkg
           API_USER: kravchenko
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: $(APPVEYOR_REPO_TAG_NAME)-SNAPSHOT
+          VERSION: $({env.APPVEYOR_REPO_TAG_NAME}}-SNAPSHOT
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
+          echo $NAME
           cd .\bootique-tool\target\bq-win.portable\bq-win.portable\
           curl --silent --show-error --fail --location --request PUT --upload-file "${{ env.FILE_PATH }}" ^
           --user "${{ env.API_USER }}:${{ secrets.BINTRAY_API_KEY }}" ^
