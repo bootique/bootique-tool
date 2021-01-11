@@ -162,7 +162,7 @@ jobs:
       - name: 'Build Native Image'
         shell: cmd
         env:
-          JAVA_HOME: D:\a\bootique-tool\bootique-tool\graalvm-ce-java11-20.1.0
+          JAVA_HOME: D:\a\my-bq-tool\my-bq-tool\graalvm-ce-java11-20.1.0
         run: |
           cd .\bootique-tool\target\
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
