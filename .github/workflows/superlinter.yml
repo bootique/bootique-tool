@@ -173,6 +173,8 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
+          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          Choco Pack
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
