@@ -203,6 +203,7 @@ jobs:
         run: |
             $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
             $VERSION=$NAME[0] -Replace '[^.\d]'
-            Set-Location -Path .\
+            dir
+            Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
             choco apikey -k {{ secrets.MY_CHOCO_APIKEY }} -source https://push.chocolatey.org/
             choco push bq.portable.$VERSION-SNAPSHOT.nupkg -s https://push.chocolatey.org/
