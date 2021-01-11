@@ -173,11 +173,6 @@ jobs:
         shell: pwsh
         run: |
           mvn package -Passembly-win -DskipTests
-          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          Choco Pack
-          $NAME=dir ..\.. bq-*.jar | select BaseName
-          $VERSION=$NAME[0] -Replace '[^.\d]'
-#          Push-AppveyorArtifact ".\bq.portable.$VERSION.nupkg"
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
@@ -204,5 +199,5 @@ jobs:
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
           $VERSION=$NAME[0] -Replace '[^.\d]'
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-          choco apikey --key ${{ secrets.MY_CHOCO_APIKEY }} --source https://push.chocolatey.org/my-bq-tool/
-          choco push bq.portable.$VERSION-SNAPSHOT.nupkg --source https://push.chocolatey.org/my-bq-tool/
+          choco apikey --key ${{ secrets.MY_CHOCO_APIKEY }} --source https://push.chocolatey.org/
+          choco push bq.portable.$VERSION-SNAPSHOT.nupkg --source https://push.chocolatey.org/
