@@ -186,6 +186,7 @@ jobs:
           $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
           echo $NAME
           echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
+          echo $VERSION
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
@@ -196,7 +197,7 @@ jobs:
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
           PACKAGE: bq
-          VERSION: ${{env.VERSION}}-SNAPSHOT
+          VERSION: $(APPVEYOR_REPO_TAG_NAME)-SNAPSHOT
           UPLOAD_PATH: pool/main/win
           PUBLISH: 0
         run: |
