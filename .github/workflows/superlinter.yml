@@ -188,8 +188,8 @@ jobs:
           echo "environment=0.100" >> $GITHUB_ENV
 
       - name: Echo env var
-          run: |
-            echo "${Env:environment}"
+        run: |
+          echo "${Env:environment}"
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
