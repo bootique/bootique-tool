@@ -187,14 +187,13 @@ jobs:
           echo $NAME
           $MY_VERSION=$NAME[0] -Replace '[^.\d]'
           echo $MY_VERSION
-          echo "VERSION=$(echo $NAME[0] -Replace '[^.\d]')" >> $GITHUB_ENV
-          Write-Output "::set-env name=VERSION::$MY_VERSION"
+          echo "VERSION=$MY_VERSION" >> $GITHUB_ENV
 
       - name: 'Upload nupkg package to Bintray'
 #        if: ${{ github.ref == 'refs/heads/master' }}
         shell: pwsh
         env:
-          FILE_PATH: bq.portable.$env:VERSION-SNAPSHOT.nupkg
+          FILE_PATH: bq.portable.${{env.VERSION}}-SNAPSHOT.nupkg
           API_USER: kravchenko
           REPOSITORY_USER: kravchenkoas
           REPOSITORY: bq-tool-my-repo-mac
