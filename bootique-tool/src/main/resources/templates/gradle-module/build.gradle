@@ -8,7 +8,6 @@ version '{{project.version}}'
 
 repositories {
     mavenCentral()
-    jcenter()
 }
 
 sourceCompatibility = '{{java.version}}'
