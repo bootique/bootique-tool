@@ -17,7 +17,7 @@
   under the License.
   -->
 
-[![Build Status](https://travis-ci.org/bootique/bootique-tool.svg)](https://travis-ci.org/bootique/bootique-tool)
+[![verify](https://github.com/bootique/bootique-tool/actions/workflows/verify.yml/badge.svg)](https://github.com/bootique/bootique-tool/actions/workflows/verify.yml)
 
 # `bq` : Bootique CLI tool
 
