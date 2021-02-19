@@ -8,19 +8,26 @@
     <iconUrl>https://cdn.jsdelivr.net/gh/bootique/bootique-io@e5086825f8267f63cf9b879a1a7c921b8cf5ce9d/themes/bootique-theme/static/images/icon-black-128x128.png</iconUrl>
     <summary>BQ: Bootique CLI tool</summary>
     <description>
-    **BQ** is an interactive tool to create and manage Bootique projects.
+**BQ** is an interactive tool to create and manage Bootique projects.
 
-    ## About Bootique Java Framework
+## About Bootique Java Framework
 
-    Bootique is a minimally opinionated java launcher and integration technology.
-    It is intended for building container-less runnable Java applications.
-    With Bootique you can create REST services, webapps, jobs, DB migration tasks, etc. and run them as if they were simple commands.
-    No JavaEE container required!
-    Among other things Bootique is an ideal platform for Java microservices,
-    as it allows you to create a fully-functional app with minimal setup.
+Bootique is a minimally opinionated java launcher and integration technology.
+It is intended for building container-less runnable Java applications.
+With Bootique you can create REST services, webapps, jobs, DB migration tasks, etc. and run them as if they were simple commands.
+No JavaEE container required!
+Among other things Bootique is an ideal platform for Java microservices,
+as it allows you to create a fully-functional app with minimal setup.
 
-    See `https://bootique.io` for more information about Bootique.
+See `https://bootique.io` for more information about Bootique.
     </description>
+    <releaseNotes>
+## Version ${project.version}
+
+* Update to the new Bootique snapshot repo in project templates
+* Minor fixes
+
+    </releaseNotes>
     <docsUrl>https://bootique.io/docs/2.x/bootique-tool-docs/</docsUrl>
     <mailingListUrl>https://groups.google.com/forum/#!forum/bootique-user</mailingListUrl>
     <bugTrackerUrl>https://github.com/bootique/bootique-tool/issues</bugTrackerUrl>

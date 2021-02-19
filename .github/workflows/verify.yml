@@ -1,0 +1,26 @@
+name: verify
+
+on: [pull_request, push]
+
+jobs:
+  verify:
+    runs-on: ubuntu-20.04
+    name: mvn verify
+    steps:
+      - name: Checkout...
+        uses: actions/checkout@v2
+
+      - name: Set up JDK...
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Retrieve mvn repo cache...
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
+          restore-keys: ${{ runner.os }}-maven
+
+      - name: Build and test...
+        run: mvn clean verify

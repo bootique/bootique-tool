@@ -46,7 +46,7 @@ public class FileConfigService implements ConfigService {
         if(Files.exists(configFile) && Files.isReadable(configFile)) {
             try {
                 Files.readAllLines(configFile).forEach(this::parseLine);
-            } catch (IOException ex) {
+            } catch (Exception ex) {
                 shell.println("Unable to read config file");
                 shell.println(ex);
             }
@@ -56,6 +56,10 @@ public class FileConfigService implements ConfigService {
     private void parseLine(String line) {
         String[] values = line.split("=");
         ConfigParameter<?> parameter = paramByName(values[0]);
+        if(parameter == null) {
+            shell.println("Unknown configuration parameter '" + values[0] + "'");
+            return;
+        }
         storage.put(parameter, parameter.valueFromString(values[1]));
     }
 

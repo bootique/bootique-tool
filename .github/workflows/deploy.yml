@@ -1,0 +1,201 @@
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  # Prepares new GitHub release for the tag and exposes required variables for dependent jobs
+  prepare-release:
+    name: Create Release
+    runs-on: ubuntu-20.04
+    outputs:
+      tag: ${{ steps.vars.outputs.tag }}
+      version: ${{ steps.vars.outputs.version }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v2
+        with:
+          fetch-depth: 1
+
+      - name: Set Version
+        id: vars
+        run: |
+          RELEASE_TAG=${GITHUB_REF#refs/*/}
+          echo ::set-output name=tag::${RELEASE_TAG}
+          echo ::set-output name=version::${RELEASE_TAG:1}
+
+      - name: Create Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.vars.outputs.tag }}
+          release_name: Release ${{ steps.vars.outputs.tag }}
+          body: |
+            BQ tool release ${{ steps.vars.outputs.tag }} binaries
+
+          draft: true
+          prerelease: false
+
+  # Deploy Linux .deb and .rpm packages
+  deploy-linux:
+    name: Deploy Linux binaries
+    needs: prepare-release
+    runs-on: ubuntu-20.04
+    continue-on-error: true
+
+    steps:
+      - name: Checkout...
+        uses: actions/checkout@v1
+
+      - name: Set up JDK...
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Retrieve mvn repo cache...
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
+          restore-keys: ${{ runner.os }}-maven
+
+#      - name: mvn package...
+#        run: mvn package
+
+      - name: Build linux native packages...
+        run: ./deploy/linux.sh
+
+      - name: Upload deb package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: ./bootique-tool/target/bq-${{ steps.vars.outputs.version }}.deb
+          asset_name: bq-${{ steps.vars.outputs.version }}.deb
+          asset_content_type: application/vnd.debian.binary-package
+
+      - name: Upload rpm package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: ./bootique-tool/target/bq-${{ steps.vars.outputs.version }}-1.x86_64.rpm
+          asset_name: bq-${{ steps.vars.outputs.version }}.x86_64.rpm
+          asset_content_type: application/x-rpm
+
+  # Deploy MacOS package and update homebrew repo link
+  deploy-macos:
+    name: Deploy MacOS binaries
+    needs: prepare-release
+    runs-on: macos-11.0
+    continue-on-error: true
+
+    steps:
+      - name: Checkout...
+        uses: actions/checkout@v1
+
+      - name: Set up JDK...
+        uses: actions/setup-java@v1
+        with:
+          java-version: 8
+
+      - name: Retrieve mvn repo cache...
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
+          restore-keys: ${{ runner.os }}-maven
+
+      #      - name: mvn package...
+      #        run: mvn package
+
+      - name: Build MacOS native packages...
+        run: ./deploy/mac.sh
+
+      - name: Upload MacOS package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: ./bootique-tool/target/bq-${{ steps.vars.outputs.version }}.zip
+          asset_name: bq-${{ steps.vars.outputs.version }}.macos.zip
+          asset_content_type: application/zip
+
+      - name: Update Homebrew repo
+        run: ./deploy/update-homebrew.sh
+        shell: bash
+        env:
+          TAG: ${{ steps.vars.outputs.tag }}
+          VERSION: ${{ steps.vars.outputs.version }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use token with write access to bootique-tools/homebrew-repo
+
+  # Deploy Windows package to Chocolatey and GitHub
+  deploy-win:
+    name: Deploy Windows binaries
+    needs: prepare-release
+    runs-on: windows-2019
+    continue-on-error: true
+
+    steps:
+      - name: Install GraalVM
+        run: |
+            Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
+            Expand-Archive -path 'graal.zip' -destinationpath '.'
+            graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
+
+      - name: Install Win SDK
+        run: |
+          choco install visualstudio2017-workload-vctools
+
+      - name: Install JDK
+        uses: actions/setup-java@v1
+        with:
+          java-version: 11
+
+      - name: Maven Package
+        shell: pwsh
+        run: mvn package -DskipTests
+
+      - name: Build Native Image
+        shell: cmd
+        env:
+          JAVA_HOME: D:\a\bootique-tool\bootique-tool\graalvm-ce-java11-20.1.0
+        run: |
+          cd .\bootique-tool\target\
+          call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
+          %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
+          cd ..\..
+
+      - name: Upload Windows package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: ./bootique-tool/target/bq.exe
+          asset_name: bq-${{ steps.vars.outputs.version }}.win.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
+
+      - name: Choco Pack
+        shell: pwsh
+        run: |
+          mvn package -Passembly-win -DskipTests
+          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          Choco Pack
+
+#      - name: Deploy Choco package
+#        continue-on-error: true
+#        shell: pwsh
+#        run: |
+#          $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
+#          $VERSION=$NAME[0] -Replace '[^.\d]'
+#          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+#          choco apikey --key ${{ secrets.CHOCO_APIKEY }} --source https://push.chocolatey.org/
+#          choco push bq.portable.$VERSION-SNAPSHOT.nupkg --source https://push.chocolatey.org/
