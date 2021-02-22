@@ -64,7 +64,7 @@ pwd
 # convert to rpm
 sudo apt-get update
 sudo apt-get install rpm ruby ruby-dev rubygems build-essential
-gem install --no-document fpm || exit 1
+sudo gem install -n /usr/local/bin --no-document fpm || exit 1
 
 fpm -t rpm -s deb ${PACK_NAME}-${VERSION}.deb || exit 1
 
