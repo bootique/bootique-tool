@@ -161,6 +161,7 @@
                                 </goals>
                                 <phase>package</phase>
                                 <configuration>
+                                    <imageName>bq</imageName>
                                     <!-- - -no-server -->
                                     <buildArgs>--report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
                                 </configuration>
@@ -201,24 +202,6 @@
                                 </filter>
                             </filters>
                         </configuration>
-                    </plugin>
-                    <plugin>
-                        <groupId>org.graalvm.nativeimage</groupId>
-                        <artifactId>native-image-maven-plugin</artifactId>
-                        <version>${native.image.plugin.version}</version>
-                        <executions>
-                            <execution>
-                                <goals>
-                                    <goal>native-image</goal>
-                                </goals>
-                                <phase>package</phase>
-                                <configuration>
-                                    <imageName>bq</imageName>
-                                    <!-- - -no-server -->
-                                    <buildArgs>--report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
-                                </configuration>
-                            </execution>
-                        </executions>
                     </plugin>
                 </plugins>
             </build>

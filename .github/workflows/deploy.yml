@@ -56,7 +56,7 @@ jobs:
       - name: Set up JDK...
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 11
 
       - name: Retrieve mvn repo cache...
         uses: actions/cache@v2
@@ -64,9 +64,6 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
           restore-keys: ${{ runner.os }}-maven
-
-#      - name: mvn package...
-#        run: mvn package
 
       - name: Build linux native packages...
         run: ./deploy/linux.sh
@@ -95,7 +92,7 @@ jobs:
   deploy-macos:
     name: Deploy MacOS binaries
     needs: prepare-release
-    runs-on: macos-11.0
+    runs-on: macos-latest
     continue-on-error: true
 
     steps:
@@ -105,7 +102,7 @@ jobs:
       - name: Set up JDK...
         uses: actions/setup-java@v1
         with:
-          java-version: 8
+          java-version: 11
 
       - name: Retrieve mvn repo cache...
         uses: actions/cache@v2
@@ -113,9 +110,6 @@ jobs:
           path: ~/.m2/repository
           key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
           restore-keys: ${{ runner.os }}-maven
-
-      #      - name: mvn package...
-      #        run: mvn package
 
       - name: Build MacOS native packages...
         run: ./deploy/mac.sh
@@ -136,7 +130,7 @@ jobs:
         env:
           TAG: ${{ steps.vars.outputs.tag }}
           VERSION: ${{ steps.vars.outputs.version }}
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # use token with write access to bootique-tools/homebrew-repo
+          GITHUB_TOKEN: ${{ secrets.HOMEBREW_UPDATE_TOKEN }}
 
   # Deploy Windows package to Chocolatey and GitHub
   deploy-win:
@@ -146,11 +140,14 @@ jobs:
     continue-on-error: true
 
     steps:
-      - name: Install GraalVM
-        run: |
-            Invoke-RestMethod -Uri https://github.com/graalvm/graalvm-ce-builds/releases/download/vm-20.1.0/graalvm-ce-java11-windows-amd64-20.1.0.zip -OutFile 'graal.zip'
-            Expand-Archive -path 'graal.zip' -destinationpath '.'
-            graalvm-ce-java11-20.1.0\bin\gu.cmd install native-image
+      - name: Setup Graalvm
+        id: setup-graalvm
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: '20.2.0.java11'
+
+      - name: Install native-image component
+        run: gu.cmd install native-image
 
       - name: Install Win SDK
         run: |
@@ -161,29 +158,22 @@ jobs:
         with:
           java-version: 11
 
+      - name: Retrieve mvn repo cache...
+        uses: actions/cache@v2
+        with:
+          path: ~/.m2/repository
+          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
+          restore-keys: ${{ runner.os }}-maven
+
       - name: Maven Package
         shell: pwsh
         run: mvn package -DskipTests
 
       - name: Build Native Image
         shell: cmd
-        env:
-          JAVA_HOME: D:\a\bootique-tool\bootique-tool\graalvm-ce-java11-20.1.0
         run: |
-          cd .\bootique-tool\target\
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          %JAVA_HOME%\bin\native-image -jar bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
-          cd ..\..
-
-      - name: Upload Windows package
-        uses: actions/upload-release-asset@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
-          asset_path: ./bootique-tool/target/bq.exe
-          asset_name: bq-${{ steps.vars.outputs.version }}.win.exe
-          asset_content_type: application/vnd.microsoft.portable-executable
+          native-image -jar .\bootique-tool\target\bq.jar --report-unsupported-elements-at-runtime --no-server --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command bq
 
       - name: Choco Pack
         shell: pwsh
@@ -192,12 +182,30 @@ jobs:
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
           Choco Pack
 
-#      - name: Deploy Choco package
-#        continue-on-error: true
-#        shell: pwsh
-#        run: |
-#          $NAME=dir .\bootique-tool\target bq-*.jar | select BaseName
-#          $VERSION=$NAME[0] -Replace '[^.\d]'
-#          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-#          choco apikey --key ${{ secrets.CHOCO_APIKEY }} --source https://push.chocolatey.org/
-#          choco push bq.portable.$VERSION-SNAPSHOT.nupkg --source https://push.chocolatey.org/
+      - name: Upload Windows package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: ./bq.exe
+          asset_name: bq-${{ steps.vars.outputs.version }}.win.exe
+          asset_content_type: application/vnd.microsoft.portable-executable
+
+      - name: Upload Choco package
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ needs.prepare-release.outputs.upload_url }}
+          asset_path: .\bootique-tool\target\bq-win.portable\bq-win.portable\bq.portable.${{ steps.vars.outputs.version }}.nupkg
+          asset_name: bq-${{ steps.vars.outputs.version }}.portable.win.nupkg
+          asset_content_type: application/zip
+
+      - name: Deploy Choco package
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          choco apikey --key ${{ secrets.CHOCO_APIKEY }} --source https://push.chocolatey.org/
+          choco push bq.portable.${{ steps.vars.outputs.version }}.nupkg --source https://push.chocolatey.org/

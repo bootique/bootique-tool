@@ -1,6 +1,12 @@
 name: verify
 
-on: [pull_request, push]
+on:
+  pull_request:
+    branches:
+      - '*'
+  push:
+    tags-ignore:
+      - 'v*'
 
 jobs:
   verify:
