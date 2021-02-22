@@ -46,6 +46,6 @@ awk "{sub(\"${PREV_CHECKSUM}\",\"${CHECKSUM}\")}1" bq.rb > temp.txt && mv temp.t
 echo "====== Updated homebrew recipe: ======"
 cat bq.rb
 
-#git add .
-#git commit -m "Update formula version"
-#git push origin-deploy master
+git add .
+git commit -m "Update formula version"
+git push origin-deploy master
