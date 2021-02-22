@@ -192,10 +192,10 @@ jobs:
           asset_name: bq-${{ needs.prepare-release.outputs.version }}.portable.win.nupkg
           asset_content_type: application/zip
 
-#      - name: Deploy Choco package
-#        continue-on-error: true
-#        shell: pwsh
-#        run: |
-#          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
-#          choco apikey --key ${{ secrets.CHOCO_APIKEY }} --source https://push.chocolatey.org/
-#          choco push bq.portable.${{ needs.prepare-release.outputs.version }}.nupkg --source https://push.chocolatey.org/
+      - name: Deploy Choco package
+        continue-on-error: true
+        shell: pwsh
+        run: |
+          Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
+          choco apikey --key ${{ secrets.CHOCO_APIKEY }} --source https://push.chocolatey.org/
+          choco push bq.portable.${{ needs.prepare-release.outputs.version }}.nupkg --source https://push.chocolatey.org/
