@@ -44,7 +44,7 @@
             <filtered>true</filtered>
         </file>
         <file>
-            <source>${project.basedir}\..\${project.artifactId}.exe</source>
+            <source>${project.basedir}\target\${project.artifactId}.exe</source>
             <outputDirectory>\</outputDirectory>
         </file>
     </files>
