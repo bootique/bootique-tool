@@ -140,6 +140,9 @@ jobs:
     continue-on-error: true
 
     steps:
+      - name: Checkout...
+        uses: actions/checkout@v1
+
       - name: Setup Graalvm
         id: setup-graalvm
         uses: DeLaGuardo/setup-graalvm@master
@@ -174,11 +177,12 @@ jobs:
 
       - name: Upload Windows package
         uses: actions/upload-release-asset@v1
+        continue-on-error: true
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ needs.prepare-release.outputs.upload_url }}
-          asset_path: ./bq.exe
+          asset_path: .\bootique-tool\target\bq.exe
           asset_name: bq-${{ needs.prepare-release.outputs.version }}.win.exe
           asset_content_type: application/vnd.microsoft.portable-executable
 
@@ -193,7 +197,6 @@ jobs:
           asset_content_type: application/zip
 
       - name: Deploy Choco package
-        continue-on-error: true
         shell: pwsh
         run: |
           Set-Location -Path .\bootique-tool\target\bq-win.portable\bq-win.portable\
