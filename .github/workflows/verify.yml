@@ -15,7 +15,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ ubuntu-latest, macos-latest ]
+        os: [ ubuntu-20.04, macos-latest ]
 
     steps:
       - name: Setup Graalvm
@@ -34,7 +34,7 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: m2-cache-${{ hashFiles('**/pom.xml') }}-v1
+          key: m2-cache-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
           restore-keys: m2-cache
 
       - name: Build and test...

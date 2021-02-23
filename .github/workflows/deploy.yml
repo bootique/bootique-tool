@@ -13,6 +13,7 @@ jobs:
     outputs:
       tag: ${{ steps.vars.outputs.tag }}
       version: ${{ steps.vars.outputs.version }}
+      graalvm_version: ${{ steps.vars.outputs.graalvm_version }}
       upload_url: ${{ steps.create_release.outputs.upload_url }}
 
     steps:
@@ -21,12 +22,14 @@ jobs:
         with:
           fetch-depth: 1
 
+      # NOTE: graalvm_version should be in sync with the native-image plugin version in the pom.xml
       - name: Set Version
         id: vars
         run: |
           RELEASE_TAG=${GITHUB_REF#refs/*/}
           echo ::set-output name=tag::${RELEASE_TAG}
           echo ::set-output name=version::${RELEASE_TAG:1}
+          echo ::set-output name=graalvm_version::21.0.0.2.java11
 
       - name: Create Release
         id: create_release
@@ -53,17 +56,24 @@ jobs:
       - name: Checkout...
         uses: actions/checkout@v1
 
-      - name: Set up JDK...
-        uses: actions/setup-java@v1
+      - name: Setup Graalvm
+        id: setup-graalvm
+        uses: DeLaGuardo/setup-graalvm@master
         with:
-          java-version: 11
+          graalvm-version: ${{ needs.prepare-release.outputs.graalvm_version }}
+
+      - name: Install native-image component
+        run: gu install native-image
 
       - name: Retrieve mvn repo cache...
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
-          restore-keys: ${{ runner.os }}-maven
+          key: m2-cache-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2-cache
+
+      - name: Build native-image
+        run: mvn package -Pnative-image -DskipTests
 
       - name: Build linux native packages...
         run: ./deploy/linux.sh
@@ -99,20 +109,24 @@ jobs:
       - name: Checkout...
         uses: actions/checkout@v1
 
-      - name: Set up JDK...
-        uses: actions/setup-java@v1
+      - name: Setup Graalvm
+        id: setup-graalvm
+        uses: DeLaGuardo/setup-graalvm@master
         with:
-          java-version: 11
+          graalvm-version: ${{ needs.prepare-release.outputs.graalvm_version }}
+
+      - name: Install native-image component
+        run: gu install native-image
 
       - name: Retrieve mvn repo cache...
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
-          restore-keys: ${{ runner.os }}-maven
+          key: m2-cache-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2-cache
 
       - name: Build MacOS native packages...
-        run: ./deploy/mac.sh
+        run: mvn package -Pnative-image,assembly-mac -DskipTests
 
       - name: Upload MacOS package
         uses: actions/upload-release-asset@v1
@@ -147,7 +161,7 @@ jobs:
         id: setup-graalvm
         uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm-version: '20.2.0.java11'
+          graalvm-version: ${{ needs.prepare-release.outputs.graalvm_version }}
 
       - name: Install native-image component
         run: gu.cmd install native-image
@@ -160,14 +174,14 @@ jobs:
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
-          restore-keys: ${{ runner.os }}-maven
+          key: m2-cache-${{ runner.os }}-${{ hashFiles('**/pom.xml') }}
+          restore-keys: m2-cache
 
       - name: Build Native Image
         shell: cmd
         run: |
           call "C:\Program Files (x86)\Microsoft Visual Studio\2017\BuildTools\VC\Auxiliary\Build\vcvars64.bat"
-          mvn package -Pnative-image -Passembly-win -DskipTests
+          mvn package -Pnative-image,assembly-win -DskipTests
 
       - name: Choco Pack
         shell: pwsh
