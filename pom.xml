@@ -39,8 +39,8 @@
         <bootique.version>2.0.M1</bootique.version>
         <jline.version>3.11.0</jline.version>
         <mustache.java.version>0.9.6</mustache.java.version>
-        <native.image.plugin.version>20.2.0</native.image.plugin.version>
-        <junit.version>4.13.1</junit.version>
+        <native.image.plugin.version>21.0.0.2</native.image.plugin.version>
+        <junit.version>4.13.2</junit.version>
         <mockito.version>3.3.0</mockito.version>
     </properties>
 
