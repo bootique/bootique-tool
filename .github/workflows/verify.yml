@@ -12,23 +12,36 @@ on:
 
 jobs:
   verify:
-    runs-on: ubuntu-20.04
-    name: mvn verify
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, macos-latest ]
+
     steps:
+      - name: Setup Graalvm
+        id: setup-graalvm
+        uses: DeLaGuardo/setup-graalvm@master
+        with:
+          graalvm-version: '21.0.0.2.java11'
+
+      - name: Install native-image component
+        run: gu install native-image
+
       - name: Checkout...
         uses: actions/checkout@v2
-
-      - name: Set up JDK...
-        uses: actions/setup-java@v1
-        with:
-          java-version: 11
 
       - name: Retrieve mvn repo cache...
         uses: actions/cache@v2
         with:
           path: ~/.m2/repository
-          key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}-build-v1
-          restore-keys: ${{ runner.os }}-maven
+          key: m2-cache-${{ hashFiles('**/pom.xml') }}-v1
+          restore-keys: m2-cache
 
       - name: Build and test...
-        run: mvn clean verify
+        run: mvn clean package -Pnative-image
+
+      - uses: actions/upload-artifact@v2
+        with:
+          name: ${{ matrix.os }}-binary
+          path: ./bootique-tool/target/bq
+          if-no-files-found: error
