@@ -105,19 +105,6 @@ Other problems with GraalVM on Windows:
     native-image.cmd -jar ..\lib\graalvm\svm-driver.jar
     ``` 
   
-## TODO: Windows binary distribution
-
-To publish on [chocolatey community portal](https://chocolatey.org/community) we need the following:
-
-- [x] check win binary actually works
-- [x] add app icon, see https://github.com/chocolatey/choco/wiki/CreatePackages#package-icon-guidelines
-- [x] check nuspec file, see https://github.com/chocolatey/package-validator/wiki
-- [x] add to the final bundle:
-    - [x] license text 
-    - [x] verification instructions 
-    - [x] app icon 
-- [ ] check https://github.com/chocolatey/package-verifier/wiki 
-- [ ] enable deployment in AppVeyor
 
 
 
