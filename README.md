@@ -25,7 +25,7 @@
 
 ## Documentation
 
-https://bootique.io/docs/latest/bootique-tool-docs/
+https://bootique.io/docs/2.x/bootique-tool-docs/
 
 ## How to Build
 
