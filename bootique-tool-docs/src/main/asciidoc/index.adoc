@@ -34,42 +34,6 @@ bq is a command line interactive tool that allows creating and managing Bootique
 brew install bootique-tools/repo/bq
 ----
 
-=== Linux
-
-==== CentOS
-To install `bq` on CentOS you need to
-
-* add bintray repo to your yum sources:
-+
-[source,shell]
-----
-wget https://bintray.com/bootique/bq-rpm/rpm -O bintray-bootique-bq-rpm.repo
-sudo mv bintray-bootique-bq-rpm.repo /etc/yum.repos.d/
-----
-* run:
-+
-[source,bash]
-----
-yum install bq
-----
-
-==== Ubuntu
-Installation process is similar to CentOS.
-
-* Add bintray repo to apt sources:
-+
-[source,bash]
-----
-echo "deb [trusted=yes] https://dl.bintray.com/bootique/bq-deb vivid main" | sudo tee -a /etc/apt/sources.list
-----
-* Install:
-+
-[source,bash]
-----
-apt-get update
-apt-get install bq
-----
-
 === Windows
 
 Windows binary is distributed with https://chocolatey.org[Chocolatey] package manager.
@@ -85,6 +49,40 @@ And here is how to upgrade `bq` to the latest version:
 [source,bash]
 ----
 choco upgrade bq.portable
+----
+
+=== Linux
+
+==== Ubuntu
+
+* Download the latest release from the GitHub:
++
+[source,bash]
+----
+wget https://github.com/bootique/bootique-tool/releases/download/v0.100/bq-0.100.deb
+----
+* Install:
++
+[source,bash]
+----
+sudo apt install ./bq-0.100.deb
+----
+
+==== CentOS
+
+To install `bq` on CentOS you need to
+
+* Download the latest release from the GitHub:
++
+[source,bash]
+----
+wget https://github.com/bootique/bootique-tool/releases/download/v0.100/bq-0.100.x86_64.rpm
+----
+* Install:
++
+[source,bash]
+----
+sudo yum install bq-0.100.x86_64.rpm
 ----
 
 
