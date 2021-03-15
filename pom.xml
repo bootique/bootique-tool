@@ -28,7 +28,7 @@
 
     <groupId>io.bootique.tools</groupId>
     <artifactId>bootique-tool-parent</artifactId>
-    <version>0.100</version>
+    <version>0.101-SNAPSHOT</version>
 
     <packaging>pom</packaging>
 
