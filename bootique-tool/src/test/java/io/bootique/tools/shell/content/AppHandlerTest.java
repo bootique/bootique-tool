@@ -23,22 +23,20 @@ import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 
 
 public class AppHandlerTest {
 
     private AppHandler appHandler;
 
-    @Before
+    @BeforeEach
     public void setup() {
 
         appHandler = Mockito.spy(new AppHandler() {
@@ -71,19 +69,19 @@ public class AppHandlerTest {
 
         Properties properties = appHandler.buildProperties(components, outputRoot, parentFile).build();
 
-        assertNotNull(properties.get("output.path"));
-        assertEquals(outputRoot, properties.get("output.path"));
-        assertNotNull(properties.get("project.name"));
-        assertEquals(components.getName(), properties.get("project.name"));
-        assertNotNull(properties.get("parent"));
-        assertNotNull(properties.get("java.package"));
-        assertEquals(components.getJavaPackage(), properties.get("java.package"));
-        assertNotNull(properties.get("bq.version"));
-        assertEquals("2.0", properties.get("bq.version"));
-        assertNotNull(properties.get("project.version"));
-        assertEquals(components.getVersion(), properties.get("project.version"));
-        assertNotNull(properties.get("project.mainClass"));
-        assertEquals("testJavaPackage.Application", properties.get("project.mainClass"));
-        assertNotNull(properties.get("bq.di"));
+        Assertions.assertNotNull(properties.get("output.path"));
+        Assertions.assertEquals(outputRoot, properties.get("output.path"));
+        Assertions.assertNotNull(properties.get("project.name"));
+        Assertions.assertEquals(components.getName(), properties.get("project.name"));
+        Assertions.assertNotNull(properties.get("parent"));
+        Assertions.assertNotNull(properties.get("java.package"));
+        Assertions.assertEquals(components.getJavaPackage(), properties.get("java.package"));
+        Assertions.assertNotNull(properties.get("bq.version"));
+        Assertions.assertEquals("2.0", properties.get("bq.version"));
+        Assertions.assertNotNull(properties.get("project.version"));
+        Assertions.assertEquals(components.getVersion(), properties.get("project.version"));
+        Assertions.assertNotNull(properties.get("project.mainClass"));
+        Assertions.assertEquals("testJavaPackage.Application", properties.get("project.mainClass"));
+        Assertions.assertNotNull(properties.get("bq.di"));
     }
 }

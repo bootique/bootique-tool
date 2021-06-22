@@ -65,8 +65,8 @@
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-api</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -81,7 +81,7 @@
             <plugins>
                 <plugin>
                     <artifactId>maven-assembly-plugin</artifactId>
-                    <version>3.2.0</version>
+                    <version>3.3.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -114,7 +114,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.2</version>
+                <version>3.2.4</version>
                 <configuration>
                     <filters>
                         <filter>
@@ -163,7 +163,7 @@
                                 <configuration>
                                     <imageName>bq</imageName>
                                     <!-- - -no-server -->
-                                    <buildArgs>--report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
+                                    <buildArgs>--allow-incomplete-classpath --report-unsupported-elements-at-runtime --no-fallback --initialize-at-build-time=io.bootique.tools.shell.command.ShellCommand --initialize-at-build-time=io.bootique.command.Command</buildArgs>
                                 </configuration>
                             </execution>
                         </executions>
