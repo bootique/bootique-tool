@@ -37,12 +37,6 @@ import javax.inject.Provider;
 public class MavenAppHandler extends AppHandler implements MavenHandler {
 
     public MavenAppHandler() {
-        // pom.xml
-/*        addPipeline(TemplatePipeline.builder()
-                .source("pom.xml")
-                .processor(new MustacheTemplateProcessor())
-        );*/
-
         // assembly.xml
         addPipeline(TemplatePipeline.builder()
                 .source("assembly.xml")

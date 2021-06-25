@@ -1,6 +1,7 @@
 modules-config:
   #module-config:
   maven-app:
+    defaultLoader: template_resource
     pipelines:
       - sources:
           - pom.xml

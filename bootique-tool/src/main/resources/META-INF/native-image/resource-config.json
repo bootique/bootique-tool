@@ -74,6 +74,12 @@
     {"pattern":"templates/gradle-multimodule/gradle/wrapper/gradle-wrapper.properties"},
     {"pattern":"templates/gradle-multimodule/gradlew"},
     {"pattern":"templates/gradle-multimodule/gradlew.bat"},
-    {"pattern":"templates/gradle-multimodule/settings.gradle"}
+    {"pattern":"templates/gradle-multimodule/settings.gradle"},
+    {"pattern":"config/gradle-app-config.yml"},
+    {"pattern":"config/gradle-module-config.yml"},
+    {"pattern":"config/gradle-multimodule-config.yml"},
+    {"pattern":"config/maven-app-config.yml"},
+    {"pattern":"config/maven-module-config.yml"},
+    {"pattern":"config/maven-multimodule-config.yml"}
   ]
 }

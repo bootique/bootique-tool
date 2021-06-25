@@ -1,6 +1,7 @@
 modules-config:
   #module-config:
   gradle-module:
+    defaultLoader: template_resource
     pipelines:
       - sources:
           - src/main/resources

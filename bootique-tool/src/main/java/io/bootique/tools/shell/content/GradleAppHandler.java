@@ -62,11 +62,6 @@ public class GradleAppHandler extends AppHandler implements GradleHandler {
                 )))
         );
 
-        // gradle scripts
-/*        addPipeline(TemplatePipeline.builder()
-                .source("build.gradle")
-                .processor(new MustacheTemplateProcessor())
-        );*/
         addPipeline(TemplatePipeline.builder()
                 .filter((s, properties) -> !properties.get("parent", false))
                 .source("settings.gradle")

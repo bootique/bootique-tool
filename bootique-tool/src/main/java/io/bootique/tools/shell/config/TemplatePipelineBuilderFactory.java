@@ -43,7 +43,8 @@ public class TemplatePipelineBuilderFactory {
         }
     }
 
-    @BQConfigProperty("Loader identifier (\"binary_file\",\"binary_resource\",\"empty\",\"template_resource\")")
+    @BQConfigProperty("Loader identifier (\"binary_file\",\"binary_resource\",\"empty\",\"template_resource\"," +
+            "\"external_resource\",\"external_binary_resource\")")
     public void setLoader(String loaderName) {
         try {
             LoaderType loaderType = LoaderType.valueOf(loaderName.toUpperCase());

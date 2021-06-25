@@ -33,31 +33,6 @@ import javax.inject.Provider;
 abstract class AppHandler extends BaseContentHandler implements BuildSystemHandler {
 
     public AppHandler() {
-        // java sources
-/*        for (TemplatePipeline.Builder builder : pipelinesFactory.getTemplatePipelinesBuilders()) {
-            addPipeline(builder);
-        }*/
-       /* addPipeline(TemplatePipeline.builder()
-                .source("src/main/java/example/Application.java")
-                .source("src/main/java/example/ApplicationModuleProvider.java")
-                .source("src/test/java/example/ApplicationTest.java")
-                .source("src/test/java/example/ApplicationModuleProviderTest.java")
-                .processor(new JavaPackageProcessor())
-                .processor(new MustacheTemplateProcessor())
-        );
-
-        // folders
-        addPipeline(TemplatePipeline.builder()
-                .source("src/main/resources")
-                .source("src/test/resources")
-                .loader(new EmptyTemplateLoader())
-                .saver(new TemplateDirOnlySaver())
-        );
-
-        addPipeline(TemplatePipeline.builder()
-                .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
-                .processor(new MustacheTemplateProcessor())
-        );*/
     }
 
     @Override

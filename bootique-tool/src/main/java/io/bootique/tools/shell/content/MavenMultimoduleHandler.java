@@ -14,10 +14,6 @@ import javax.inject.Provider;
 public class MavenMultimoduleHandler extends BaseContentHandler implements MavenHandler {
 
     public MavenMultimoduleHandler() {
-       /* addPipeline(TemplatePipeline.builder()
-                .source("pom.xml")
-                .processor(new MustacheTemplateProcessor())
-        );*/
     }
 
     @Override

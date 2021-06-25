@@ -1,6 +1,7 @@
 modules-config:
   #module-config:
   gradle-multimodule:
+    defaultLoader: template_resource
     pipelines:
       - sources:
           - gradle/wrapper/gradle-wrapper.jar

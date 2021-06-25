@@ -31,16 +31,18 @@ import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.Toolchain;
-import io.bootique.tools.shell.content.BaseContentHandler;
 import io.bootique.tools.shell.content.ContentHandler;
 import io.bootique.tools.shell.content.DefaultGradleHandler;
 import io.bootique.tools.shell.content.DefaultMavenHandler;
-import io.bootique.tools.shell.template.processor.TemplateProcessor;
+import io.bootique.tools.shell.content.DefaultUniversalHandler;
 import org.jline.builtins.Completers;
 
+import static io.bootique.tools.shell.Toolchain.GRADLE;
+import static io.bootique.tools.shell.Toolchain.MAVEN;
 import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
+    private static final String UNIVERSAL_MODULE_KEY = "universal";
 
     @Inject
     private Map<String, ContentHandler> artifactHandlers;
@@ -86,18 +88,20 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         if (artifactHandlers.containsKey(templateType))
             return artifactHandlers.get(templateType);
         else
-            return getDefaultHandlerByToolchain(arguments.getToolchain(), arguments.getArtifactType());
+            return getDefaultHandlerByArguments(arguments);
     }
 
-    private ContentHandler getDefaultHandlerByToolchain(Toolchain toolchain, String type) {
-        switch (toolchain) {
-            case MAVEN:
-                return new DefaultMavenHandler(type);
-            case GRADLE:
-                return new DefaultGradleHandler(type);
-            default:
-                throw new RuntimeException("Unrecognizable toolchain: " + toolchain);
-        }
+    private ContentHandler getDefaultHandlerByArguments(NewCommandArguments arguments) {
+        Toolchain toolchain = arguments.getToolchain();
+        if (arguments.getModulePrototypePath() == null)
+            throw new RuntimeException("You set new artifact, but didn't set path to it; sent path as the third " +
+                    "command line argument");
+        DefaultUniversalHandler contentHandler = (DefaultUniversalHandler) artifactHandlers.get(
+                toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY
+        );
+        contentHandler.setPath(arguments.getModulePrototypePath());
+        contentHandler.setArtifactTypeKey(arguments.getArtifactType());
+        return contentHandler;
     }
 
 }

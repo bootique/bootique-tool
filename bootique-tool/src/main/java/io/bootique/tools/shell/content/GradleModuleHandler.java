@@ -59,11 +59,6 @@ public class GradleModuleHandler extends ModuleHandler implements GradleHandler 
                         PosixFilePermission.OTHERS_READ
                 )))
         );
-
-        /*addPipeline(TemplatePipeline.builder()
-                .source("build.gradle")
-                .processor(new MustacheTemplateProcessor())
-        );*/
         addPipeline(TemplatePipeline.builder()
                 .filter((s, properties) -> !properties.get("parent", false))
                 .source("settings.gradle")
