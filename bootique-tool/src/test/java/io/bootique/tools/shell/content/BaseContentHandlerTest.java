@@ -40,6 +40,11 @@ public class BaseContentHandlerTest {
     public void setup() {
         baseContentHandler = Mockito.spy(new BaseContentHandler() {
             @Override
+            protected String getArtifactTypeKey() {
+                return null;
+            }
+
+            @Override
             public String getBuildSystemName() {
                 return null;
             }

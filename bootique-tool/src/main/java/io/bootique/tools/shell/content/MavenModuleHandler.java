@@ -20,25 +20,38 @@
 package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
 
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 public class MavenModuleHandler extends ModuleHandler implements MavenHandler {
 
     public MavenModuleHandler() {
         // pom.xml
-        addPipeline(TemplatePipeline.builder()
+       /* for (TemplatePipeline.Builder builder : builderList) {
+            addPipeline(builder);
+        }*/
+       /* addPipeline(TemplatePipeline.builder()
                 .source("pom.xml")
                 .processor(new MustacheTemplateProcessor())
-        );
+        );*/
     }
 
     @Override
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/maven-module/");
+    }
+
+    @Override
+    protected String getArtifactTypeKey() {
+        return "maven-module";
     }
 
 }

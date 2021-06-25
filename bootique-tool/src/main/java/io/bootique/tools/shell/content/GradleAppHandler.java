@@ -21,7 +21,9 @@ package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
 import java.nio.file.attribute.PosixFilePermission;
+import java.util.ArrayList;
 import java.util.EnumSet;
+import java.util.List;
 
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.DockerType;
@@ -31,10 +33,12 @@ import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 public class GradleAppHandler extends AppHandler implements GradleHandler {
 
     public GradleAppHandler() {
-        super();
         // gradle wrapper
         addPipeline(TemplatePipeline.builder()
                 .filter((s, properties) -> !properties.get("parent", false))
@@ -59,10 +63,10 @@ public class GradleAppHandler extends AppHandler implements GradleHandler {
         );
 
         // gradle scripts
-        addPipeline(TemplatePipeline.builder()
+/*        addPipeline(TemplatePipeline.builder()
                 .source("build.gradle")
                 .processor(new MustacheTemplateProcessor())
-        );
+        );*/
         addPipeline(TemplatePipeline.builder()
                 .filter((s, properties) -> !properties.get("parent", false))
                 .source("settings.gradle")
@@ -82,5 +86,10 @@ public class GradleAppHandler extends AppHandler implements GradleHandler {
     protected Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/gradle-app/");
+    }
+
+    @Override
+    protected String getArtifactTypeKey() {
+        return "gradle-app";
     }
 }

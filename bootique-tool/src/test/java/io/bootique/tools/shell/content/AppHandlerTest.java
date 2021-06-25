@@ -41,6 +41,11 @@ public class AppHandlerTest {
 
         appHandler = Mockito.spy(new AppHandler() {
             @Override
+            protected String getArtifactTypeKey() {
+                return null;
+            }
+
+            @Override
             public String getBuildSystemName() {
                 return null;
             }

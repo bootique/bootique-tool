@@ -1,0 +1,8 @@
+modules-config:
+  #module-config:
+  maven-multimodule:
+    pipelines:
+      - sources:
+         - pom.xml
+        processors:
+         - mustache

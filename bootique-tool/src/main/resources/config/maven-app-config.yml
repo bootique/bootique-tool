@@ -1,0 +1,25 @@
+modules-config:
+  #module-config:
+  maven-app:
+    pipelines:
+      - sources:
+          - pom.xml
+        processors:
+          - mustache
+      - sources:
+          - src/main/java/example/Application.java
+          - src/main/java/example/ApplicationModuleProvider.java
+          - src/test/java/example/ApplicationTest.java
+          - src/test/java/example/ApplicationModuleProviderTest.java
+        processors:
+          - java
+          - mustache
+      - sources:
+          - src/main/resources
+          - src/test/resources
+        loader: empty
+        saver: dir_only
+      - sources:
+          - src/main/resources/META-INF/services/io.bootique.BQModuleProvider
+        processors:
+          - mustache
