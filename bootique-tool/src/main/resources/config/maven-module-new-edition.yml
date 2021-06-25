@@ -1,0 +1,28 @@
+modules-config:
+  #module-config:
+  my-module:
+    pipelines:
+      - sources:
+          - pom.xml
+        processors:
+          - mustache
+      - sources:
+          - src/main/resources
+          - src/test/resources
+        loader: empty
+        saver: dir_only
+      - sources:
+          - src/main/resources/META-INF/services/io.bootique.BQModuleProvider
+        processors:
+          - mustache
+      - sources:
+          - src/main/another/another.txt
+      - sources:
+          - src/main/java/example/Temporary.java
+          - src/main/java/example/MyModule.java
+          - src/main/java/example/MyModuleProvider.java
+          - src/test/java/example/MyModuleProviderTest.java
+        processors:
+          - java
+          - module_path
+          - mustache

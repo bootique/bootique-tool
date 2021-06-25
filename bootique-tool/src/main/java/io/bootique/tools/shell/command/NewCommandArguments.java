@@ -31,7 +31,7 @@ import io.bootique.tools.shell.content.NameParser;
 class NewCommandArguments {
     private final Toolchain toolchain;
     private final String artifactType;
-    //private final ArtifactType artifactType;
+    private final String modulePrototypePath;
     private final NameComponents components;
 
     Toolchain getToolchain() {
@@ -46,27 +46,30 @@ class NewCommandArguments {
         return artifactType;
     }
 
-/*    ArtifactType getArtifactType() {
-        return artifactType;
-    }*/
+    public String getModulePrototypePath() {
+        return modulePrototypePath;
+    }
 
-    private NewCommandArguments(Toolchain toolchain, String artifactType, NameComponents components) {
+    private NewCommandArguments(Toolchain toolchain, String artifactType, NameComponents components, String modulePrototypePath) {
         this.toolchain = toolchain;
         this.artifactType = artifactType;
         this.components = components;
+        this.modulePrototypePath = modulePrototypePath;
     }
 
     static NewCommandArguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
         String type = null;
         String name = null;
+        String modulePath = null;
 
         if (arguments != null) {
             // we have something ...
             switch (arguments.size()) {
+                case 3:
+                    modulePath = arguments.get(2);
                 case 2:
                     name = arguments.get(1);
                 case 1:
-                    //type = ArtifactType.byName(arguments.get(0));
                     type = arguments.get(0);
                     if (type == null) {
                         if (name == null) {
@@ -98,6 +101,6 @@ class NewCommandArguments {
             }
             nameComponents = nameComponents.withJavaPackage(javaPackage);
         }
-        return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents);
+        return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents, modulePath);
     }
 }

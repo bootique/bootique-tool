@@ -86,13 +86,6 @@ public class BQShellModule extends ConfigModule {
 
     @Provides
     @Singleton
-    List<TemplatePipeline.Builder> providePipelineBuilders(ConfigurationFactory configFactory) {
-        return configFactory.config(new TypeRef<PipelinesFactory>() {
-        }, "module-config").getTemplatePipelinesBuilders();
-    }
-
-    @Provides
-    @Singleton
     Map<String, List<TemplatePipeline.Builder>> providePipelineBuildersMap(ConfigurationFactory configFactory) {
         return configFactory.config(new TypeRef<Map<String, PipelinesFactory>>() {
         }, "modules-config").entrySet().stream()

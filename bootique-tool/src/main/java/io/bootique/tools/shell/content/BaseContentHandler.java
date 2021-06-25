@@ -21,7 +21,7 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
     protected ConfigService configService;
 
     @Inject
-    Provider<Map<String, List<TemplatePipeline.Builder>>> buildersMap;
+    protected Provider<Map<String, List<TemplatePipeline.Builder>>> buildersMap;
 
     private boolean pipelinesInitialized = false;
 
@@ -62,8 +62,8 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
         if (!pipelinesInitialized) {
             if (buildersMap == null) {
                 throw new RuntimeException("Unrecognizable artifact type: " + getArtifactTypeKey() + "; you need" +
-                        " to use basic artifacts (lib,module,app) or add your configuration file in the last command" +
-                        " argument");
+                        " to use basic artifacts (lib,module,app) or add your configuration file when start bq" +
+                        " as --config argument");
             }
             List<TemplatePipeline.Builder> builders = buildersMap.get().get(getArtifactTypeKey());
             for (TemplatePipeline.Builder builder : builders) {

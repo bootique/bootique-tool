@@ -33,14 +33,6 @@ import javax.inject.Provider;
 public class MavenModuleHandler extends ModuleHandler implements MavenHandler {
 
     public MavenModuleHandler() {
-        // pom.xml
-       /* for (TemplatePipeline.Builder builder : builderList) {
-            addPipeline(builder);
-        }*/
-       /* addPipeline(TemplatePipeline.builder()
-                .source("pom.xml")
-                .processor(new MustacheTemplateProcessor())
-        );*/
     }
 
     @Override

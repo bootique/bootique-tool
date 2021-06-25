@@ -55,6 +55,8 @@
     <modules>
         <module>bootique-tool</module>
         <module>bootique-tool-docs</module>
+        <module>test</module>
+        <module>test-module</module>
     </modules>
 
     <repositories>
