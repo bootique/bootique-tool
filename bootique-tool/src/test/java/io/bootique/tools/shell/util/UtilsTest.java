@@ -19,27 +19,26 @@
 
 package io.bootique.tools.shell.util;
 
-import org.junit.Test;
-
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 
 public class UtilsTest {
 
     @Test
     public void moduleNameFromArtifactName() {
         String moduleName = Utils.moduleNameFromArtifactName("bootique-tool-test-artifact");
-        assertEquals("BootiqueToolTestArtifact", moduleName);
+        Assertions.assertEquals("BootiqueToolTestArtifact", moduleName);
     }
 
-    @Test(expected = StringIndexOutOfBoundsException.class)
+    @Test
     public void moduleNameFromNullLengthArtifactName() {
-        Utils.moduleNameFromArtifactName("");
+        Assertions.assertThrows(StringIndexOutOfBoundsException.class, () -> Utils.moduleNameFromArtifactName(""));
     }
 
     @Test
     public void moduleNameFromArtifactNameInSingleWord() {
         String moduleName = Utils.moduleNameFromArtifactName("test");
-        assertEquals("Test", moduleName);
+        Assertions.assertEquals("Test", moduleName);
     }
 
 }

@@ -6,12 +6,12 @@ import java.nio.file.Path;
 
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -24,7 +24,7 @@ public class MavenMultimoduleHandlerIT {
 
     Path tmpRootPath;
 
-    @Before
+    @BeforeEach
     public void createHandler() {
         tmpRootPath = folder.getRoot().toPath();
 

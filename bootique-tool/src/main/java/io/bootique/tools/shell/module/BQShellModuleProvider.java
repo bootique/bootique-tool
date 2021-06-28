@@ -19,12 +19,15 @@
 
 package io.bootique.tools.shell.module;
 
+import java.lang.reflect.Type;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Map;
 
 import io.bootique.BQCoreModule;
 import io.bootique.BQModuleProvider;
 import io.bootique.di.BQModule;
+import io.bootique.tools.shell.config.PipelinesFactory;
 
 public class BQShellModuleProvider implements BQModuleProvider {
 
@@ -36,5 +39,10 @@ public class BQShellModuleProvider implements BQModuleProvider {
     @Override
     public Collection<Class<? extends BQModule>> overrides() {
         return Collections.singleton(BQCoreModule.class);
+    }
+
+    @Override
+    public Map<String, Type> configs() {
+        return Collections.singletonMap("pipelines", PipelinesFactory.class);
     }
 }

@@ -24,8 +24,8 @@ import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.BinaryTemplate;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.Template;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -34,7 +34,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class SettingsGradleProcessorTest {
 
@@ -45,7 +45,7 @@ public class SettingsGradleProcessorTest {
     private static final String PROCESSED_SETTINGS_GRADLE = "rootProject.name = 'example'\n" +
             "include 'TestProjectName'";
 
-    @Before
+    @BeforeEach
     public void prepareProcessor() {
         Shell shell = Mockito.mock(JlineShell.class);
         processor = new SettingsGradleProcessor(shell);

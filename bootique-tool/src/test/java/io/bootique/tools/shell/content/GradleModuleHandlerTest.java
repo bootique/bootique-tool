@@ -21,20 +21,20 @@ package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.template.Properties;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class GradleModuleHandlerTest {
 
     private GradleModuleHandler moduleHandlerMock;
 
-    @Before
+    @BeforeEach
     public void setup() {
         moduleHandlerMock = Mockito.spy(new GradleModuleHandler());
         moduleHandlerMock.configService = Mockito.mock(ConfigService.class);

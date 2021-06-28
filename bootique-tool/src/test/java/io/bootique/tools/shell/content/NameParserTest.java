@@ -19,16 +19,16 @@
 
 package io.bootique.tools.shell.content;
 
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class NameParserTest {
 
     private NameParser parser;
 
-    @Before
+    @BeforeEach
     public void init() {
         parser = new NameParser();
     }

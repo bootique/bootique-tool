@@ -1,0 +1,26 @@
+modules-config:
+  #module-config:
+  gradle-module:
+    defaultLoader: template_resource
+    pipelines:
+      - sources:
+          - src/main/resources
+          - src/test/resources
+        loader: empty
+        saver: dir_only
+      - sources:
+          - src/main/resources/META-INF/services/io.bootique.BQModuleProvider
+        processors:
+          - mustache
+      - sources:
+          - src/main/java/example/MyModule.java
+          - src/main/java/example/MyModuleProvider.java
+          - src/test/java/example/MyModuleProviderTest.java
+        processors:
+          - java
+          - module_path
+          - mustache
+      - sources:
+          - build.gradle
+        processors:
+          - mustache

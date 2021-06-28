@@ -25,13 +25,13 @@ import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 import io.bootique.tools.shell.template.processor.TemplateProcessor;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.lang.reflect.Field;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ContentHandlerTest {
 
@@ -39,7 +39,7 @@ public class ContentHandlerTest {
 
     private ContentHandler contentHandler;
 
-    @Before
+    @BeforeEach
     public void setup() {
         contentHandler = Mockito.spy(new ContentHandler() {
             @Override

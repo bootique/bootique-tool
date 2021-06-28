@@ -20,22 +20,24 @@
 package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
+import java.util.List;
 
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.Packaging;
-import io.bootique.tools.shell.template.EmptyTemplateLoader;
 import io.bootique.tools.shell.template.Properties;
-import io.bootique.tools.shell.template.TemplateDirOnlySaver;
 import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.JavaPackageProcessor;
-import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
+
+import javax.inject.Provider;
 
 abstract class AppHandler extends BaseContentHandler implements BuildSystemHandler {
 
     public AppHandler() {
         // java sources
-        addPipeline(TemplatePipeline.builder()
+/*        for (TemplatePipeline.Builder builder : pipelinesFactory.getTemplatePipelinesBuilders()) {
+            addPipeline(builder);
+        }*/
+       /* addPipeline(TemplatePipeline.builder()
                 .source("src/main/java/example/Application.java")
                 .source("src/main/java/example/ApplicationModuleProvider.java")
                 .source("src/test/java/example/ApplicationTest.java")
@@ -55,7 +57,7 @@ abstract class AppHandler extends BaseContentHandler implements BuildSystemHandl
         addPipeline(TemplatePipeline.builder()
                 .source("src/main/resources/META-INF/services/io.bootique.BQModuleProvider")
                 .processor(new MustacheTemplateProcessor())
-        );
+        );*/
     }
 
     @Override

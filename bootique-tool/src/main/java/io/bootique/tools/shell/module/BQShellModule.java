@@ -20,25 +20,25 @@
 package io.bootique.tools.shell.module;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 import java.nio.file.Path;
 import java.nio.file.Paths;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
-import java.util.Optional;
-import java.util.Set;
+import java.util.*;
+import java.util.stream.Collectors;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
 import javax.inject.Singleton;
 
 import io.bootique.BQCoreModule;
 import io.bootique.BootiqueException;
+import io.bootique.ConfigModule;
 import io.bootique.annotation.DefaultCommand;
 import io.bootique.command.Command;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
-import io.bootique.di.BQModule;
-import io.bootique.di.Binder;
-import io.bootique.di.Provides;
+import io.bootique.config.ConfigurationFactory;
+import io.bootique.di.*;
 import io.bootique.tools.shell.ConfigDir;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.FileConfigService;
@@ -58,12 +58,10 @@ import io.bootique.tools.shell.command.terminal.PathResolver;
 import io.bootique.tools.shell.command.terminal.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
-import io.bootique.tools.shell.content.GradleAppHandler;
-import io.bootique.tools.shell.content.GradleMultimoduleHandler;
-import io.bootique.tools.shell.content.MavenAppHandler;
-import io.bootique.tools.shell.content.MavenModuleHandler;
-import io.bootique.tools.shell.content.GradleModuleHandler;
-import io.bootique.tools.shell.content.MavenMultimoduleHandler;
+import io.bootique.tools.shell.config.PipelinesFactory;
+import io.bootique.tools.shell.content.*;
+import io.bootique.tools.shell.template.TemplatePipeline;
+import io.bootique.type.TypeRef;
 import org.jline.reader.Completer;
 import org.jline.reader.History;
 import org.jline.reader.LineReader;
@@ -75,10 +73,22 @@ import org.jline.terminal.TerminalBuilder;
 import static org.jline.builtins.Completers.TreeCompleter;
 import static org.jline.builtins.Completers.TreeCompleter.Node;
 
-public class BQShellModule implements BQModule {
+public class BQShellModule extends ConfigModule {
 
     public static BQShellModuleExtender extend(Binder binder) {
         return new BQShellModuleExtender(binder);
+    }
+
+    @Provides
+    @Singleton
+    Map<String, List<TemplatePipeline.Builder>> providePipelineBuildersMap(ConfigurationFactory configFactory) {
+        return configFactory.config(new TypeRef<Map<String, PipelinesFactory>>() {
+        }, "modules-config").entrySet().stream()
+                .collect(
+                        Collectors.toMap(
+                                Map.Entry::getKey,
+                                entry -> entry.getValue().getTemplatePipelinesBuilders())
+                );
     }
 
     @Override
@@ -104,13 +114,16 @@ public class BQShellModule implements BQModule {
                 .addHandler("maven-lib", MavenModuleHandler.class)
                 .addHandler("gradle-lib", GradleModuleHandler.class)
                 .addHandler("maven-parent", MavenMultimoduleHandler.class)
-                .addHandler("gradle-parent", GradleMultimoduleHandler.class);
+                .addHandler("gradle-parent", GradleMultimoduleHandler.class)
+                .addHandler("maven-universal", DefaultMavenHandler.class)
+                .addHandler("gradle-universal", DefaultGradleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();
         binder.bind(ConfigService.class).to(FileConfigService.class).inSingletonScope();
         binder.bind(PathCompleter.class).inSingletonScope();
         binder.bind(PathResolver.class).inSingletonScope();
+
     }
 
     /**
@@ -184,6 +197,7 @@ public class BQShellModule implements BQModule {
 
     /**
      * Collect only shell commands from all commands registered in app
+     *
      * @see ShellCommand
      */
     @Provides
@@ -191,12 +205,12 @@ public class BQShellModule implements BQModule {
     Map<String, ShellCommand> getShellCommands(CommandManager commandManager) {
         Map<String, ShellCommand> result = new HashMap<>();
         commandManager.getAllCommands().forEach((name, cmd) -> {
-            if(!cmd.isHidden()) {
+            if (!cmd.isHidden()) {
                 Command command = cmd.getCommand();
-                if(command instanceof ShellCommand) {
+                if (command instanceof ShellCommand) {
                     ShellCommand shellCommand = (ShellCommand) command;
                     result.put(name, shellCommand);
-                    for(String alias : shellCommand.aliases()) {
+                    for (String alias : shellCommand.aliases()) {
                         result.put(alias, shellCommand);
                     }
                 }
@@ -213,10 +227,10 @@ public class BQShellModule implements BQModule {
     ShellCommand defaultShellCommand(CommandManager commandManager) {
         ShellCommand[] command = new ShellCommand[1];
         commandManager.getAllCommands().forEach((n, cmd) -> {
-            if(cmd.isHidden()) {
+            if (cmd.isHidden()) {
                 Command nextCandidate = cmd.getCommand();
-                if(nextCandidate instanceof ShellCommand) {
-                    if(command[0] != null) {
+                if (nextCandidate instanceof ShellCommand) {
+                    if (command[0] != null) {
                         throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
                                 , "Multiple default commands configured for shell: "
                                 + command[0].getMetadata().getName() + ", "
@@ -227,7 +241,7 @@ public class BQShellModule implements BQModule {
             }
         });
 
-        if(command[0] == null) {
+        if (command[0] == null) {
             throw new BootiqueException(ShellCommand.TERMINATING_EXIT_CODE
                     , "No default command configured for shell.");
         }

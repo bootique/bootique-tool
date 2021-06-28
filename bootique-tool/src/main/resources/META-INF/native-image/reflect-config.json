@@ -297,5 +297,17 @@
 {
   "name":"sun.misc.Unsafe",
   "fields":[{"name":"theUnsafe"}]
-}
+},
+  {
+    "name":"io.bootique.tools.shell.config.PipelinesFactory",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.config.TemplatePipelineBuilderFactory",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  }
 ]

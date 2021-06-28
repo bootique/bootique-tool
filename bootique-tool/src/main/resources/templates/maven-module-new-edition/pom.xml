@@ -1,0 +1,72 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    {{#parent}}
+    <parent>
+        <groupId>{{parent.group}}</groupId>
+        <artifactId>{{parent.name}}</artifactId>
+        <version>{{parent.version}}</version>
+    </parent>
+    {{/parent}}
+    {{#override.group}}
+    <groupId>{{java.package}}</groupId>
+    {{/override.group}}
+    <artifactId>{{project.name}}</artifactId>
+    {{#override.group}}
+    <version>{{project.version}}</version>
+    {{/override.group}}
+    {{^parent}}
+    <groupId>{{java.package}}</groupId>
+    <version>{{project.version}}</version>
+    {{/parent}}
+
+    {{^parent}}
+    <properties>
+        <maven.compiler.source>{{java.version}}</maven.compiler.source>
+        <maven.compiler.target>{{java.version}}</maven.compiler.target>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+        <bootique.version>{{bq.version}}</bootique.version>
+        <junit.version>4.13.1</junit.version>
+    </properties>
+    {{/parent}}
+    {{^parent}}
+
+    <dependencyManagement>
+        <dependencies>
+            <dependency>
+                <groupId>io.bootique.bom</groupId>
+                <artifactId>bootique-bom</artifactId>
+                <version>${bootique.version}</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+            <dependency>
+                <groupId>junit</groupId>
+                <artifactId>junit</artifactId>
+                <version>${junit.version}</version>
+            </dependency>
+        </dependencies>
+    </dependencyManagement>
+    {{/parent}}
+
+    <dependencies>
+        <dependency>
+            <groupId>io.bootique</groupId>
+            <artifactId>bootique</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>io.bootique</groupId>
+            <artifactId>bootique-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+    </dependencies>
+
+</project>

@@ -15,9 +15,9 @@ import io.bootique.test.junit.BQTestFactory;
 import io.bootique.tools.shell.module.BQShellModule;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.impl.DumbTerminal;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 
 import static org.junit.Assert.assertTrue;
@@ -33,7 +33,7 @@ public class ApplicationIT {
     @Rule
     public BQTestFactory factory = new BQTestFactory();
 
-    @Before
+    @BeforeEach
     public void setup() throws IOException {
 
         System.setProperty("user.dir", folder.getRoot().toString());

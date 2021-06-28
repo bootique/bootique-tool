@@ -24,8 +24,9 @@ import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.BinaryTemplate;
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.Template;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.io.IOException;
@@ -34,10 +35,7 @@ import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParentPomProcessorTest {
 
@@ -101,7 +99,7 @@ public class ParentPomProcessorTest {
             "    <modelVersion>4.0.0</modelVersion>\n" +
             "    <packaging>pom</packaging>";
 
-    @Before
+    @BeforeEach
     public void prepareProcessor() {
         shell = Mockito.mock(JlineShell.class);
         processor = new ParentPomProcessor(shell);
@@ -139,10 +137,10 @@ public class ParentPomProcessorTest {
         assertEquals(Charset.defaultCharset(), charset);
     }
 
-    @Test(expected = StringIndexOutOfBoundsException.class)
+    @Test
     public void detectCharsetWithShortLengthPom() {
         byte[] fileContent = SHORT_LENGTH_POM.getBytes(StandardCharsets.UTF_8);
-        processor.detectCharset(fileContent);
+        Assertions.assertThrows(StringIndexOutOfBoundsException.class,()->processor.detectCharset(fileContent));
     }
 
     @Test

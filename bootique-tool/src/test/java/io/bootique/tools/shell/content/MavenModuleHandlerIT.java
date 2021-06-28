@@ -3,9 +3,9 @@ package io.bootique.tools.shell.content;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Packaging;
 import io.bootique.tools.shell.Shell;
-import org.junit.Before;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 
 import java.io.IOException;
@@ -69,7 +69,7 @@ public class MavenModuleHandlerIT {
     Path tmpRootPath;
 
 
-    @Before
+    @BeforeEach
     public void createHandler() {
 
         tmpRootPath = folder.getRoot().toPath();
