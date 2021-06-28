@@ -35,7 +35,8 @@ public class TemplateResourceLoader implements TemplateLoader, ResourceLoader {
         InputStream stream = getResourceAsStream(basePath + source);
         if(stream == null) {
             throw new TemplateException("Unable to read resource " + basePath + source+" from tool resources;" +
-                    " maybe you need\n to use external resource loader for this instead?");
+                    " maybe you need\n to use external resource loader for this instead\n" +
+                    " or yor forgot to set defaultLoader property?");
         }
 
         StringBuilder content = new StringBuilder();
