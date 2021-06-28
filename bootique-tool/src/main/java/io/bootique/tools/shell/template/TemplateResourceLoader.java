@@ -26,15 +26,16 @@ import java.io.InputStreamReader;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-public class TemplateResourceLoader implements TemplateLoader {
+public class TemplateResourceLoader implements TemplateLoader, ResourceLoader {
 
     @Override
     public Template load(String source, Properties properties) {
         String basePath = properties.get("input.path");
 
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(basePath + source);
+        InputStream stream = getResourceAsStream(basePath + source);
         if(stream == null) {
-            throw new TemplateException("Unable to read resource " + basePath + source);
+            throw new TemplateException("Unable to read resource " + basePath + source+" from tool resources;" +
+                    " maybe you need\n to use external resource loader for this instead?");
         }
 
         StringBuilder content = new StringBuilder();

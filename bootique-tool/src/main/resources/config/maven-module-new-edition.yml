@@ -6,6 +6,7 @@ modules-config:
           - pom.xml
         processors:
           - mustache
+        loader: external_resource
       - sources:
           - src/main/resources
           - src/test/resources
@@ -15,8 +16,10 @@ modules-config:
           - src/main/resources/META-INF/services/io.bootique.BQModuleProvider
         processors:
           - mustache
+        loader: external_resource
       - sources:
           - src/main/another/another.txt
+        loader: external_resource
       - sources:
           - src/main/java/example/Temporary.java
           - src/main/java/example/MyModule.java
@@ -26,3 +29,4 @@ modules-config:
           - java
           - module_path
           - mustache
+        loader: external_resource

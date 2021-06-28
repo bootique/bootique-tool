@@ -59,12 +59,7 @@ import io.bootique.tools.shell.command.terminal.PwdCommand;
 import io.bootique.tools.shell.command.ShellCommand;
 import io.bootique.tools.shell.command.StartShellCommand;
 import io.bootique.tools.shell.config.PipelinesFactory;
-import io.bootique.tools.shell.content.GradleAppHandler;
-import io.bootique.tools.shell.content.GradleMultimoduleHandler;
-import io.bootique.tools.shell.content.MavenAppHandler;
-import io.bootique.tools.shell.content.MavenModuleHandler;
-import io.bootique.tools.shell.content.GradleModuleHandler;
-import io.bootique.tools.shell.content.MavenMultimoduleHandler;
+import io.bootique.tools.shell.content.*;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.type.TypeRef;
 import org.jline.reader.Completer;
@@ -119,7 +114,9 @@ public class BQShellModule extends ConfigModule {
                 .addHandler("maven-lib", MavenModuleHandler.class)
                 .addHandler("gradle-lib", GradleModuleHandler.class)
                 .addHandler("maven-parent", MavenMultimoduleHandler.class)
-                .addHandler("gradle-parent", GradleMultimoduleHandler.class);
+                .addHandler("gradle-parent", GradleMultimoduleHandler.class)
+                .addHandler("maven-universal", DefaultMavenHandler.class)
+                .addHandler("gradle-universal", DefaultGradleHandler.class);
 
         binder.bind(CommandLineParser.class).to(DefaultCommandLineParser.class).inSingletonScope();
         binder.bind(Shell.class).to(JlineShell.class).inSingletonScope();

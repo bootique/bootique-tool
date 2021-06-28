@@ -13,6 +13,10 @@ public class LoaderFactory {
                 return new BinaryFileLoader();
             case BINARY_RESOURCE:
                 return new BinaryResourceLoader();
+            case EXTERNAL_RESOURCE:
+                return new TemplateExternalResourceLoader();
+            case EXTERNAL_BINARY_RESOURCE:
+                return new ExternalBinaryResourceLoader();
             default:
                 throw new IllegalArgumentException("Unrecognizable loader type: " + loaderType);
         }

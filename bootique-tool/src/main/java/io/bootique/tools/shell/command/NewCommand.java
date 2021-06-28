@@ -34,6 +34,7 @@ import io.bootique.tools.shell.Toolchain;
 import io.bootique.tools.shell.content.ContentHandler;
 import io.bootique.tools.shell.content.DefaultGradleHandler;
 import io.bootique.tools.shell.content.DefaultMavenHandler;
+import io.bootique.tools.shell.content.DefaultUniversalHandler;
 import org.jline.builtins.Completers;
 
 import static io.bootique.tools.shell.Toolchain.GRADLE;
@@ -41,6 +42,7 @@ import static io.bootique.tools.shell.Toolchain.MAVEN;
 import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
+    private static final String UNIVERSAL_MODULE_KEY = "universal";
 
     @Inject
     private Map<String, ContentHandler> artifactHandlers;
@@ -94,14 +96,12 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
         if (arguments.getModulePrototypePath() == null)
             throw new RuntimeException("You set new artifact, but didn't set path to it; sent path as the third " +
                     "command line argument");
-        switch (toolchain) {
-            case MAVEN:
-                return new DefaultMavenHandler(arguments.getArtifactType(), arguments.getModulePrototypePath());
-            case GRADLE:
-                return new DefaultGradleHandler(arguments.getArtifactType(), arguments.getModulePrototypePath());
-            default:
-                throw new RuntimeException("Unrecognizable toolchain: " + toolchain);
-        }
+        DefaultUniversalHandler contentHandler = (DefaultUniversalHandler) artifactHandlers.get(
+                toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY
+        );
+        contentHandler.setPath(arguments.getModulePrototypePath());
+        contentHandler.setArtifactTypeKey(arguments.getArtifactType());
+        return contentHandler;
     }
 
 }

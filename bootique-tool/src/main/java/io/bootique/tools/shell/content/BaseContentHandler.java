@@ -10,10 +10,7 @@ import javax.inject.Provider;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.template.BinaryFileLoader;
-import io.bootique.tools.shell.template.Properties;
-import io.bootique.tools.shell.template.SafeBinaryContentSaver;
-import io.bootique.tools.shell.template.TemplatePipeline;
+import io.bootique.tools.shell.template.*;
 
 public abstract class BaseContentHandler extends ContentHandler implements BuildSystemHandler {
 
@@ -29,6 +26,7 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
         addPipeline(TemplatePipeline.builder()
                 .source("gitignore")
                 .processor((tpl, p) -> tpl.withPath(tpl.getPath().getParent().resolve(".gitignore")))
+                .loader(getDefaultResourceLoader())
         );
 
         // parent build file
@@ -65,7 +63,8 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
                         " to use basic artifacts (lib,module,app) or add your configuration file when start bq" +
                         " as --config argument");
             }
-            List<TemplatePipeline.Builder> builders = buildersMap.get().get(getArtifactTypeKey());
+            Map<String, List<TemplatePipeline.Builder>> buildersUnboxedMap = buildersMap.get();
+            List<TemplatePipeline.Builder> builders = buildersUnboxedMap.get(getArtifactTypeKey());
             for (TemplatePipeline.Builder builder : builders) {
                 addPipeline(builder);
             }
@@ -94,4 +93,8 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
     }
 
     protected abstract String getArtifactTypeKey();
+
+    protected TemplateLoader getDefaultResourceLoader(){
+        return new TemplateResourceLoader();
+    }
 }

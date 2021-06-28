@@ -1,12 +1,18 @@
 package io.bootique.tools.shell.content;
 
 import io.bootique.tools.shell.template.Properties;
+import io.bootique.tools.shell.template.TemplateExternalResourceLoader;
+import io.bootique.tools.shell.template.TemplateLoader;
 
 import java.nio.file.Path;
 
 public abstract class DefaultUniversalHandler extends BaseContentHandler {
-    private final String artifactTypeKey;
-    private final String path;
+    private String artifactTypeKey;
+    private String path;
+
+    public DefaultUniversalHandler() {
+        super();
+    }
 
     public DefaultUniversalHandler(String artifactTypeKey, String path) {
         this.artifactTypeKey = artifactTypeKey;
@@ -18,8 +24,23 @@ public abstract class DefaultUniversalHandler extends BaseContentHandler {
         return artifactTypeKey;
     }
 
+    public void setArtifactTypeKey(String artifactTypeKey) {
+        this.artifactTypeKey = artifactTypeKey;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
+    }
+
     @Override
     Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
-        return super.buildProperties(components, outputRoot, parentFile).with("input.path", path);
+        return super.buildProperties(components, outputRoot, parentFile)
+                .with("module.name", artifactTypeKey)
+                .with("input.path", path);
+    }
+
+    @Override
+    protected TemplateLoader getDefaultResourceLoader() {
+        return new TemplateExternalResourceLoader();
     }
 }
