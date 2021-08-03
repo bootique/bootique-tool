@@ -93,13 +93,11 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
 
     private ContentHandler getDefaultHandlerByArguments(NewCommandArguments arguments) {
         Toolchain toolchain = arguments.getToolchain();
-        if (arguments.getModulePrototypePath() == null)
-            throw new RuntimeException("You set new artifact, but didn't set path to it; sent path as the third " +
-                    "command line argument");
         DefaultUniversalHandler contentHandler = (DefaultUniversalHandler) artifactHandlers.get(
                 toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY
         );
-        contentHandler.setPath(arguments.getModulePrototypePath());
+        if(arguments.getModulePrototypePath() != null)
+            contentHandler.setPath(arguments.getModulePrototypePath());
         contentHandler.setArtifactTypeKey(arguments.getArtifactType());
         return contentHandler;
     }

@@ -15,6 +15,7 @@ import java.util.stream.Collectors;
 public class PipelinesFactory {
     Collection<TemplatePipelineBuilderFactory> templatePipelineBuilderFactories;
     private TemplateLoader defaultLoader;
+    private String prototypePath;
 
     @BQConfigProperty("Collection of pipelines configurations")
     public void setPipelines(Collection<TemplatePipelineBuilderFactory> pipelines) {
@@ -23,7 +24,7 @@ public class PipelinesFactory {
 
     @BQConfigProperty("Loader identifier (\"binary_file\",\"binary_resource\",\"empty\",\"template_resource\"," +
             "\"external_resource\",\"external_binary_resource\"), which will be used by default")
-    public void setDefaultLoader(String loaderName){
+    public void setDefaultLoader(String loaderName) {
         try {
             LoaderType loaderType = LoaderType.valueOf(loaderName.toUpperCase());
             defaultLoader = LoaderFactory.getLoaderWithType(loaderType);
@@ -32,9 +33,20 @@ public class PipelinesFactory {
         }
     }
 
+    @BQConfigProperty("Path to module prototype")
+    public void setPrototypePath(String prototypePath) {
+        if (prototypePath.isEmpty())
+            throw new RuntimeException("Prototype path cannot be empty!");
+        this.prototypePath = prototypePath;
+    }
+
     @Provides
     @Singleton
-    public List<TemplatePipeline.Builder> getTemplatePipelinesBuilders() {
+    public ModuleConfig getCustomModuleConfiguration() {
+        return new ModuleConfig(getTemplatePipelinesBuilders(), prototypePath);
+    }
+
+    private List<TemplatePipeline.Builder> getTemplatePipelinesBuilders() {
         List<TemplatePipeline.Builder> builders = templatePipelineBuilderFactories.stream()
                 .map(TemplatePipelineBuilderFactory::builder)
                 .collect(Collectors.toList());
@@ -43,5 +55,4 @@ public class PipelinesFactory {
                 .forEach(builder -> builder.loader(defaultLoader));
         return builders;
     }
-
 }

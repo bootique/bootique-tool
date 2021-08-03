@@ -19,17 +19,6 @@
 
 package io.bootique.tools.shell.module;
 
-import java.io.IOException;
-import java.lang.reflect.Type;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.util.*;
-import java.util.stream.Collectors;
-
-import javax.inject.Inject;
-import javax.inject.Provider;
-import javax.inject.Singleton;
-
 import io.bootique.BQCoreModule;
 import io.bootique.BootiqueException;
 import io.bootique.ConfigModule;
@@ -38,29 +27,14 @@ import io.bootique.command.Command;
 import io.bootique.command.CommandManager;
 import io.bootique.command.CommandManagerBuilder;
 import io.bootique.config.ConfigurationFactory;
-import io.bootique.di.*;
-import io.bootique.tools.shell.ConfigDir;
-import io.bootique.tools.shell.ConfigService;
-import io.bootique.tools.shell.FileConfigService;
-import io.bootique.tools.shell.JlineShell;
-import io.bootique.tools.shell.Shell;
-import io.bootique.tools.shell.command.terminal.CdCommand;
-import io.bootique.tools.shell.command.CommandLineParser;
-import io.bootique.tools.shell.command.ConfigCommand;
-import io.bootique.tools.shell.command.DefaultCommandLineParser;
-import io.bootique.tools.shell.command.ErrorCommand;
-import io.bootique.tools.shell.command.ExitCommand;
-import io.bootique.tools.shell.command.HelpCommand;
-import io.bootique.tools.shell.command.NewCommand;
-import io.bootique.tools.shell.command.terminal.LsCommand;
-import io.bootique.tools.shell.command.terminal.PathCompleter;
-import io.bootique.tools.shell.command.terminal.PathResolver;
-import io.bootique.tools.shell.command.terminal.PwdCommand;
-import io.bootique.tools.shell.command.ShellCommand;
-import io.bootique.tools.shell.command.StartShellCommand;
+import io.bootique.di.Binder;
+import io.bootique.di.Provides;
+import io.bootique.tools.shell.*;
+import io.bootique.tools.shell.command.*;
+import io.bootique.tools.shell.command.terminal.*;
+import io.bootique.tools.shell.config.ModuleConfig;
 import io.bootique.tools.shell.config.PipelinesFactory;
 import io.bootique.tools.shell.content.*;
-import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.type.TypeRef;
 import org.jline.reader.Completer;
 import org.jline.reader.History;
@@ -69,6 +43,13 @@ import org.jline.reader.LineReaderBuilder;
 import org.jline.reader.impl.history.DefaultHistory;
 import org.jline.terminal.Terminal;
 import org.jline.terminal.TerminalBuilder;
+
+import javax.inject.Singleton;
+import java.io.IOException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.*;
+import java.util.stream.Collectors;
 
 import static org.jline.builtins.Completers.TreeCompleter;
 import static org.jline.builtins.Completers.TreeCompleter.Node;
@@ -81,13 +62,13 @@ public class BQShellModule extends ConfigModule {
 
     @Provides
     @Singleton
-    Map<String, List<TemplatePipeline.Builder>> providePipelineBuildersMap(ConfigurationFactory configFactory) {
+    Map<String, ModuleConfig> provideModulesConfigurationMap(ConfigurationFactory configFactory) {
         return configFactory.config(new TypeRef<Map<String, PipelinesFactory>>() {
         }, "modules-config").entrySet().stream()
                 .collect(
                         Collectors.toMap(
                                 Map.Entry::getKey,
-                                entry -> entry.getValue().getTemplatePipelinesBuilders())
+                                entry -> entry.getValue().getCustomModuleConfiguration())
                 );
     }
 

@@ -10,6 +10,8 @@ import javax.inject.Provider;
 
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
+import io.bootique.tools.shell.config.ModuleConfig;
+import io.bootique.tools.shell.config.PipelinesFactory;
 import io.bootique.tools.shell.template.*;
 
 public abstract class BaseContentHandler extends ContentHandler implements BuildSystemHandler {
@@ -18,7 +20,7 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
     protected ConfigService configService;
 
     @Inject
-    protected Provider<Map<String, List<TemplatePipeline.Builder>>> buildersMap;
+    private Provider<Map<String, ModuleConfig>> pipelinesMap;
 
     private boolean pipelinesInitialized = false;
 
@@ -58,13 +60,13 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
     @Override
     public CommandOutcome handle(NameComponents components) {
         if (!pipelinesInitialized) {
-            if (buildersMap == null) {
+            if (pipelinesMap == null) {
                 throw new RuntimeException("Unrecognizable artifact type: " + getArtifactTypeKey() + "; you need" +
                         " to use basic artifacts (lib,module,app) or add your configuration file when start bq" +
                         " as --config argument");
             }
-            Map<String, List<TemplatePipeline.Builder>> buildersUnboxedMap = buildersMap.get();
-            List<TemplatePipeline.Builder> builders = buildersUnboxedMap.get(getArtifactTypeKey());
+            Map<String, ModuleConfig> buildersUnboxedMap = pipelinesMap.get();
+            List<TemplatePipeline.Builder> builders = buildersUnboxedMap.get(getArtifactTypeKey()).getTemplatePipelineBuilders();
             for (TemplatePipeline.Builder builder : builders) {
                 addPipeline(builder);
             }
@@ -94,7 +96,11 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
 
     protected abstract String getArtifactTypeKey();
 
-    protected TemplateLoader getDefaultResourceLoader(){
+    protected TemplateLoader getDefaultResourceLoader() {
         return new TemplateResourceLoader();
+    }
+
+    protected ModuleConfig getModuleConfigByName(String artifactTypeKey){
+        return pipelinesMap.get().get(artifactTypeKey);
     }
 }
