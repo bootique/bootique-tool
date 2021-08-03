@@ -35,6 +35,7 @@ import io.bootique.tools.shell.command.terminal.*;
 import io.bootique.tools.shell.config.ModuleConfig;
 import io.bootique.tools.shell.config.PipelinesFactory;
 import io.bootique.tools.shell.content.*;
+import io.bootique.tools.shell.util.FileUtils;
 import io.bootique.type.TypeRef;
 import org.jline.reader.Completer;
 import org.jline.reader.History;
@@ -87,6 +88,11 @@ public class BQShellModule extends ConfigModule {
                 .addCommand(PwdCommand.class)
                 .addCommand(LsCommand.class)
                 .setDefaultCommand(StartShellCommand.class);
+
+        Collection<String> additionalConfigsPaths = FileUtils.getPathsToFilesByPostfixFrom(getConfigDirectory(), ".yml");
+        additionalConfigsPaths.forEach(
+                additionalConfigsPath -> BQCoreModule.extend(binder).addConfig(additionalConfigsPath)
+        );
 
         // new content handlers
         extend(binder)
