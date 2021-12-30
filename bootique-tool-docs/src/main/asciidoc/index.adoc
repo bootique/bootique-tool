@@ -59,13 +59,13 @@ choco upgrade bq.portable
 +
 [source,bash]
 ----
-wget https://github.com/bootique/bootique-tool/releases/download/v0.100/bq-0.100.deb
+wget https://github.com/bootique/bootique-tool/releases/download/v0.101/bq-0.101.deb
 ----
 * Install:
 +
 [source,bash]
 ----
-sudo apt install ./bq-0.100.deb
+sudo apt install ./bq-0.101.deb
 ----
 
 ==== CentOS
@@ -76,13 +76,14 @@ To install `bq` on CentOS you need to
 +
 [source,bash]
 ----
-wget https://github.com/bootique/bootique-tool/releases/download/v0.100/bq-0.100.x86_64.rpm
+wget https://github.com/bootique/bootique-tool/releases/download/v0.101/bq-0.101.x86_64.rpm
 ----
 * Install:
 +
 [source,bash]
 ----
-sudo yum install bq-0.100.x86_64.rpm
+sudo yum install bq-0.10
+1.x86_64.rpm
 ----
 
 
