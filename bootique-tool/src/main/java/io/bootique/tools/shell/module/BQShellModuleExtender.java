@@ -44,7 +44,7 @@ public class BQShellModuleExtender extends ModuleExtender<BQShellModuleExtender>
     }
 
     public BQShellModuleExtender addHandler(String name, ContentHandler handler) {
-        contributeArtifactHandlers().put(name, handler);
+        contributeArtifactHandlers().putInstance(name, handler);
         return this;
     }
 

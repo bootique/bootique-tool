@@ -33,10 +33,6 @@
   "allDeclaredMethods":true
 },
 {
-  "name":"io.bootique.JsonNodeConfigurationFactoryProvider",
-  "allDeclaredConstructors":true
-},
-{
   "name":"io.bootique.annotation.DIConfigs",
   "allDeclaredMethods":true
 },

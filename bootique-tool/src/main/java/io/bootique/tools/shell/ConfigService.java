@@ -28,7 +28,7 @@ public interface ConfigService {
     ConfigParameter<String> JAVA_VERSION
             = new ConfigParameter<>("java-version", JavaVersion.getJavaVersion(), Function.identity(), Function.identity());
     ConfigParameter<String> BQ_VERSION
-            = new ConfigParameter<>("bq-version", "1.2", Function.identity(), Function.identity());
+            = new ConfigParameter<>("bq-version", "1.3", Function.identity(), Function.identity());
     ConfigParameter<String> GROUP_ID
             = new ConfigParameter<>("group-id", null, Function.identity(), Function.identity());
     ConfigParameter<Packaging> PACKAGING
