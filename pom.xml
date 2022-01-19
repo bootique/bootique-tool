@@ -37,7 +37,7 @@
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <bootique.version>2.0.RC1</bootique.version>
-        <jline.version>3.11.0</jline.version>
+        <jline.version>3.21.0</jline.version>
         <mustache.java.version>0.9.6</mustache.java.version>
         <native.image.plugin.version>21.2.0</native.image.plugin.version>
         <junit.version>4.13.2</junit.version>
