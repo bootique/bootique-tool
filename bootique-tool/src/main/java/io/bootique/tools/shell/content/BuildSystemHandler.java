@@ -15,7 +15,7 @@ interface BuildSystemHandler {
     TemplateProcessor getTemplateProcessorForParent(Shell shell);
 
     default Properties.Builder additionalProperties(Properties.Builder propertiesBuilder, NameComponents components,
-                                            Path outputRoot, Path parentFile) {
+                                                    Path outputRoot, Path parentFile) {
         return propertiesBuilder;
     }
 

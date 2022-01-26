@@ -32,7 +32,7 @@ import org.jline.reader.UserInterruptException;
 
 public class StartShellCommand extends CommandWithMetadata {
 
-    private static ResourceBundle bundle = ResourceBundle.getBundle("io.bootique.tools.shell.build");
+    private static final ResourceBundle BUNDLE = ResourceBundle.getBundle("io.bootique.tools.shell.build");
 
     private static final String BANNER_STRING =
             "@|green  ____              _   _                    |@_\n" +
@@ -40,7 +40,7 @@ public class StartShellCommand extends CommandWithMetadata {
             "@|green |  _ \\ / _ \\ / _ \\| __| |/ _` | | | |/ _ \\|@ | |/ _ \\\n" +
             "@|green | |_) | (_) | (_) | |_| | (_| | |_| |  __/|@_| | (_) |\n" +
             "@|green |____/ \\___/ \\___/ \\__|_|\\__, |\\__,_|\\___|@(_)_|\\___/\n" +
-            "@|green                             |_||@          shell @|bold v" + bundle.getString("bq.build.version") + "|@\n\n" +
+            "@|green                             |_||@          shell @|bold v" + BUNDLE.getString("bq.build.version") + "|@\n\n" +
             "Type @|bold help|@ to see all available commands. Use @|bold config|@ command to change defaults.";
 
     @Inject

@@ -16,7 +16,7 @@ import org.xml.sax.XMLReader;
 import org.xml.sax.helpers.DefaultHandler;
 
 /**
- * A simple parser of POM file that extracts artifact group, name and version.
+ * A simple parser of POM file that extracts artifact's group, name and version.
  */
 class PomParser {
 

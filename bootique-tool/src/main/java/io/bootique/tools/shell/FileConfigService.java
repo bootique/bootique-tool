@@ -32,7 +32,7 @@ import javax.inject.Inject;
 
 public class FileConfigService implements ConfigService {
 
-    private Shell shell;
+    private final Shell shell;
 
     private final Path configFile;
 

@@ -24,8 +24,8 @@ See `https://bootique.io` for more information about Bootique.
     <releaseNotes>
 ## Version ${project.version}
 
-* Update to the new Bootique snapshot repo in project templates
-* Minor fixes
+* Upgrade to Bootique 2.0.RC1
+* Update GraalVM to 21.3.0
 
     </releaseNotes>
     <docsUrl>https://bootique.io/docs/2.x/bootique-tool-docs/</docsUrl>

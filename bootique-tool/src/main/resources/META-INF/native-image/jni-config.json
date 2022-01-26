@@ -4,8 +4,7 @@
   "fields":[
     {"name":"HAVE_ISATTY"}, 
     {"name":"HAVE_TTYNAME"}, 
-    {"name":"STDERR_FILENO"}, 
-    {"name":"STDIN_FILENO"}, 
+    {"name":"STDERR_FILENO"},
     {"name":"STDOUT_FILENO"}, 
     {"name":"TCSADRAIN"}, 
     {"name":"TCSAFLUSH"}, 

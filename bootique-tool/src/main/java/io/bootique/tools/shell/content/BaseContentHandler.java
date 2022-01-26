@@ -48,7 +48,7 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
                 .with("java.package", components.getJavaPackage())
                 .with("project.version", components.getVersion())
                 .with("project.name", components.getName())
-                .with("bq.di", bqVersion.startsWith("2."))
+                .with("bq.di", bqVersion.startsWith("2.") || bqVersion.startsWith("3."))
                 .with("bq.version", bqVersion)
                 .with("java.version", configService.get(ConfigService.JAVA_VERSION))
                 .with("parent", parentFile != null)
