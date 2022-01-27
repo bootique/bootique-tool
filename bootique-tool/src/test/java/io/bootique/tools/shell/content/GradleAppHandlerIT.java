@@ -3,18 +3,16 @@ package io.bootique.tools.shell.content;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.DockerType;
 import io.bootique.tools.shell.Shell;
-import org.junit.Before;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.TemporaryFolder;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -39,19 +37,20 @@ public class GradleAppHandlerIT {
     private static final String APPLICATION_MODULE_PROVIDER =
             "public class ApplicationModuleProvider implements BQModuleProvider";
 
-    @Rule
-    public TemporaryFolder folder = new TemporaryFolder();
+   /* @Rule
+    public TemporaryFolder folder = new TemporaryFolder();*/
+
+    @TempDir
+    public Path folderPath;
 
     GradleAppHandler handler;
 
-    Path tmpRootPath;
 
-    @Before
+    @BeforeEach
     public void createHandler() {
-        tmpRootPath = folder.getRoot().toPath();
 
         Shell shell = mock(Shell.class);
-        when(shell.workingDir()).thenReturn(tmpRootPath);
+        when(shell.workingDir()).thenReturn(folderPath);
 
         ConfigService configService = mock(ConfigService.class);
         when(configService.get(ConfigService.BQ_VERSION)).thenReturn("1.1");
@@ -70,7 +69,7 @@ public class GradleAppHandlerIT {
 
         handler.handle(new NameComponents("io.bootique.test", projectName, version));
 
-        Path projectPath = tmpRootPath.resolve(projectName);
+        Path projectPath = folderPath.resolve(projectName);
 
         Path applicationDotJavaPath = projectPath
                 .resolve("src")

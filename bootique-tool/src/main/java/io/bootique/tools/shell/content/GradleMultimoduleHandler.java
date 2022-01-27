@@ -19,51 +19,23 @@
 
 package io.bootique.tools.shell.content;
 
-import java.nio.file.Path;
-import java.nio.file.attribute.PosixFilePermission;
-import java.util.EnumSet;
-
-import io.bootique.tools.shell.template.BinaryContentSaver;
-import io.bootique.tools.shell.template.BinaryResourceLoader;
 import io.bootique.tools.shell.template.Properties;
-import io.bootique.tools.shell.template.TemplatePipeline;
-import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
+
+import java.nio.file.Path;
 
 public class GradleMultimoduleHandler extends BaseContentHandler implements GradleHandler {
 
     public GradleMultimoduleHandler() {
-        // gradle wrapper
-        addPipeline(TemplatePipeline.builder()
-                .source("gradle/wrapper/gradle-wrapper.jar")
-                .source("gradle/wrapper/gradle-wrapper.properties")
-                .loader(new BinaryResourceLoader())
-                .saver(new BinaryContentSaver())
-        );
-        addPipeline(TemplatePipeline.builder()
-                .source("gradlew")
-                .source("gradlew.bat")
-                .loader(new BinaryResourceLoader())
-                .saver(new BinaryContentSaver(EnumSet.of(
-                        PosixFilePermission.OWNER_EXECUTE,
-                        PosixFilePermission.OWNER_READ,
-                        PosixFilePermission.GROUP_EXECUTE,
-                        PosixFilePermission.GROUP_READ,
-                        PosixFilePermission.OTHERS_EXECUTE,
-                        PosixFilePermission.OTHERS_READ
-                )))
-        );
-
-        // gradle scripts
-        addPipeline(TemplatePipeline.builder()
-                .source("build.gradle")
-                .source("settings.gradle")
-                .processor(new MustacheTemplateProcessor())
-        );
     }
 
     @Override
     Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("input.path", "templates/gradle-multimodule/");
+    }
+
+    @Override
+    protected String getArtifactTypeKey() {
+        return "gradle-multimodule";
     }
 }

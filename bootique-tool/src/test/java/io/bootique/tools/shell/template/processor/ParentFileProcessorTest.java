@@ -23,14 +23,14 @@ import io.bootique.tools.shell.JlineShell;
 import io.bootique.tools.shell.Shell;
 import io.bootique.tools.shell.template.BinaryTemplate;
 import io.bootique.tools.shell.template.Properties;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class ParentFileProcessorTest {
 
@@ -61,7 +61,7 @@ public class ParentFileProcessorTest {
                     "    </dependencies>\n" +
                     "</project>";
 
-    @Before
+    @BeforeEach
     public void prepareProcessor() {
         shell = Mockito.mock(JlineShell.class);
 

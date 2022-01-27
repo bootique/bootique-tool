@@ -19,19 +19,17 @@
 
 package io.bootique.tools.shell.template;
 
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.file.Path;
 import java.nio.file.Paths;
 
 public class BinaryFileLoader extends BinaryLoader {
 
     @Override
     public Template load(String source, Properties properties) {
-        try(InputStream stream = new FileInputStream(new File(source))) {
+        try(InputStream stream = new FileInputStream(source)) {
             byte[] content;
             try {
                 content = loadContent(stream);

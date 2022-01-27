@@ -19,17 +19,25 @@
 
 package io.bootique.tools.shell;
 
+import io.bootique.Bootique;
+
 import java.util.logging.Level;
 import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
-import io.bootique.Bootique;
-
 public class Application {
+    private static final String[] DEFAULT_CONFIGS_ARGS = new String[]{
+            "-c=classpath:config/gradle-module-config.yml",
+            "-c=classpath:config/gradle-app-config.yml",
+            "-c=classpath:config/gradle-multimodule-config.yml",
+            "-c=classpath:config/maven-module-config.yml",
+            "-c=classpath:config/maven-app-config.yml",
+            "-c=classpath:config/maven-multimodule-config.yml"
+    };
 
     public static void main(String[] args) {
         // see https://github.com/fusesource/jansi/issues/162
-        if(System.getProperty("sun.arch.data.model") == null) {
+        if (System.getProperty("sun.arch.data.model") == null) {
             String arch = System.getProperty("os.arch");
             String vm = System.getProperty("java.vm.name");
             if (arch.endsWith("64") && "Substrate VM".equals(vm)) {
@@ -43,6 +51,7 @@ public class Application {
 
         Bootique
                 .app(args)
+                .args(DEFAULT_CONFIGS_ARGS)
                 .autoLoadModules()
                 .exec()
                 .exit();

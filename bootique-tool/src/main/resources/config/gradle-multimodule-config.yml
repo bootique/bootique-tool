@@ -1,0 +1,21 @@
+modules-config:
+  #module-config:
+  gradle-multimodule:
+    defaultLoader: template_resource
+    pipelines:
+      - sources:
+          - gradle/wrapper/gradle-wrapper.jar
+          - gradle/wrapper/gradle-wrapper.properties
+        loader: binary_resource
+        saver: binary
+      - sources:
+          - gradlew
+          - gradlew.bat
+        loader: binary_resource
+        saver: binary
+        permissions: 777
+      - sources:
+          - build.gradle
+          - settings.gradle
+        processors:
+          - mustache

@@ -1,297 +1,313 @@
 [
-{
-  "name":"[Ljava.lang.String;",
-  "allDeclaredFields":true
-},
-{
-  "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
-  "allDeclaredMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.ApplicationDescription",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.BQCoreModule",
-  "allDeclaredMethods":true
-},
-{
-  "name":"io.bootique.annotation.DIConfigs",
-  "allDeclaredMethods":true
-},
-{
-  "name":"io.bootique.annotation.DefaultCommand",
-  "allDeclaredMethods":true
-},
-{
-  "name":"io.bootique.cli.NoArgsCli",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.command.CommandWithMetadata",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.command.DefaultCommandManager",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.command.ExecutionPlanBuilder",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.config.TypesFactory",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.di.spi.DefaultScopeProvider",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.di.spi.DefaultInjector",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.help.ValueObjectDescriptor",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.help.config.DefaultConfigHelpGenerator",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.help.config.HelpConfigCommand",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.jopt.JoptCli",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.jopt.JoptCliFactory",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.log.DefaultBootLogger",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.meta.application.ApplicationMetadata",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.meta.application.OptionMetadata",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.meta.config.ConfigHierarchyResolver",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.meta.module.ModulesMetadata",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.run.DefaultRunner",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.shutdown.DefaultShutdownManager",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.terminal.SttyTerminal",
-  "allPublicMethods":true
-},
-{
-  "name":"io.bootique.tools.shell.Application"
-},
-{
-  "name":"io.bootique.tools.shell.FileConfigService",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.JlineShell",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.ConfigCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.DefaultCommandLineParser",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.ErrorCommand",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.ExitCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.HelpCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.NewCommand",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.StartShellCommand",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.terminal.CdCommand",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.terminal.LsCommand",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.terminal.PwdCommand",
-  "allDeclaredFields":true,
-  "allPublicMethods":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.ContentHandler",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.tools.shell.content.BaseContentHandler",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.tools.shell.content.AppHandler",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.tools.shell.content.ModuleHandler",
-  "allDeclaredFields":true
-},
-{
-  "name":"io.bootique.tools.shell.content.GradleAppHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.GradleModuleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.MavenAppHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.MavenModuleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.GradleMultimoduleHandler",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.content.NameParser",
-  "allDeclaredFields":true,
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.module.BQShellModule",
-  "allDeclaredMethods":true
-},
-{
-  "name":"io.bootique.tools.shell.command.terminal.PathCompleter",
-  "allDeclaredConstructors":true
-},
-{
-  "name":"io.bootique.tools.shell.command.terminal.PathResolver",
-  "allDeclaredConstructors":true
-},
-{
-  "name":"java.io.File",
-  "methods":[{"name":"toPath","parameterTypes":[] }]
-},
-{
-  "name":"java.nio.file.Files",
-  "methods":[{"name":"setPosixFilePermissions","parameterTypes":["java.nio.file.Path","java.util.Set"] }]
-},
-{
-  "name":"java.nio.file.attribute.PosixFilePermissions",
-  "methods":[{"name":"fromString","parameterTypes":["java.lang.String"] }]
-},
-{
-  "name":"java.util.HashMap",
-  "allPublicMethods":true
-},
-{
-  "name":"java.util.HashSet",
-  "allPublicMethods":true
-},
-{
-  "name":"org.jline.builtins.Completers$TreeCompleter",
-  "allPublicMethods":true
-},
-{
-  "name":"org.jline.reader.impl.LineReaderImpl",
-  "allPublicMethods":true
-},
-{
-  "name":"org.jline.reader.impl.history.DefaultHistory",
-  "allPublicMethods":true
-},
-{
-  "name":"org.jline.terminal.impl.PosixSysTerminal",
-  "allPublicMethods":true
-},
-{
-  "name":"sun.misc.Unsafe",
-  "fields":[{"name":"theUnsafe"}]
-}
+  {
+    "name":"[Ljava.lang.String;",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.sun.org.apache.xalan.internal.xsltc.trax.TransformerFactoryImpl",
+    "allDeclaredMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderFactoryImpl",
+    "allDeclaredMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"com.sun.org.apache.xerces.internal.jaxp.DocumentBuilderImpl",
+    "allDeclaredMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"com.sun.org.apache.xerces.internal.jaxp.SAXParserFactoryImpl",
+    "allDeclaredMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.ApplicationDescription",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.BQCoreModule",
+    "allDeclaredMethods":true
+  },
+  {
+    "name":"io.bootique.JsonNodeConfigurationFactoryProvider",
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.annotation.DIConfigs",
+    "allDeclaredMethods":true
+  },
+  {
+    "name":"io.bootique.annotation.DefaultCommand",
+    "allDeclaredMethods":true
+  },
+  {
+    "name":"io.bootique.cli.NoArgsCli",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.command.CommandWithMetadata",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.command.DefaultCommandManager",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.command.ExecutionPlanBuilder",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.config.TypesFactory",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.di.spi.DefaultScopeProvider",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.di.spi.DefaultInjector",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.help.ValueObjectDescriptor",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.help.config.DefaultConfigHelpGenerator",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.help.config.HelpConfigCommand",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.jopt.JoptCli",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.jopt.JoptCliFactory",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.log.DefaultBootLogger",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.meta.application.ApplicationMetadata",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.meta.application.OptionMetadata",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.meta.config.ConfigHierarchyResolver",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.meta.module.ModulesMetadata",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.run.DefaultRunner",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.shutdown.DefaultShutdownManager",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.terminal.SttyTerminal",
+    "allPublicMethods":true
+  },
+  {
+    "name":"io.bootique.tools.shell.Application"
+  },
+  {
+    "name":"io.bootique.tools.shell.FileConfigService",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.JlineShell",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.ConfigCommand",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.DefaultCommandLineParser",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.ErrorCommand",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.ExitCommand",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.HelpCommand",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.NewCommand",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.StartShellCommand",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.terminal.CdCommand",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.terminal.LsCommand",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.terminal.PwdCommand",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.ContentHandler",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.BaseContentHandler",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.AppHandler",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.ModuleHandler",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.GradleAppHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.GradleModuleHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenAppHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenModuleHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.GradleMultimoduleHandler",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.content.NameParser",
+    "allDeclaredFields":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.module.BQShellModule",
+    "allDeclaredMethods":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.terminal.PathCompleter",
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.command.terminal.PathResolver",
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"java.io.File",
+    "methods":[{"name":"toPath","parameterTypes":[] }]
+  },
+  {
+    "name":"java.nio.file.Files",
+    "methods":[{"name":"setPosixFilePermissions","parameterTypes":["java.nio.file.Path","java.util.Set"] }]
+  },
+  {
+    "name":"java.nio.file.attribute.PosixFilePermissions",
+    "methods":[{"name":"fromString","parameterTypes":["java.lang.String"] }]
+  },
+  {
+    "name":"java.util.HashMap",
+    "allPublicMethods":true
+  },
+  {
+    "name":"java.util.HashSet",
+    "allPublicMethods":true
+  },
+  {
+    "name":"org.jline.builtins.Completers$TreeCompleter",
+    "allPublicMethods":true
+  },
+  {
+    "name":"org.jline.reader.impl.LineReaderImpl",
+    "allPublicMethods":true
+  },
+  {
+    "name":"org.jline.reader.impl.history.DefaultHistory",
+    "allPublicMethods":true
+  },
+  {
+    "name":"org.jline.terminal.impl.PosixSysTerminal",
+    "allPublicMethods":true
+  },
+  {
+    "name":"sun.misc.Unsafe",
+    "fields":[{"name":"theUnsafe"}]
+  },
+  {
+    "name":"io.bootique.tools.shell.config.PipelinesFactory",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  },
+  {
+    "name":"io.bootique.tools.shell.config.TemplatePipelineBuilderFactory",
+    "allDeclaredFields":true,
+    "allPublicMethods":true,
+    "allDeclaredConstructors":true
+  }
 ]

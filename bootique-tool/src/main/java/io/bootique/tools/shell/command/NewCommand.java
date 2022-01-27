@@ -30,12 +30,19 @@ import io.bootique.meta.application.CommandMetadata;
 import io.bootique.meta.application.OptionMetadata;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.Shell;
+import io.bootique.tools.shell.Toolchain;
 import io.bootique.tools.shell.content.ContentHandler;
+import io.bootique.tools.shell.content.DefaultGradleHandler;
+import io.bootique.tools.shell.content.DefaultMavenHandler;
+import io.bootique.tools.shell.content.DefaultUniversalHandler;
 import org.jline.builtins.Completers;
 
+import static io.bootique.tools.shell.Toolchain.GRADLE;
+import static io.bootique.tools.shell.Toolchain.MAVEN;
 import static org.jline.builtins.Completers.TreeCompleter.node;
 
 public class NewCommand extends CommandWithMetadata implements ShellCommand {
+    private static final String UNIVERSAL_MODULE_KEY = "universal";
 
     @Inject
     private Map<String, ContentHandler> artifactHandlers;
@@ -63,18 +70,10 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
     @Override
     public CommandOutcome run(Cli cli) {
         NewCommandArguments arguments = NewCommandArguments.fromCliArguments(shell, config, cli.standaloneArguments());
-        if(arguments == null) {
+        if (arguments == null) {
             return CommandOutcome.failed(-1, "Usage: new type name");
         }
-
-        String templateType = arguments.getToolchain().name().toLowerCase()
-                + '-' + arguments.getArtifactType().name().toLowerCase();
-        ContentHandler handler = artifactHandlers.get(templateType);
-        if(handler == null) {
-            return CommandOutcome.failed(-1, "Unknown artifact type: '" + templateType + "'\n"
-                    + "Supported types: " + String.join(", ", artifactHandlers.keySet()));
-        }
-
+        ContentHandler handler = getContentHandlerFromArguments(arguments);
         return handler.handle(arguments.getNameComponents());
     }
 
@@ -82,4 +81,25 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
     public Completers.TreeCompleter.Node getCompleter() {
         return node("new", node("app"), node("lib"), node("parent"));
     }
+
+    private ContentHandler getContentHandlerFromArguments(NewCommandArguments arguments) {
+        String templateType = arguments.getToolchain().name().toLowerCase()
+                + '-' + arguments.getArtifactType().toLowerCase();
+        if (artifactHandlers.containsKey(templateType))
+            return artifactHandlers.get(templateType);
+        else
+            return getDefaultHandlerByArguments(arguments);
+    }
+
+    private ContentHandler getDefaultHandlerByArguments(NewCommandArguments arguments) {
+        Toolchain toolchain = arguments.getToolchain();
+        DefaultUniversalHandler contentHandler = (DefaultUniversalHandler) artifactHandlers.get(
+                toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY
+        );
+        if(arguments.getModulePrototypePath() != null)
+            contentHandler.setPath(arguments.getModulePrototypePath());
+        contentHandler.setArtifactTypeKey(arguments.getArtifactType());
+        return contentHandler;
+    }
+
 }

@@ -20,7 +20,8 @@
 package io.bootique.tools.shell.template;
 
 import org.junit.Rule;
-import org.junit.Test;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.Test;
 import org.junit.rules.TemporaryFolder;
 import org.mockito.Mockito;
 
@@ -29,16 +30,16 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BinaryContentSaverTest {
 
-    private BinaryContentSaver binaryContentSaver = Mockito.spy(BinaryContentSaver.class);
+    private final BinaryContentSaver binaryContentSaver = Mockito.spy(BinaryContentSaver.class);
 
     @Rule
     public TemporaryFolder folder = new TemporaryFolder();
 
-    @Test(expected = TemplateException.class)
+    @Test
     public void saveNotBinary() {
         Properties properties = Properties.builder()
                 .with("noModule.name", "Test")
@@ -47,7 +48,7 @@ public class BinaryContentSaverTest {
                 "AnotherMyModule", "TestClass.java"),
                 "package example;\n" + "public class Test implements Module {\n" + "}");
 
-        binaryContentSaver.save(template, properties);
+        Assertions.assertThrows(TemplateException.class,()->binaryContentSaver.save(template, properties));
     }
 
     @Test

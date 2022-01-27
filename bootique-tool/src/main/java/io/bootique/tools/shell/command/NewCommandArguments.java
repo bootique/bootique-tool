@@ -30,7 +30,8 @@ import io.bootique.tools.shell.content.NameParser;
 
 class NewCommandArguments {
     private final Toolchain toolchain;
-    private final ArtifactType artifactType;
+    private final String artifactType;
+    private final String modulePrototypePath;
     private final NameComponents components;
 
     Toolchain getToolchain() {
@@ -41,27 +42,35 @@ class NewCommandArguments {
         return components;
     }
 
-    ArtifactType getArtifactType() {
+    String getArtifactType() {
         return artifactType;
     }
 
-    private NewCommandArguments(Toolchain toolchain, ArtifactType artifactType, NameComponents components) {
+    public String getModulePrototypePath() {
+        return modulePrototypePath;
+    }
+
+    private NewCommandArguments(Toolchain toolchain, String artifactType, NameComponents components, String modulePrototypePath) {
         this.toolchain = toolchain;
         this.artifactType = artifactType;
         this.components = components;
+        this.modulePrototypePath = modulePrototypePath;
     }
 
     static NewCommandArguments fromCliArguments(Shell shell, ConfigService configService, List<String> arguments) {
-        ArtifactType type = null;
+        String type = null;
         String name = null;
+        String modulePath = null;
 
         if (arguments != null) {
             // we have something ...
             switch (arguments.size()) {
+                case 3:
+                    modulePath = arguments.get(2);
                 case 2:
                     name = arguments.get(1);
                 case 1:
-                    type = ArtifactType.byName(arguments.get(0));
+                    type = arguments.get(0);
                     if (type == null) {
                         if (name == null) {
                             name = arguments.get(0);
@@ -78,7 +87,7 @@ class NewCommandArguments {
         }
 
         while (type == null) {
-            type = ArtifactType.byName(shell.readln("Artifact type ([a]pp, [l]ib or [p]arent): "));
+            type = shell.readln("Artifact type ([a]pp, [l]ib or [p]arent): ");//ArtifactType.byName(shell.readln("Artifact type ([a]pp, [l]ib or [p]arent): "));
         }
         while (name == null) {
             name = shell.readln("Artifact name ([group:]name[:version]): ");
@@ -92,6 +101,6 @@ class NewCommandArguments {
             }
             nameComponents = nameComponents.withJavaPackage(javaPackage);
         }
-        return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents);
+        return new NewCommandArguments(configService.get(ConfigService.TOOLCHAIN), type, nameComponents, modulePath);
     }
 }

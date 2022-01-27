@@ -21,19 +21,19 @@ package io.bootique.tools.shell.template.processor;
 
 import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.Template;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class BqModulePathProcessorTest {
 
 
     private BqModulePathProcessor processor;
 
-    @Before
+    @BeforeEach
     public void prepareProcessor() {
         processor = new BqModulePathProcessor();
 
@@ -55,7 +55,7 @@ public class BqModulePathProcessorTest {
         assertFalse(result.getPath().toString().contains("MyModule"));
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test
     public void noModuleNameTest() {
         Properties properties = Properties.builder()
                 .with("noModule.name", "Test")
@@ -63,8 +63,7 @@ public class BqModulePathProcessorTest {
         Template template = new Template(Paths.get("ParentMyModule", "MyModule", "ChildMyModule",
                 "AnotherMyModule", "TestClass.java"),
                 "package example;\n" + "public class Test implements Module {\n" + "}");
-
-        processor.process(template, properties);
+        assertThrows(NullPointerException.class, () -> processor.process(template, properties));
     }
 
     @Test

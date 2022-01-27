@@ -20,6 +20,9 @@
 package io.bootique.tools.shell.content;
 
 import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
 
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.DockerType;
@@ -28,15 +31,12 @@ import io.bootique.tools.shell.template.Properties;
 import io.bootique.tools.shell.template.TemplatePipeline;
 import io.bootique.tools.shell.template.processor.MustacheTemplateProcessor;
 
+import javax.inject.Inject;
+import javax.inject.Provider;
+
 public class MavenAppHandler extends AppHandler implements MavenHandler {
 
     public MavenAppHandler() {
-        super();
-        // pom.xml
-        addPipeline(TemplatePipeline.builder()
-                .source("pom.xml")
-                .processor(new MustacheTemplateProcessor())
-        );
         // assembly.xml
         addPipeline(TemplatePipeline.builder()
                 .source("assembly.xml")
@@ -57,5 +57,10 @@ public class MavenAppHandler extends AppHandler implements MavenHandler {
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("module.name", "Application")
                 .with("input.path", "templates/maven-app/");
+    }
+
+    @Override
+    protected String getArtifactTypeKey() {
+        return "maven-app";
     }
 }

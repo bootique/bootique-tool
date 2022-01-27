@@ -79,7 +79,7 @@ public class TemplatePipeline {
         }
 
         public Builder processor(TemplateProcessor processor) {
-            if(this.processor == null) {
+            if (this.processor == null) {
                 this.processor = processor;
                 return this;
             }
@@ -103,20 +103,24 @@ public class TemplatePipeline {
             return this;
         }
 
+        public boolean loaderPresents() {
+            return loader != null;
+        }
+
         public TemplatePipeline build() {
-            if(sources.isEmpty()) {
+            if (sources.isEmpty()) {
                 throw new TemplateException("No sources set for template pipeline");
             }
-            if(processor == null) {
+            if (processor == null) {
                 processor = (t, p) -> t;
             }
-            if(loader == null) {
+            if (loader == null) {
                 loader = new TemplateResourceLoader();
             }
-            if(saver == null) {
+            if (saver == null) {
                 saver = new TemplateFileSaver();
             }
-            if(filter == null) {
+            if (filter == null) {
                 filter = (s, properties) -> true;
             }
             return new TemplatePipeline(sources, processor, loader, saver, filter);

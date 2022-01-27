@@ -23,13 +23,13 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 
-public class BinaryResourceLoader extends BinaryLoader {
+public class BinaryResourceLoader extends BinaryLoader implements ResourceLoader {
 
     @Override
     public BinaryTemplate load(String source, Properties properties) {
         String basePath = properties.get("input.path");
 
-        InputStream stream = getClass().getClassLoader().getResourceAsStream(basePath + source);
+        InputStream stream = getResourceAsStream(basePath + source);
         if(stream == null) {
             throw new TemplateException("Unable to read resource " + basePath + source);
         }
