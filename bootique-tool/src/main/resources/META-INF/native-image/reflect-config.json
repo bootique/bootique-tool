@@ -24,6 +24,24 @@
     "allDeclaredConstructors":true
   },
   {
+    "name":"[Lcom.fasterxml.jackson.databind.deser.Deserializers;"
+  },
+  {
+    "name":"[Lcom.fasterxml.jackson.databind.deser.ValueInstantiators;"
+  },
+  {
+    "name":"[Ljava.lang.String;",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"com.fasterxml.jackson.databind.ext.Java7HandlersImpl",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"com.fasterxml.jackson.databind.ext.Java7SupportImpl",
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
     "name":"io.bootique.ApplicationDescription",
     "allDeclaredFields":true,
     "allDeclaredConstructors":true
@@ -33,8 +51,53 @@
     "allDeclaredMethods":true
   },
   {
-    "name":"io.bootique.JsonNodeConfigurationFactoryProvider",
-    "allDeclaredConstructors":true
+    "name":"io.bootique.config.jackson.CliConfigurationLoader",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.log.BootLogger","io.bootique.config.jackson.parser.JsonConfigurationParser","io.bootique.config.jackson.merger.JsonConfigurationMerger","io.bootique.cli.Cli"] }]
+  },
+  {
+    "name":"io.bootique.config.jackson.CliCustomOptionsConfigurationLoader",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.cli.Cli","java.util.Set","java.util.Set","java.util.Set","io.bootique.config.jackson.parser.JsonConfigurationParser","io.bootique.config.jackson.merger.JsonConfigurationMerger"] }]
+  },
+  {
+    "name":"io.bootique.config.jackson.DIConfigurationLoader",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.log.BootLogger","io.bootique.config.jackson.parser.JsonConfigurationParser","io.bootique.config.jackson.merger.JsonConfigurationMerger","java.util.Set"] }]
+  },
+  {
+    "name":"io.bootique.config.jackson.JsonConfigurationFactory"
+  },
+  {
+    "name":"io.bootique.config.jackson.PropertiesConfigurationLoader",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.env.Environment"] }]
+  },
+  {
+    "name":"io.bootique.config.jackson.UrlConfigurationLoader",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"io.bootique.config.jackson.merger.InPlaceLeftHandMerger"
+  },
+  {
+    "name":"io.bootique.config.jackson.parser.JsonConfigurationFormatParser",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.jackson.JacksonService"] }]
+  },
+  {
+    "name":"io.bootique.config.jackson.parser.MultiFormatJsonNodeParser"
+  },
+  {
+    "name":"io.bootique.config.jackson.parser.YamlConfigurationFormatParser",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":["io.bootique.jackson.JacksonService"] }]
   },
   {
     "name":"io.bootique.annotation.DIConfigs",
@@ -196,7 +259,36 @@
     "allDeclaredConstructors":true
   },
   {
-    "name":"io.bootique.tools.shell.content.ContentHandler",
+    "name":"io.bootique.tools.shell.config.PipelinesFactory",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllPublicMethods":true,
+    "queryAllDeclaredConstructors":true,
+    "queryAllPublicConstructors":true,
+    "methods":[
+      {"name":"<init>","parameterTypes":[] },
+      {"name":"setDefaultLoader","parameterTypes":["java.lang.String"] },
+      {"name":"setPipelines","parameterTypes":["java.util.Collection"] }
+    ]
+  },
+  {
+    "name":"io.bootique.tools.shell.config.TemplatePipelineBuilderFactory",
+    "allDeclaredFields":true,
+    "queryAllDeclaredMethods":true,
+    "queryAllPublicMethods":true,
+    "queryAllDeclaredConstructors":true,
+    "queryAllPublicConstructors":true,
+    "methods":[
+      {"name":"<init>","parameterTypes":[] },
+      {"name":"setLoader","parameterTypes":["java.lang.String"] },
+      {"name":"setPermissions","parameterTypes":["int"] },
+      {"name":"setProcessors","parameterTypes":["java.util.Collection"] },
+      {"name":"setSaver","parameterTypes":["java.lang.String"] },
+      {"name":"setSources","parameterTypes":["java.util.Collection"] }
+    ]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.AppHandler",
     "allDeclaredFields":true
   },
   {
@@ -204,42 +296,64 @@
     "allDeclaredFields":true
   },
   {
-    "name":"io.bootique.tools.shell.content.AppHandler",
+    "name":"io.bootique.tools.shell.content.ContentHandler",
     "allDeclaredFields":true
   },
   {
-    "name":"io.bootique.tools.shell.content.ModuleHandler",
+    "name":"io.bootique.tools.shell.content.DefaultGradleHandler",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.DefaultMavenHandler",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.DefaultUniversalHandler",
     "allDeclaredFields":true
   },
   {
     "name":"io.bootique.tools.shell.content.GradleAppHandler",
     "allDeclaredFields":true,
-    "allDeclaredConstructors":true
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
     "name":"io.bootique.tools.shell.content.GradleModuleHandler",
     "allDeclaredFields":true,
-    "allDeclaredConstructors":true
-  },
-  {
-    "name":"io.bootique.tools.shell.content.MavenAppHandler",
-    "allDeclaredFields":true,
-    "allDeclaredConstructors":true
-  },
-  {
-    "name":"io.bootique.tools.shell.content.MavenModuleHandler",
-    "allDeclaredFields":true,
-    "allDeclaredConstructors":true
-  },
-  {
-    "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
-    "allDeclaredFields":true,
-    "allDeclaredConstructors":true
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
   },
   {
     "name":"io.bootique.tools.shell.content.GradleMultimoduleHandler",
     "allDeclaredFields":true,
-    "allDeclaredConstructors":true
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenAppHandler",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenModuleHandler",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.MavenMultimoduleHandler",
+    "allDeclaredFields":true,
+    "queryAllDeclaredConstructors":true,
+    "methods":[{"name":"<init>","parameterTypes":[] }]
+  },
+  {
+    "name":"io.bootique.tools.shell.content.ModuleHandler",
+    "allDeclaredFields":true
   },
   {
     "name":"io.bootique.tools.shell.content.NameParser",
@@ -279,8 +393,19 @@
     "allPublicMethods":true
   },
   {
-    "name":"org.jline.builtins.Completers$TreeCompleter",
-    "allPublicMethods":true
+    "name":"java.util.Map",
+    "methods":[{"name":"get","parameterTypes":["java.lang.Object"] }]
+  },
+  {
+    "name":"org.jline.builtins.Completers$DirectoriesCompleter",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"org.jline.builtins.Completers$FileNameCompleter",
+    "allDeclaredFields":true
+  },
+  {
+    "name":"org.jline.builtins.Completers$TreeCompleter"
   },
   {
     "name":"org.jline.reader.impl.LineReaderImpl",
@@ -299,15 +424,6 @@
     "fields":[{"name":"theUnsafe"}]
   },
   {
-    "name":"io.bootique.tools.shell.config.PipelinesFactory",
-    "allDeclaredFields":true,
-    "allPublicMethods":true,
-    "allDeclaredConstructors":true
-  },
-  {
-    "name":"io.bootique.tools.shell.config.TemplatePipelineBuilderFactory",
-    "allDeclaredFields":true,
-    "allPublicMethods":true,
-    "allDeclaredConstructors":true
+    "name":"sun.nio.fs.WindowsPath"
   }
 ]
