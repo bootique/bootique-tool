@@ -19,8 +19,6 @@
 
 package io.bootique.tools.shell.template;
 
-import java.io.InputStream;
-
 @FunctionalInterface
 public interface TemplateLoader {
     Template load(String source, Properties properties);

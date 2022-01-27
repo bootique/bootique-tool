@@ -21,9 +21,6 @@ package io.bootique.tools.shell.template;
 
 import java.nio.file.Path;
 
-/**
- * @since 4.2
- */
 public class BinaryTemplate extends Template {
 
     private final byte[] content;

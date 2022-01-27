@@ -23,9 +23,6 @@ import java.io.BufferedInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * @since 4.2
- */
 public abstract class BinaryLoader implements TemplateLoader {
     byte[] loadContent(InputStream stream) throws IOException {
         byte[] content = null;
