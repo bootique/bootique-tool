@@ -85,19 +85,20 @@ public class NewCommand extends CommandWithMetadata implements ShellCommand {
     private ContentHandler getContentHandlerFromArguments(NewCommandArguments arguments) {
         String templateType = arguments.getToolchain().name().toLowerCase()
                 + '-' + arguments.getArtifactType().toLowerCase();
-        if (artifactHandlers.containsKey(templateType))
+        if (artifactHandlers.containsKey(templateType)) {
             return artifactHandlers.get(templateType);
-        else
+        } else {
             return getDefaultHandlerByArguments(arguments);
+        }
     }
 
     private ContentHandler getDefaultHandlerByArguments(NewCommandArguments arguments) {
         Toolchain toolchain = arguments.getToolchain();
-        DefaultUniversalHandler contentHandler = (DefaultUniversalHandler) artifactHandlers.get(
-                toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY
-        );
-        if(arguments.getModulePrototypePath() != null)
+        DefaultUniversalHandler contentHandler = (DefaultUniversalHandler)
+                artifactHandlers.get(toolchain.toString().toLowerCase() + "-" + UNIVERSAL_MODULE_KEY);
+        if(arguments.getModulePrototypePath() != null) {
             contentHandler.setPath(arguments.getModulePrototypePath());
+        }
         contentHandler.setArtifactTypeKey(arguments.getArtifactType());
         return contentHandler;
     }

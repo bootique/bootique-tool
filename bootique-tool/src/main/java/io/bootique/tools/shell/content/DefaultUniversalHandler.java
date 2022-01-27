@@ -35,9 +35,10 @@ public abstract class DefaultUniversalHandler extends BaseContentHandler {
     @Override
     Properties.Builder buildProperties(NameComponents components, Path outputRoot, Path parentFile) {
         String inputPath = path == null ? getModuleConfigByName(artifactTypeKey).getModulePrototypePath() : path;
-        if (inputPath == null)
+        if (inputPath == null) {
             throw new RuntimeException("Path to your artifact was not set" +
                     " as the third argument or as a prototypePath property of configuration");
+        }
         return super.buildProperties(components, outputRoot, parentFile)
                 .with("module.name", artifactTypeKey)
                 .with("input.path", inputPath);

@@ -95,13 +95,18 @@ public class StartShellCommand extends CommandWithMetadata {
 
     private void failedCommandOutput(CommandOutcome commandOutcome) {
         if(commandOutcome.getMessage() != null) {
-            shell.println("@|red   < |@" + commandOutcome.getMessage());
+            shell.println("@|red   < |@" + formatMessage(commandOutcome));
         } else {
             shell.println("@|red   < |@" + "Failed to run command");
         }
         if(commandOutcome.getException() != null) {
             shell.println(commandOutcome.getException());
         }
+    }
+
+    private String formatMessage(CommandOutcome commandOutcome) {
+        String message = commandOutcome.getMessage();
+        return message.replace("\n", "\n@|red   < |@");
     }
 
 }

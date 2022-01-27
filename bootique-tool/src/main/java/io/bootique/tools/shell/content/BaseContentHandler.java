@@ -11,7 +11,6 @@ import javax.inject.Provider;
 import io.bootique.command.CommandOutcome;
 import io.bootique.tools.shell.ConfigService;
 import io.bootique.tools.shell.config.ModuleConfig;
-import io.bootique.tools.shell.config.PipelinesFactory;
 import io.bootique.tools.shell.template.*;
 
 public abstract class BaseContentHandler extends ContentHandler implements BuildSystemHandler {
@@ -61,12 +60,13 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
     public CommandOutcome handle(NameComponents components) {
         if (!pipelinesInitialized) {
             if (pipelinesMap == null) {
-                throw new RuntimeException("Unrecognizable artifact type: " + getArtifactTypeKey() + "; you need" +
-                        " to use basic artifacts (lib,module,app) or add your configuration file when start bq" +
-                        " as --config argument");
+                return unknownTypeError();
             }
-            Map<String, ModuleConfig> buildersUnboxedMap = pipelinesMap.get();
-            List<TemplatePipeline.Builder> builders = buildersUnboxedMap.get(getArtifactTypeKey()).getTemplatePipelineBuilders();
+            ModuleConfig moduleConfig = pipelinesMap.get().get(getArtifactTypeKey());
+            if(moduleConfig == null) {
+                return unknownTypeError();
+            }
+            List<TemplatePipeline.Builder> builders = moduleConfig.getTemplatePipelineBuilders();
             for (TemplatePipeline.Builder builder : builders) {
                 addPipeline(builder);
             }
@@ -78,8 +78,8 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
         Path parentFile = shell.workingDir().resolve(getBuildFileName());
         boolean parentFileExists = Files.exists(parentFile);
         if (parentFileExists && !Files.isWritable(parentFile)) {
-            return CommandOutcome.failed(-1, "Parent " + getBuildFileName() +
-                    " file is not writable.");
+            return CommandOutcome.failed(-1,
+                    "Parent " + getBuildFileName() + " file is not writable.");
         }
 
         Path outputRoot = shell.workingDir().resolve(components.getName());
@@ -92,6 +92,12 @@ public abstract class BaseContentHandler extends ContentHandler implements Build
 
         log("done.");
         return CommandOutcome.succeeded();
+    }
+
+    private CommandOutcome unknownTypeError() {
+        return CommandOutcome.failed(-1, "Unknown artifact type: @|bold " + getArtifactTypeKey() + "|@"
+                + "\nyou could use default artifacts (@|bold lib, module, app|@)"
+                + "\nor provide configuration file for your own");
     }
 
     protected abstract String getArtifactTypeKey();
