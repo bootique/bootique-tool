@@ -32,14 +32,14 @@ import java.util.Collection;
 public class TemplatePipelineBuilderFactory {
     private final TemplatePipeline.Builder builder = TemplatePipeline.builder();
 
-    private Integer permissions;
+    private FilePermissions permissions;
     private SaverType saverType;
 
     public TemplatePipelineBuilderFactory() {
     }
 
-    @BQConfigProperty("Permissions like number, which can be used in chmod command")
-    public void setPermissions(int permissions) {
+    @BQConfigProperty("UNIX permissions mask")
+    public void setPermissions(FilePermissions permissions) {
         this.permissions = permissions;
     }
 

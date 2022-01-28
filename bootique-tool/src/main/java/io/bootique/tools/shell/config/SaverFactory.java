@@ -19,16 +19,19 @@
 
 package io.bootique.tools.shell.config;
 
-import io.bootique.tools.shell.template.*;
-import io.bootique.tools.shell.util.PermissionsUtils;
+import io.bootique.tools.shell.template.BinaryContentSaver;
+import io.bootique.tools.shell.template.SafeBinaryContentSaver;
+import io.bootique.tools.shell.template.TemplateDirOnlySaver;
+import io.bootique.tools.shell.template.TemplateFileSaver;
+import io.bootique.tools.shell.template.TemplateSaver;
 
 public class SaverFactory {
-    private Integer permissions;
+    private FilePermissions permissions;
 
     public SaverFactory() {
     }
 
-    public void setPermissions(Integer permissions) {
+    public void setPermissions(FilePermissions permissions) {
         this.permissions = permissions;
     }
 
@@ -37,8 +40,9 @@ public class SaverFactory {
             case FILE:
                 return new TemplateFileSaver();
             case BINARY: {
-                if (permissions != null)
-                    return new BinaryContentSaver(PermissionsUtils.parsePermissions(permissions));
+                if (permissions != null) {
+                    return new BinaryContentSaver(permissions.toPosixFilePermissions());
+                }
                 return new BinaryContentSaver();
             }
             case SAFE_BINARY:
