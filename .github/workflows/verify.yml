@@ -22,7 +22,7 @@ jobs:
         id: setup-graalvm
         uses: DeLaGuardo/setup-graalvm@master
         with:
-          graalvm-version: '21.3.0.java11'
+          graalvm-version: '22.1.0.java11'
 
       - name: Install native-image component
         run: gu install native-image
