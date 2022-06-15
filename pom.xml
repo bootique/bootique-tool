@@ -36,12 +36,12 @@
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <bootique.version>2.0.RC1</bootique.version>
+        <bootique.version>2.0.1</bootique.version>
         <jline.version>3.21.0</jline.version>
         <mustache.java.version>0.9.10</mustache.java.version>
         <native.image.plugin.version>21.2.0</native.image.plugin.version>
-        <junit.version>5.8.0-M1</junit.version>
-        <mockito.version>3.11.2</mockito.version>
+        <junit.version>5.8.2</junit.version>
+        <mockito.version>4.6.1</mockito.version>
     </properties>
 
     <inceptionYear>2019</inceptionYear>

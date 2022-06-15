@@ -281,7 +281,7 @@
     "methods":[
       {"name":"<init>","parameterTypes":[] },
       {"name":"setLoader","parameterTypes":["java.lang.String"] },
-      {"name":"setPermissions","parameterTypes":["int"] },
+      {"name":"setPermissions","parameterTypes":["io.bootique.tools.shell.config.FilePermissions"] },
       {"name":"setProcessors","parameterTypes":["java.util.Collection"] },
       {"name":"setSaver","parameterTypes":["java.lang.String"] },
       {"name":"setSources","parameterTypes":["java.util.Collection"] }
